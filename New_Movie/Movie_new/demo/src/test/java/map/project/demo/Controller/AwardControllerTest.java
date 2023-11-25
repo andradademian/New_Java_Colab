@@ -10,12 +10,16 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.sql.SQLException;
 import java.util.Vector;
 
 public class AwardControllerTest {
     AwardRepository awardRepository = AwardRepository.getInstance();
     AwardFactory awardFactory = AwardFactory.getInstance();
     AwardController awardController = new AwardController(awardRepository, awardFactory);
+
+    public AwardControllerTest() throws SQLException {
+    }
 
     @BeforeEach
     public void setUp() {

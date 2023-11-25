@@ -9,17 +9,26 @@ import java.text.ParseException;
 import java.util.Scanner;
 
 public class UI {
-    private static final ActorRepository actorRepo;
+    private static final ActorRepository actorRepo = ActorRepository.getInstance();
+
+//    static {
+//        try {
+//            actorRepo = ActorRepository.getInstance();
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
+
+    private static final AwardRepository awardRepository;
 
     static {
         try {
-            actorRepo = ActorRepository.getInstance();
+            awardRepository = AwardRepository.getInstance();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private static final AwardRepository awardRepository = AwardRepository.getInstance();
     private static final CinemaRepository cinemaRepository = CinemaRepository.getInstance();
     private static final GenreRepository genreRepository = GenreRepository.getInstance();
     private static final MovieRepository movieRepository = MovieRepository.getInstance();
@@ -39,7 +48,16 @@ public class UI {
     private static final TicketRepository ticketRepository = TicketRepository.getInstance();
     private static final AwardFactory awardFactory = AwardFactory.getInstance();
     private static final ActorController actorController = new ActorController(actorRepo);
-    private static final AwardController awardController = new AwardController(awardRepository, awardFactory);
+    private static final AwardController awardController;
+
+    static {
+        try {
+            awardController = new AwardController(awardRepository, awardFactory);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private static final CinemaController cinemaController = new CinemaController(cinemaRepository);
     private static final GenreController genreController = new GenreController(genreRepository);
     private static final MovieController movieController = new MovieController(movieRepository);

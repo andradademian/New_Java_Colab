@@ -27,7 +27,7 @@ public class SingletonTest {
         assertSame(instance1, instance2);
     }
     @Test
-    public void testSingletonAward() {
+    public void testSingletonAward() throws SQLException {
         AwardRepository instance1 = AwardRepository.getInstance();
         AwardRepository instance2 = AwardRepository.getInstance();
 

@@ -1,6 +1,7 @@
 package map.project.demo.Domain;
 
 import java.sql.Date;
+//import java.util.Date;
 import java.util.Vector;
 
 public class Actor extends Spectator {

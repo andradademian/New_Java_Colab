@@ -7,6 +7,7 @@ import map.project.demo.Domain.Movie;
 import map.project.demo.Repository.AwardRepository;
 import map.project.demo.AwardFactory.AwardFactory;
 
+import java.sql.SQLException;
 import java.util.Objects;
 import java.util.Scanner;
 import java.util.Vector;
@@ -16,7 +17,7 @@ public class AwardController {
     private final Vector<Award> listOfAwards = new Vector<>();
     private final AwardFactory awardFactory;
 
-    public AwardController(AwardRepository awardRepo, AwardFactory awardFactory) {
+    public AwardController(AwardRepository awardRepo, AwardFactory awardFactory) throws SQLException {
         this.awardRepo = awardRepo;
         this.awardFactory = awardFactory;
     }

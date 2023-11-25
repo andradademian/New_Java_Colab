@@ -6,13 +6,15 @@ import map.project.demo.Repository.AwardRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.sql.SQLException;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class AwardRepoTest {
     AwardRepository awardRepository;
 
     @BeforeEach
-    public void setUp() {
+    public void setUp() throws SQLException {
         awardRepository = AwardRepository.getInstance();
     }
 

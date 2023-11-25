@@ -9,6 +9,6 @@ services:
     environment:
       - POSTGRES_PASSWORD=slay
       - POSTGRES_USER=MyUser
-      - POSTGRES_DB=Movie_Java
+      - POSTGRES_DB=Movie
 volumes:
   postgres_volume:
