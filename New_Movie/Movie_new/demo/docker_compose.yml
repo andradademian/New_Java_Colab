@@ -7,7 +7,7 @@ services:
     volumes:
       - postgres_volume:/var/lib/postgresql/data
     environment:
-      - POSTGRES_PASSWORD=slay
+      - POSTGRES_PASSWORD=castravete
       - POSTGRES_USER=MyUser
       - POSTGRES_DB=Movie
 volumes:

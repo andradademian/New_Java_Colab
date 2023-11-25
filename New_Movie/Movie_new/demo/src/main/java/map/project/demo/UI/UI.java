@@ -147,6 +147,7 @@ public class UI {
 
     public static void exitMenu() throws SQLException {
         roomRepository.addRoomsToTable();
+        awardRepository.addAwardsToTable();
     }
 
     public static void actorMenu() {

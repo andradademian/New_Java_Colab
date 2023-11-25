@@ -13,7 +13,7 @@ import java.util.Scanner;
 import java.util.Vector;
 
 public class AwardController {
-    private AwardRepository awardRepo = new AwardRepository();
+    private AwardRepository awardRepo;
     private final Vector<Award> listOfAwards = new Vector<>();
     private final AwardFactory awardFactory;
 

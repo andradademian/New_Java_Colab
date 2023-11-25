@@ -11,7 +11,7 @@ public class RoomRepository {
     private static RoomRepository instance;
     private final Vector<Room> rooms;
 
-    Connection connection= DriverManager.getConnection("jdbc:postgresql://localhost:5432/Movie","MyUser","slay");
+    Connection connection= DriverManager.getConnection("jdbc:postgresql://localhost:5432/Movie","MyUser","castravete");
     Statement insert=connection.createStatement();
     String insertStringFancy="INSERT INTO \"Room\"(id, roomnumber, numberofseats) VALUES (?, ?, ?)";
     PreparedStatement insertFancy=connection.prepareStatement(insertStringFancy);

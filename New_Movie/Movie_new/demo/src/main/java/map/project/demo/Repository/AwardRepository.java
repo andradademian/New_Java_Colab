@@ -1,18 +1,22 @@
 package map.project.demo.Repository;
 
+import map.project.demo.AwardFactory.GoldenGlobe;
+import map.project.demo.AwardFactory.Oscar;
+import map.project.demo.AwardFactory.PalmeDor;
 import map.project.demo.Builder.RoomBuilder;
 import map.project.demo.Domain.Actor;
 import map.project.demo.Domain.Award;
 import map.project.demo.Domain.Room;
 
 import java.sql.*;
+import java.util.Objects;
 import java.util.Vector;
 
 public class AwardRepository {
     private static AwardRepository instance;
     private final Vector<Award> awards;
 
-    Connection connection= DriverManager.getConnection("jdbc:postgresql://localhost:5432/Movie","MyUser","slay");
+    Connection connection= DriverManager.getConnection("jdbc:postgresql://localhost:5432/Movie","MyUser","castravete");
     Statement insert=connection.createStatement();
     String insertStringFancy="INSERT INTO \"Award\"(id, awardType, category) VALUES (?, ?, ?)";
     PreparedStatement insertFancy=connection.prepareStatement(insertStringFancy);
@@ -21,7 +25,7 @@ public class AwardRepository {
 
 
     public AwardRepository() throws SQLException {
-        awards = new Vector<>();
+        awards = getAwardsFromTable();
     }
 
     public static AwardRepository getInstance() throws SQLException {
@@ -38,9 +42,16 @@ public class AwardRepository {
             String id=result.getString("Id");
             String awardType = result.getString("AwardType");
             String category = result.getString("Category");
-            awardVector.add(new Award(id, category));
+            if(Objects.equals(awardType, "Oscar")){
+                awardVector.add(new Oscar(id, category));
+            } else if (Objects.equals(awardType, "PalmeDor")) {
+                awardVector.add(new PalmeDor(id, category));
+            } else if (Objects.equals(awardType, "GoldenGlobe")) {
+                awardVector.add(new GoldenGlobe(id, category));
+            }
+
         }
-        select.execute("delete from \"Room\"");
+        select.execute("delete from \"Award\"");
         return awardVector;
     }
 
