@@ -1,25 +1,55 @@
 package map.project.demo.Repository;
 
-import map.project.demo.Domain.Actor;
-import map.project.demo.Domain.Genre;
-import map.project.demo.Domain.Movie;
-import map.project.demo.Domain.StageDirector;
+import map.project.demo.Builder.RoomBuilder;
+import map.project.demo.Domain.*;
 
+import java.sql.*;
 import java.util.Vector;
 
 public class MovieRepository {
     private static MovieRepository instance;
     private final Vector<Movie> movies;
 
-    public MovieRepository() {
-        movies = new Vector<>();
+    Connection connection= DriverManager.getConnection("jdbc:postgresql://localhost:5432/Movie","MyUser","slay");
+    Statement insert=connection.createStatement();
+    String insertStringFancy="INSERT INTO \"Movie\"(id, movieTitle, durationInMinutes) VALUES (?, ?, ?)";
+    PreparedStatement insertFancy=connection.prepareStatement(insertStringFancy);
+
+    Statement select=connection.createStatement();
+
+
+    public MovieRepository() throws SQLException {
+        movies = getMoviesFromTable();
     }
-    public static MovieRepository getInstance() {
+    public static MovieRepository getInstance() throws SQLException {
         if (instance == null) {
             instance = new MovieRepository();
         }
         return instance;
     }
+
+    public Vector<Movie> getMoviesFromTable() throws SQLException {
+        Vector<Movie> movieVector=new Vector<>();
+        ResultSet result=select.executeQuery(" SELECT * FROM \"Movie\"");
+        while (result.next()){
+            String id=result.getString("Id");
+            String movieTitle =result.getString("MovieTitle");
+            int durationInMinutes=result.getInt("durationInMinutes");
+            movieVector.add(new Movie(id, movieTitle, durationInMinutes, new Vector<>(), new Vector<>(), new Vector<>()));
+        }
+        select.execute("delete from \"Movie\"");
+        return movieVector;
+    }
+
+    public void addMoviesToTable() throws SQLException {
+        for(Movie movie:movies){
+            insertFancy.setString(1,movie.getId());
+            insertFancy.setString(2,movie.getTitle());
+            insertFancy.setInt(3,movie.getDurationInMinutes());
+            insertFancy.executeUpdate();
+        }
+    }
+
     public void add(Movie movie) {
         movies.add(movie);
     }

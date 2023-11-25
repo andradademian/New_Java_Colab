@@ -4,6 +4,7 @@ import map.project.demo.Domain.*;
 
 import map.project.demo.Repository.MovieRepository;
 
+import java.sql.SQLException;
 import java.util.Objects;
 import java.util.Scanner;
 import java.util.Vector;
@@ -12,7 +13,7 @@ public class MovieController {
     private MovieRepository movieRepo = new MovieRepository();
     private final Vector<Movie> listOfMovies = new Vector<>();
 
-    public MovieController(MovieRepository movieRepo) {
+    public MovieController(MovieRepository movieRepo) throws SQLException {
         this.movieRepo = movieRepo;
     }
 

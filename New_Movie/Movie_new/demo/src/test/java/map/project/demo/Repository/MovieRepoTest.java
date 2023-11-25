@@ -6,6 +6,7 @@ import map.project.demo.Repository.MovieRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.sql.SQLException;
 import java.util.Vector;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -15,7 +16,7 @@ public class MovieRepoTest {
     MovieRepository movieRepository;
 
     @BeforeEach
-    public void setUp() {
+    public void setUp() throws SQLException {
         movieRepository = MovieRepository.getInstance();
     }
 
