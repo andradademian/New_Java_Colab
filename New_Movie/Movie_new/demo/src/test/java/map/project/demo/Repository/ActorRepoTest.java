@@ -8,10 +8,11 @@ import map.project.demo.Repository.ActorRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.sql.Date;
 import java.util.Vector;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -20,7 +21,7 @@ public class ActorRepoTest {
     ActorRepository actorRepository;
 
     @BeforeEach
-    public void setUp() {
+    public void setUp() throws SQLException {
         actorRepository = ActorRepository.getInstance();
     }
 
@@ -167,8 +168,9 @@ public class ActorRepoTest {
         actorRepository.deleteAll();
         String startDate = "2000-01-01";
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date date = dateFormat.parse(startDate);
-        Actor actor = new Actor("1", "Vin", "Diesel", new Vector<>(), date, new Vector<>());
+        java.util.Date date = dateFormat.parse(startDate);
+        Date sqlDate=new Date(date.getTime());
+        Actor actor = new Actor("1", "Vin", "Diesel", new Vector<>(), sqlDate, new Vector<>());
         actorRepository.add(actor);
     }
 

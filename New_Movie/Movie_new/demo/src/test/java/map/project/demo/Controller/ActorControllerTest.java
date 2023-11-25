@@ -8,10 +8,11 @@ import map.project.demo.Repository.ActorRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.sql.Date;
 import java.util.Vector;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -21,11 +22,15 @@ public class ActorControllerTest {
     ActorRepository actorRepository = ActorRepository.getInstance();
     ActorController actorController = new ActorController(actorRepository);
 
+    public ActorControllerTest() throws SQLException {
+    }
+
     @BeforeEach
     public void setUp() throws ParseException {
         String startDate = "2000-01-01";
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date date = dateFormat.parse(startDate);
+        java.util.Date utilDate =dateFormat.parse(startDate);
+        java.sql.Date date=new Date(utilDate.getTime());
         actorRepository.add(new Actor("1", "First1", "Last1", new Vector<Movie>(), date, new Vector<Award>()));
         actorRepository.add(new Actor("2", "First2", "Last2", new Vector<Movie>(), date, new Vector<Award>()));
         actorRepository.add(new Actor("3", "First3", "Last3", new Vector<Movie>(), date, new Vector<Award>()));

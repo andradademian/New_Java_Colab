@@ -7,10 +7,12 @@ import static org.junit.jupiter.api.Assertions.*;
 import map.project.demo.Repository.*;
 import org.junit.jupiter.api.Test;
 
+import java.sql.SQLException;
+
 public class SingletonTest {
 
     @Test
-    public void testSingletonActor() {
+    public void testSingletonActor() throws SQLException {
         ActorRepository instance1 = ActorRepository.getInstance();
         ActorRepository instance2 = ActorRepository.getInstance();
 
@@ -53,7 +55,7 @@ public class SingletonTest {
         assertSame(instance1, instance2);
     }
     @Test
-    public void testSingletonRoom() {
+    public void testSingletonRoom() throws SQLException {
         RoomRepository instance1 = RoomRepository.getInstance();
         RoomRepository instance2 = RoomRepository.getInstance();
 

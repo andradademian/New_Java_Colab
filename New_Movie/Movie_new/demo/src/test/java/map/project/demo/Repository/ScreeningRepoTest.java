@@ -9,6 +9,7 @@ import map.project.demo.Strategy.Screening;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.sql.SQLException;
 import java.sql.Time;
 import java.util.Vector;
 
@@ -21,7 +22,7 @@ public class ScreeningRepoTest {
     RoomRepository roomRepository;
 
     @BeforeEach
-    public void setUp() {
+    public void setUp() throws SQLException {
         screeningRepository = ScreeningRepository.getInstance();
         movieRepository = MovieRepository.getInstance();
         roomRepository = RoomRepository.getInstance();
