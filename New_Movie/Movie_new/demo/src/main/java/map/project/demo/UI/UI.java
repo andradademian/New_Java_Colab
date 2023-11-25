@@ -4,16 +4,35 @@ import map.project.demo.AwardFactory.AwardFactory;
 import map.project.demo.Controller.*;
 import map.project.demo.Repository.*;
 
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.Scanner;
 
 public class UI {
-    private static final ActorRepository actorRepo = ActorRepository.getInstance();
+    private static final ActorRepository actorRepo;
+
+    static {
+        try {
+            actorRepo = ActorRepository.getInstance();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private static final AwardRepository awardRepository = AwardRepository.getInstance();
     private static final CinemaRepository cinemaRepository = CinemaRepository.getInstance();
     private static final GenreRepository genreRepository = GenreRepository.getInstance();
     private static final MovieRepository movieRepository = MovieRepository.getInstance();
-    private static final RoomRepository roomRepository = RoomRepository.getInstance();
+    private static final RoomRepository roomRepository;
+
+    static {
+        try {
+            roomRepository = RoomRepository.getInstance();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private static final ScreeningRepository screeningRepository = ScreeningRepository.getInstance();
     private static final SpectatorRepository spectatorRepository = SpectatorRepository.getInstance();
     private static final StageDirectorRepository stageDirectorRepository = StageDirectorRepository.getInstance();
@@ -40,7 +59,7 @@ public class UI {
     private static final StageDirectorUI stageDirectorUI = new StageDirectorUI(stageDirectorController, movieController, awardController);
     private static final TicketUI ticketUI = new TicketUI(ticketController, spectatorController, screeningController);
 
-    public static void mainUI() throws ParseException {
+    public static void mainUI() throws ParseException, SQLException {
         int choice;
         Scanner keyboard = new Scanner(System.in);
 
@@ -81,6 +100,7 @@ public class UI {
                     ticketMenu();
                     break;
                 case 11:
+                    exitMenu();
                     System.out.println("Exiting the program.");
                     break;
                 default:
@@ -105,6 +125,10 @@ public class UI {
         System.out.println("9. StageDirectors");
         System.out.println("10. Tickets");
         System.out.println("11. Exit");
+    }
+
+    public static void exitMenu() throws SQLException {
+        roomRepository.addRoomsToTable();
     }
 
     public static void actorMenu() {

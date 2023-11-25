@@ -1,23 +1,56 @@
 package map.project.demo.Repository;
 
+import map.project.demo.Builder.RoomBuilder;
 import map.project.demo.Domain.Actor;
 import map.project.demo.Domain.Room;
 
+import java.sql.*;
 import java.util.Vector;
 
 public class RoomRepository {
     private static RoomRepository instance;
     private final Vector<Room> rooms;
 
-    public RoomRepository() {
-        rooms = new Vector<>();
+    Connection connection= DriverManager.getConnection("jdbc:postgresql://localhost:5432/Movie","MyUser","castravete");
+    Statement insert=connection.createStatement();
+    String insertStringFancy="INSERT INTO \"Room\"(id, roomnumber, numberofseats) VALUES (?, ?, ?)";
+    PreparedStatement insertFancy=connection.prepareStatement(insertStringFancy);
+
+    Statement select=connection.createStatement();
+
+
+    public RoomRepository() throws SQLException {
+        rooms = getRoomsFromTable();
     }
-    public static RoomRepository getInstance() {
+    public static RoomRepository getInstance() throws SQLException {
         if (instance == null) {
             instance = new RoomRepository();
         }
         return instance;
     }
+
+    public Vector<Room> getRoomsFromTable() throws SQLException {
+        Vector<Room> roomVector=new Vector<>();
+        ResultSet result=select.executeQuery(" SELECT * FROM \"Room\"");
+        while (result.next()){
+            String id=result.getString("Id");
+            int roomNumber=result.getInt("RoomNumber");
+            int numberOfSeats=result.getInt("NumberOfSeats");
+            roomVector.add(RoomBuilder.buildRoom(id, roomNumber, numberOfSeats));
+        }
+        select.execute("delete from \"Room\"");
+        return roomVector;
+    }
+
+    public void addRoomsToTable() throws SQLException {
+        for(Room room:rooms){
+            insertFancy.setString(1,room.getId());
+            insertFancy.setInt(2,room.getRoomNumber());
+            insertFancy.setInt(3,room.getNumberOfSeats());
+            insertFancy.executeUpdate();
+        }
+    }
+
     public void add(Room room) {
         rooms.add(room);
     }

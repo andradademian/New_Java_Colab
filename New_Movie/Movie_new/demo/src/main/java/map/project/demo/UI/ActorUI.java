@@ -8,7 +8,7 @@ import map.project.demo.Domain.*;
 
 import java.awt.*;
 import java.sql.Time;
-import java.util.Date;
+import java.sql.Date;
 import java.util.Scanner;
 import java.util.Vector;
 

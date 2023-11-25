@@ -6,7 +6,7 @@ import map.project.demo.Controller.MovieController;
 import map.project.demo.Controller.StageDirectorController;
 import map.project.demo.Domain.*;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.Scanner;
 import java.util.Vector;
 
