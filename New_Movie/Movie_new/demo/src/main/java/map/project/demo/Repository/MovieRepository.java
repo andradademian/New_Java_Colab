@@ -84,10 +84,28 @@ public class MovieRepository {
 
     public void addActor(Movie movie, Actor actor) {
         movies.get(getAll().indexOf(movie)).addActor(actor);
+        String insertString = "INSERT INTO \"actormovie\" (actorId, movieId) VALUES (?, ?)";
+        try (PreparedStatement insertStatement = connection.prepareStatement(insertString)) {
+            insertStatement.setString(1, actor.getId());
+            insertStatement.setString(2, movie.getId());
+            insertStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     public void deleteActor(Movie movie, Actor actor) {
         movies.get(getAll().indexOf(movie)).deleteActor(actor);
+        String deleteString = "DELETE FROM \"actormovie\" WHERE ActorId = ? AND MovieId = ?";
+        try (PreparedStatement deleteStatement = connection.prepareStatement(deleteString)) {
+            deleteStatement.setString(1, actor.getId());
+            deleteStatement.setString(2, movie.getId());
+            deleteStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     public void addGenre(Movie movie, Genre genre) {

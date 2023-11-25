@@ -118,7 +118,7 @@ public class ActorRepoTest {
     }
 
     @Test
-    public void expectCorrectDeletingOfTheMovie() throws ParseException {
+    public void expectCorrectDeletingOfTheMovie() throws ParseException, SQLException {
         actorIsAddedToTheList();
         movieIsAddedToTheActor();
         actorRepository.deleteMovie(actorRepository.getAll().get(0), actorRepository.getAll().get(0).getListOfMovies().get(0));
@@ -126,7 +126,7 @@ public class ActorRepoTest {
     }
 
     @Test
-    public void expectIncorrectDeletingOfTheMovie() throws ParseException {
+    public void expectIncorrectDeletingOfTheMovie() throws ParseException, SQLException {
         actorIsAddedToTheList();
         movieIsAddedToTheActor();
         actorRepository.deleteMovie(actorRepository.getAll().get(0), actorRepository.getAll().get(0).getListOfMovies().get(0));

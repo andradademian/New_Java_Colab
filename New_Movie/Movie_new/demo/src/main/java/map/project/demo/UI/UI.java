@@ -170,7 +170,7 @@ public class UI {
         movieRepository.addMoviesToTable();
     }
 
-    public static void actorMenu() {
+    public static void actorMenu() throws SQLException {
         actorUI.mainActorUI();
     }
 

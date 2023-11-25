@@ -81,12 +81,28 @@ public class ActorRepository {
         listOfActors.get(getAll().indexOf(actor)).setLastName(lastName);
     }
 
-    public void deleteMovie(Actor actor, Movie movie) {
+    public void deleteMovie(Actor actor, Movie movie) throws SQLException {
         listOfActors.get(getAll().indexOf(actor)).removeMovie(movie);
+
+        String deleteString = "DELETE FROM \"actormovie\" WHERE actorId = ? AND movieId = ?";
+        try (PreparedStatement deleteStatement = connection.prepareStatement(deleteString)) {
+            deleteStatement.setString(1, actor.getId());
+            deleteStatement.setString(2, movie.getId());
+            deleteStatement.executeUpdate();
+        }
     }
 
     public void addMovie(Actor actor, Movie movie) {
         listOfActors.get(getAll().indexOf(actor)).addMovie(movie);
+
+        String insertString = "INSERT INTO \"actormovie\" (actorId, movieId) VALUES (?, ?)";
+        try (PreparedStatement insertStatement = connection.prepareStatement(insertString)) {
+            insertStatement.setString(1, actor.getId());
+            insertStatement.setString(2, movie.getId());
+            insertStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void deleteAward(Actor actor, Award award) {

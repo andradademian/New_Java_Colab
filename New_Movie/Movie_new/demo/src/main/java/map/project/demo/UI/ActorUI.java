@@ -7,6 +7,7 @@ import map.project.demo.Controller.MovieController;
 import map.project.demo.Domain.*;
 
 import java.awt.*;
+import java.sql.SQLException;
 import java.sql.Time;
 import java.sql.Date;
 import java.util.Scanner;
@@ -23,7 +24,7 @@ public class ActorUI {
         this.movieController = movieController;
     }
 
-    public void mainActorUI() {
+    public void mainActorUI() throws SQLException {
         int choice;
         do {
             this.actorController.showAllActors();
@@ -86,7 +87,7 @@ public class ActorUI {
         this.actorController.deleteActor(id);
     }
 
-    public void updateAnActor() {
+    public void updateAnActor() throws SQLException {
         this.actorController.showAllActors();
         System.out.println("Enter ID of the actor you want to update:");
         Scanner keyboard = new Scanner(System.in);
@@ -94,7 +95,7 @@ public class ActorUI {
         updateActor(id);
     }
 
-    public void updateActor(String actorId) {
+    public void updateActor(String actorId) throws SQLException {
         Actor actorToUpdate = actorController.findActorById(actorId);
         if (actorToUpdate != null) {
             System.out.println("What do you want to do?");

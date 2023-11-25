@@ -5,6 +5,7 @@ import map.project.demo.Domain.Movie;
 import map.project.demo.Repository.ActorRepository;
 import map.project.demo.Domain.Actor;
 
+import java.sql.SQLException;
 import java.util.Objects;
 import java.util.Scanner;
 import java.util.Vector;
@@ -74,7 +75,7 @@ public class ActorController {
         actorRepo.updateLastName(actor, lastName);
     }
 
-    public void deleteMovie(Actor actor, Movie movie) {
+    public void deleteMovie(Actor actor, Movie movie) throws SQLException {
         actorRepo.deleteMovie(actor, movie);
     }
 
