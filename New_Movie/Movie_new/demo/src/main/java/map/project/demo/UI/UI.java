@@ -29,7 +29,16 @@ public class UI {
         }
     }
 
-    private static final CinemaRepository cinemaRepository = CinemaRepository.getInstance();
+    private static final CinemaRepository cinemaRepository;
+
+    static {
+        try {
+            cinemaRepository = CinemaRepository.getInstance();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private static final GenreRepository genreRepository = GenreRepository.getInstance();
     private static final MovieRepository movieRepository;
 
@@ -54,7 +63,16 @@ public class UI {
     private static final ScreeningRepository screeningRepository = ScreeningRepository.getInstance();
     private static final SpectatorRepository spectatorRepository = SpectatorRepository.getInstance();
     private static final StageDirectorRepository stageDirectorRepository = StageDirectorRepository.getInstance();
-    private static final TicketRepository ticketRepository = TicketRepository.getInstance();
+    private static final TicketRepository ticketRepository;
+
+    static {
+        try {
+            ticketRepository = TicketRepository.getInstance();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private static final AwardFactory awardFactory = AwardFactory.getInstance();
     private static final ActorController actorController = new ActorController(actorRepo);
     private static final AwardController awardController;
@@ -168,6 +186,7 @@ public class UI {
         awardRepository.addAwardsToTable();
         actorRepo.addActorsToTable();
         movieRepository.addMoviesToTable();
+        cinemaRepository.addCinemasToTable();
     }
 
     public static void actorMenu() throws SQLException {

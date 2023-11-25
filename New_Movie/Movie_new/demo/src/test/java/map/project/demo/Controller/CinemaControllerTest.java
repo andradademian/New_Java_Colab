@@ -11,11 +11,15 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.sql.SQLException;
 import java.util.Vector;
 
 public class CinemaControllerTest {
     CinemaRepository cinemaRepository = CinemaRepository.getInstance();
     CinemaController cinemaController = new CinemaController(cinemaRepository);
+
+    public CinemaControllerTest() throws SQLException {
+    }
 
     @BeforeEach
     public void setUp() {
@@ -43,6 +47,7 @@ public class CinemaControllerTest {
 
         assertNull(foundCinema);
     }
+
     @Test
     public void shouldFindRoomById() {
         Cinema cinema = cinemaController.findCinemaById("1");
@@ -60,7 +65,6 @@ public class CinemaControllerTest {
     }
 
 
-
     @Test
     public void shouldNotFindInvalidRoomById() {
         Cinema cinema = cinemaController.findCinemaById("1");
@@ -70,7 +74,6 @@ public class CinemaControllerTest {
 
         assertNull(foundRoom);
     }
-
 
 
 }

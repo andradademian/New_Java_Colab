@@ -10,6 +10,7 @@ import map.project.demo.Repository.CinemaRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.Vector;
 
@@ -20,7 +21,7 @@ public class CinemaRepoTest {
     CinemaRepository cinemaRepository;
 
     @BeforeEach
-    public void setUp() {
+    public void setUp() throws SQLException {
         cinemaRepository = CinemaRepository.getInstance();
     }
 

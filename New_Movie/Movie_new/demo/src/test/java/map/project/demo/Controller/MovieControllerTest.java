@@ -9,11 +9,15 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.sql.SQLException;
 import java.util.Vector;
 
 public class MovieControllerTest {
     MovieRepository movieRepository = MovieRepository.getInstance();
     MovieController movieController = new MovieController(movieRepository);
+
+    public MovieControllerTest() throws SQLException {
+    }
 
     @BeforeEach
     public void setUp() {

@@ -6,6 +6,7 @@ import map.project.demo.Repository.TicketRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.sql.SQLException;
 import java.sql.Time;
 import java.util.Vector;
 
@@ -16,7 +17,7 @@ public class TicketRepoTest {
     TicketRepository ticketRepository;
 
     @BeforeEach
-    public void setUp() {
+    public void setUp() throws SQLException {
         ticketRepository = TicketRepository.getInstance();
     }
 

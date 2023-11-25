@@ -7,6 +7,7 @@ import map.project.demo.Repository.TicketRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.sql.SQLException;
 import java.sql.Time;
 import java.util.Vector;
 
@@ -16,6 +17,9 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 public class TicketControllerTest {
     TicketRepository ticketRepository = TicketRepository.getInstance();
     TicketController ticketController = new TicketController(ticketRepository);
+
+    public TicketControllerTest() throws SQLException {
+    }
 
     @BeforeEach
     public void setUp() {

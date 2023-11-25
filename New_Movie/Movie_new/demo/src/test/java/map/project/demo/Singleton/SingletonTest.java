@@ -26,6 +26,7 @@ public class SingletonTest {
 
         assertSame(instance1, instance2);
     }
+
     @Test
     public void testSingletonAward() throws SQLException {
         AwardRepository instance1 = AwardRepository.getInstance();
@@ -33,13 +34,15 @@ public class SingletonTest {
 
         assertSame(instance1, instance2);
     }
+
     @Test
-    public void testSingletonCinema() {
+    public void testSingletonCinema() throws SQLException {
         CinemaRepository instance1 = CinemaRepository.getInstance();
         CinemaRepository instance2 = CinemaRepository.getInstance();
 
         assertSame(instance1, instance2);
     }
+
     @Test
     public void testSingletonGenre() {
         GenreRepository instance1 = GenreRepository.getInstance();
@@ -47,13 +50,15 @@ public class SingletonTest {
 
         assertSame(instance1, instance2);
     }
+
     @Test
-    public void testSingletonMovie() {
+    public void testSingletonMovie() throws SQLException {
         MovieRepository instance1 = MovieRepository.getInstance();
         MovieRepository instance2 = MovieRepository.getInstance();
 
         assertSame(instance1, instance2);
     }
+
     @Test
     public void testSingletonRoom() throws SQLException {
         RoomRepository instance1 = RoomRepository.getInstance();
@@ -61,6 +66,7 @@ public class SingletonTest {
 
         assertSame(instance1, instance2);
     }
+
     @Test
     public void testSingletonScreening() {
         ScreeningRepository instance1 = ScreeningRepository.getInstance();
@@ -68,6 +74,7 @@ public class SingletonTest {
 
         assertSame(instance1, instance2);
     }
+
     @Test
     public void testSingletonSpectator() {
         SpectatorRepository instance1 = SpectatorRepository.getInstance();
@@ -75,6 +82,7 @@ public class SingletonTest {
 
         assertSame(instance1, instance2);
     }
+
     @Test
     public void testSingletonStageDirector() {
         StageDirectorRepository instance1 = StageDirectorRepository.getInstance();
@@ -82,8 +90,9 @@ public class SingletonTest {
 
         assertSame(instance1, instance2);
     }
+
     @Test
-    public void testSingletonTicket() {
+    public void testSingletonTicket() throws SQLException {
         TicketRepository instance1 = TicketRepository.getInstance();
         TicketRepository instance2 = TicketRepository.getInstance();
 
