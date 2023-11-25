@@ -30,6 +30,10 @@ public class Screening4DX implements Screening {
         return movie;
     }
 
+    public String getFormat() {
+        return "4DX";
+    }
+
     public void setRoom(Room room) {
         this.room = room;
     }

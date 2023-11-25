@@ -1,6 +1,5 @@
 package map.project.demo.Repository;
 
-import map.project.demo.Builder.RoomBuilder;
 import map.project.demo.Domain.*;
 
 import java.sql.*;
@@ -10,17 +9,24 @@ public class MovieRepository {
     private static MovieRepository instance;
     private final Vector<Movie> movies;
 
-    Connection connection= DriverManager.getConnection("jdbc:postgresql://localhost:5432/Movie","MyUser","slay");
-    Statement insert=connection.createStatement();
-    String insertStringFancy="INSERT INTO \"Movie\"(id, movieTitle, durationInMinutes) VALUES (?, ?, ?)";
-    PreparedStatement insertFancy=connection.prepareStatement(insertStringFancy);
+    Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Movie", "MyUser", "castravete");
+    Statement insert = connection.createStatement();
+    String insertStringFancyIntoMovie = "INSERT INTO \"Movie\"(id, title, durationInMinutes) VALUES (?, ?, ?) on conflict (id) do nothing";
+    PreparedStatement insertFancyIntoMovie = connection.prepareStatement(insertStringFancyIntoMovie);
+    String insertStringFancyIntoActorMovie = "INSERT INTO \"ActorMovie\"(actorid, movieid) VALUES (?, ?) ON CONFLICT (actorid, movieid) DO NOTHING";
+    PreparedStatement insertFancyIntoActorMovie = connection.prepareStatement(insertStringFancyIntoActorMovie);
+    String insertStringFancyIntoMovieGenre = "INSERT INTO \"MovieGenre\"(movieid, genreid) VALUES (?, ?) ON CONFLICT (movieid, genreid) DO NOTHING";
+    PreparedStatement insertFancyIntoMovieGenre = connection.prepareStatement(insertStringFancyIntoMovieGenre);
+    String insertStringFancyIntoMovieDirector = "INSERT INTO \"MovieDirector\"(movieid, directorid) VALUES (?, ?) ON CONFLICT (movieid, directorid) DO NOTHING";
+    PreparedStatement insertFancyIntoMovieDirector = connection.prepareStatement(insertStringFancyIntoMovieDirector);
 
-    Statement select=connection.createStatement();
+    Statement select = connection.createStatement();
 
 
     public MovieRepository() throws SQLException {
         movies = getMoviesFromTable();
     }
+
     public static MovieRepository getInstance() throws SQLException {
         if (instance == null) {
             instance = new MovieRepository();
@@ -29,24 +35,69 @@ public class MovieRepository {
     }
 
     public Vector<Movie> getMoviesFromTable() throws SQLException {
-        Vector<Movie> movieVector=new Vector<>();
-        ResultSet result=select.executeQuery(" SELECT * FROM \"Movie\"");
-        while (result.next()){
-            String id=result.getString("Id");
-            String movieTitle =result.getString("MovieTitle");
-            int durationInMinutes=result.getInt("durationInMinutes");
+        Vector<Movie> movieVector = new Vector<>();
+        ResultSet result = select.executeQuery(" SELECT * FROM \"Movie\"");
+        while (result.next()) {
+            String id = result.getString("id");
+            String movieTitle = result.getString("title");
+            int durationInMinutes = result.getInt("durationInMinutes");
             movieVector.add(new Movie(id, movieTitle, durationInMinutes, new Vector<>(), new Vector<>(), new Vector<>()));
         }
-        select.execute("delete from \"Movie\"");
         return movieVector;
     }
 
+    public void deleteAllFromMovieTable() throws SQLException {
+        select.execute("delete from \"Movie\"");
+    }
+
     public void addMoviesToTable() throws SQLException {
-        for(Movie movie:movies){
-            insertFancy.setString(1,movie.getId());
-            insertFancy.setString(2,movie.getTitle());
-            insertFancy.setInt(3,movie.getDurationInMinutes());
-            insertFancy.executeUpdate();
+        for (Movie movie : movies) {
+            insertFancyIntoMovie.setString(1, movie.getId());
+            insertFancyIntoMovie.setString(2, movie.getTitle());
+            insertFancyIntoMovie.setInt(3, movie.getDurationInMinutes());
+            insertFancyIntoMovie.executeUpdate();
+        }
+    }
+
+    public void deleteAllFromActorMovieTable() throws SQLException {
+        select.execute("delete from \"ActorMovie\"");
+    }
+
+    public void addToActorMovieTable() throws SQLException {
+        for (Movie movie : movies) {
+            for (Actor actor : movie.getActors()) {
+                insertFancyIntoActorMovie.setString(1, actor.getId());
+                insertFancyIntoActorMovie.setString(2, movie.getId());
+                insertFancyIntoActorMovie.executeUpdate();
+            }
+        }
+    }
+
+    public void deleteAllFromMovieGenreTable() throws SQLException {
+        select.execute("delete from \"MovieGenre\"");
+    }
+
+    public void addToMovieGenreTable() throws SQLException {
+        for (Movie movie : movies) {
+            for (Genre genre : movie.getGenres()) {
+                insertFancyIntoMovieGenre.setString(1, movie.getId());
+                insertFancyIntoMovieGenre.setString(2, genre.getId());
+                insertFancyIntoMovieGenre.executeUpdate();
+            }
+        }
+    }
+
+    public void deleteAllFromMovieDirectorTable() throws SQLException {
+        select.execute("delete from \"MovieDirector\"");
+    }
+
+    public void addToMovieDirectorTable() throws SQLException {
+        for (Movie movie : movies) {
+            for (StageDirector stageDirector : movie.getStageDirectors()) {
+                insertFancyIntoMovieDirector.setString(1, movie.getId());
+                insertFancyIntoMovieDirector.setString(2, stageDirector.getId());
+                insertFancyIntoMovieDirector.executeUpdate();
+            }
         }
     }
 
@@ -84,28 +135,10 @@ public class MovieRepository {
 
     public void addActor(Movie movie, Actor actor) {
         movies.get(getAll().indexOf(movie)).addActor(actor);
-        String insertString = "INSERT INTO \"actormovie\" (actorId, movieId) VALUES (?, ?)";
-        try (PreparedStatement insertStatement = connection.prepareStatement(insertString)) {
-            insertStatement.setString(1, actor.getId());
-            insertStatement.setString(2, movie.getId());
-            insertStatement.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
     }
 
     public void deleteActor(Movie movie, Actor actor) {
         movies.get(getAll().indexOf(movie)).deleteActor(actor);
-        String deleteString = "DELETE FROM \"actormovie\" WHERE ActorId = ? AND MovieId = ?";
-        try (PreparedStatement deleteStatement = connection.prepareStatement(deleteString)) {
-            deleteStatement.setString(1, actor.getId());
-            deleteStatement.setString(2, movie.getId());
-            deleteStatement.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
     }
 
     public void addGenre(Movie movie, Genre genre) {

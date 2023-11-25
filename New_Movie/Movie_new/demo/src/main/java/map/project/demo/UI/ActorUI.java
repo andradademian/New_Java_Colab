@@ -148,7 +148,9 @@ public class ActorUI {
                     System.out.println("Enter id of the movie you want to add");
                     String id = keyboard.next();
                     Movie movie = movieController.findMovieById(id);
-                    actorController.addMovie(actorToUpdate, movie);
+                    if (movie != null) {
+                        actorController.addMovie(actorToUpdate, movie);
+                    }
                 }
             } else if (choice == 5) {
                 if (!actorToUpdate.getListOfAwards().isEmpty()) {

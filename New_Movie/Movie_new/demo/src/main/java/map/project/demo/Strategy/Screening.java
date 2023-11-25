@@ -19,6 +19,8 @@ public interface Screening {
 
     Movie getIdMovie();
 
+    String getFormat();
+
     void setMovie(Movie movie);
 
     Room getRoom();

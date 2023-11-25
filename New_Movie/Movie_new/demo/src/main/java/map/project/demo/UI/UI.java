@@ -39,7 +39,16 @@ public class UI {
         }
     }
 
-    private static final GenreRepository genreRepository = GenreRepository.getInstance();
+    private static final GenreRepository genreRepository;
+
+    static {
+        try {
+            genreRepository = GenreRepository.getInstance();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private static final MovieRepository movieRepository;
 
     static {
@@ -60,7 +69,16 @@ public class UI {
         }
     }
 
-    private static final ScreeningRepository screeningRepository = ScreeningRepository.getInstance();
+    private static final ScreeningRepository screeningRepository;
+
+    static {
+        try {
+            screeningRepository = ScreeningRepository.getInstance();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private static final SpectatorRepository spectatorRepository = SpectatorRepository.getInstance();
     private static final StageDirectorRepository stageDirectorRepository = StageDirectorRepository.getInstance();
     private static final TicketRepository ticketRepository;
@@ -182,11 +200,30 @@ public class UI {
     }
 
     public static void exitMenu() throws SQLException {
+        screeningRepository.deleteAllFromScreeningTable();
+        actorRepo.deleteAllFromActorMovieTable();
+        actorRepo.deleteAllFromActorAwardTable();
+        movieRepository.deleteAllFromMovieGenreTable();
+        movieRepository.deleteAllFromMovieDirectorTable();
+        awardRepository.deleteAllFromAwards();
+        genreRepository.deleteAllFromGenreTable();
+        roomRepository.deleteAllRoomsFromTable();
+        genreRepository.addGenresToTable();
         roomRepository.addRoomsToTable();
         awardRepository.addAwardsToTable();
+        actorRepo.deleteAllFromActorTable();
         actorRepo.addActorsToTable();
+        movieRepository.deleteAllFromMovieTable();
         movieRepository.addMoviesToTable();
+        cinemaRepository.deleteAllCinemasFromTable();
         cinemaRepository.addCinemasToTable();
+        screeningRepository.addScreeningToTable();
+        actorRepo.addToActorMovieTable();
+        movieRepository.addToActorMovieTable();
+        actorRepo.addToActorAwardTable();
+        movieRepository.addToMovieGenreTable();
+        movieRepository.addToMovieDirectorTable();
+        genreRepository.addToMovieGenreTable();
     }
 
     public static void actorMenu() throws SQLException {

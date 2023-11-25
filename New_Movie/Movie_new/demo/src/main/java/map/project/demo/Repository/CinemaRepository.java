@@ -39,8 +39,11 @@ public class CinemaRepository {
             String address = result.getString("cinemaaddress");
             cinemaVector.add(new Cinema(id, cinemaName, address, new Vector<>()));
         }
-        select.execute("delete from \"Cinema\"");
         return cinemaVector;
+    }
+
+    public void deleteAllCinemasFromTable() throws SQLException {
+        select.execute("delete from \"Cinema\"");
     }
 
     public void addCinemasToTable() throws SQLException {

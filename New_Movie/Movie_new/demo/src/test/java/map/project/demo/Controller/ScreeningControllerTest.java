@@ -8,6 +8,7 @@ import map.project.demo.Strategy.Screening;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.sql.SQLException;
 import java.sql.Time;
 import java.util.Vector;
 
@@ -16,6 +17,9 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ScreeningControllerTest {
     ScreeningRepository screeningRepository = ScreeningRepository.getInstance();
     ScreeningController screeningController = new ScreeningController(screeningRepository);
+
+    public ScreeningControllerTest() throws SQLException {
+    }
 
     @BeforeEach
     public void setUp() {

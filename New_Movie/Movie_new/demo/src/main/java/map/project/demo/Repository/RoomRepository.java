@@ -11,17 +11,18 @@ public class RoomRepository {
     private static RoomRepository instance;
     private final Vector<Room> rooms;
 
-    Connection connection= DriverManager.getConnection("jdbc:postgresql://localhost:5432/Movie","MyUser","slay");
-    Statement insert=connection.createStatement();
-    String insertStringFancy="INSERT INTO \"Room\"(id, roomnumber, numberofseats) VALUES (?, ?, ?)";
-    PreparedStatement insertFancy=connection.prepareStatement(insertStringFancy);
+    Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Movie", "MyUser", "castravete");
+    Statement insert = connection.createStatement();
+    String insertStringFancy = "INSERT INTO \"Room\"(id, roomnumber, numberofseats) VALUES (?, ?, ?)";
+    PreparedStatement insertFancy = connection.prepareStatement(insertStringFancy);
 
-    Statement select=connection.createStatement();
+    Statement select = connection.createStatement();
 
 
     public RoomRepository() throws SQLException {
         rooms = getRoomsFromTable();
     }
+
     public static RoomRepository getInstance() throws SQLException {
         if (instance == null) {
             instance = new RoomRepository();
@@ -30,23 +31,26 @@ public class RoomRepository {
     }
 
     public Vector<Room> getRoomsFromTable() throws SQLException {
-        Vector<Room> roomVector=new Vector<>();
-        ResultSet result=select.executeQuery(" SELECT * FROM \"Room\"");
-        while (result.next()){
-            String id=result.getString("Id");
-            int roomNumber=result.getInt("RoomNumber");
-            int numberOfSeats=result.getInt("NumberOfSeats");
+        Vector<Room> roomVector = new Vector<>();
+        ResultSet result = select.executeQuery(" SELECT * FROM \"Room\"");
+        while (result.next()) {
+            String id = result.getString("Id");
+            int roomNumber = result.getInt("RoomNumber");
+            int numberOfSeats = result.getInt("NumberOfSeats");
             roomVector.add(RoomBuilder.buildRoom(id, roomNumber, numberOfSeats));
         }
-        select.execute("delete from \"Room\"");
         return roomVector;
     }
 
+    public void deleteAllRoomsFromTable() throws SQLException {
+        select.execute("delete from \"Room\"");
+    }
+
     public void addRoomsToTable() throws SQLException {
-        for(Room room:rooms){
-            insertFancy.setString(1,room.getId());
-            insertFancy.setInt(2,room.getRoomNumber());
-            insertFancy.setInt(3,room.getNumberOfSeats());
+        for (Room room : rooms) {
+            insertFancy.setString(1, room.getId());
+            insertFancy.setInt(2, room.getRoomNumber());
+            insertFancy.setInt(3, room.getNumberOfSeats());
             insertFancy.executeUpdate();
         }
     }

@@ -99,6 +99,8 @@ public class ScreeningUI {
         } else if (Objects.equals(format, "4DX")) {
             this.screeningController.addScreening(new Screening4DX(screeningId, new Movie(movieId, title, duration, new Vector<>(), new Vector<>(), new Vector<>()), RoomBuilder.buildRoom(roomId, roomNumber, seats), startTime));
         }
+        roomController.addRoom(RoomBuilder.buildRoom(roomId, roomNumber, seats));
+        movieController.addMovie(new Movie(movieId, title, duration, new Vector<>(), new Vector<>(), new Vector<>()));
     }
 
     public void deleteScreening() {

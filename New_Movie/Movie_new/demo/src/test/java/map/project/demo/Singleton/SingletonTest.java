@@ -44,7 +44,7 @@ public class SingletonTest {
     }
 
     @Test
-    public void testSingletonGenre() {
+    public void testSingletonGenre() throws SQLException {
         GenreRepository instance1 = GenreRepository.getInstance();
         GenreRepository instance2 = GenreRepository.getInstance();
 
@@ -68,7 +68,7 @@ public class SingletonTest {
     }
 
     @Test
-    public void testSingletonScreening() {
+    public void testSingletonScreening() throws SQLException {
         ScreeningRepository instance1 = ScreeningRepository.getInstance();
         ScreeningRepository instance2 = ScreeningRepository.getInstance();
 

@@ -4,6 +4,8 @@ import map.project.demo.AwardFactory.GoldenGlobe;
 import map.project.demo.AwardFactory.Oscar;
 import map.project.demo.AwardFactory.PalmeDor;
 
+import java.util.Vector;
+
 public class Award {
     private String id;
     private String name;

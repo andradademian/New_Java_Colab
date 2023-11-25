@@ -14,12 +14,15 @@ public class StageDirectorRepository {
     public StageDirectorRepository() {
         stageDirectors = new Vector<>();
     }
+
     public static StageDirectorRepository getInstance() {
         if (instance == null) {
             instance = new StageDirectorRepository();
         }
         return instance;
     }
+
+
     public void add(StageDirector stageDirector) {
         stageDirectors.add(stageDirector);
     }

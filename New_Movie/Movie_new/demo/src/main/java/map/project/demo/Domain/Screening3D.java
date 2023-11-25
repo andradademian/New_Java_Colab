@@ -42,6 +42,10 @@ public class Screening3D implements Screening {
         return movie;
     }
 
+    public String getFormat() {
+        return "3D";
+    }
+
     public void setMovie(Movie movie) {
         this.movie = movie;
     }

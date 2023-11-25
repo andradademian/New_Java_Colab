@@ -16,9 +16,6 @@ public class Actor extends Spectator {
         this.listOfAwards = awards;
     }
 
-//    public Actor(String number, String first3, String last3, Vector<Domain.Movie> movies, Date date, Vector<Domain.Award> awards) {
-//    }
-
     public Vector<Movie> getListOfMovies() {
         return listOfMovies;
     }

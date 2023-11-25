@@ -10,11 +10,15 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.sql.SQLException;
 import java.util.Vector;
 
 public class GenreControllerTest {
     GenreRepository genreRepository = GenreRepository.getInstance();
     GenreController genreController = new GenreController(genreRepository);
+
+    public GenreControllerTest() throws SQLException {
+    }
 
     @BeforeEach
     public void setUp() {

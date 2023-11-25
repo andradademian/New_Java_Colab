@@ -19,6 +19,10 @@ public class Screening2D implements Screening {
         this.startTime = startTime;
     }
 
+    public String getFormat() {
+        return "2D";
+    }
+
     public String getId() {
         return id;
     }
