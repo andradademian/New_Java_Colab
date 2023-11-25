@@ -9,15 +9,15 @@ import java.text.ParseException;
 import java.util.Scanner;
 
 public class UI {
-    private static final ActorRepository actorRepo = ActorRepository.getInstance();
+    private static final ActorRepository actorRepo;
 
-//    static {
-//        try {
-//            actorRepo = ActorRepository.getInstance();
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
+    static {
+        try {
+            actorRepo = ActorRepository.getInstance();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     private static final AwardRepository awardRepository;
 
@@ -148,6 +148,7 @@ public class UI {
     public static void exitMenu() throws SQLException {
         roomRepository.addRoomsToTable();
         awardRepository.addAwardsToTable();
+        actorRepo.addActorsToTable();
     }
 
     public static void actorMenu() {

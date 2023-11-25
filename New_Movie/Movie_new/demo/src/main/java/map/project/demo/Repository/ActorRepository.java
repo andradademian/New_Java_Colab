@@ -1,24 +1,60 @@
 package map.project.demo.Repository;
 
+import map.project.demo.AwardFactory.GoldenGlobe;
+import map.project.demo.AwardFactory.Oscar;
+import map.project.demo.AwardFactory.PalmeDor;
 import map.project.demo.Domain.Actor;
 import map.project.demo.Domain.Award;
 import map.project.demo.Domain.Movie;
 
+import java.sql.*;
+import java.util.Objects;
 import java.util.Vector;
 
 public class ActorRepository {
     private static ActorRepository instance;
     private final Vector<Actor> listOfActors;
 
-    private ActorRepository() {
-        listOfActors = new Vector<>();
+    Connection connection= DriverManager.getConnection("jdbc:postgresql://localhost:5432/Movie","MyUser","slay");
+    Statement insert=connection.createStatement();
+    String insertStringFancy="INSERT INTO \"Actor\"(id, firstName, lastName, startOfCareer) VALUES (?, ?, ?, ?)";
+    PreparedStatement insertFancy=connection.prepareStatement(insertStringFancy);
+
+    Statement select=connection.createStatement();
+
+    private ActorRepository() throws SQLException {
+        listOfActors = getActorsFromTable();
     }
 
-    public static ActorRepository getInstance() {
+    public static ActorRepository getInstance() throws SQLException {
         if (instance == null) {
             instance = new ActorRepository();
         }
         return instance;
+    }
+
+    public Vector<Actor> getActorsFromTable() throws SQLException {
+        Vector<Actor> actorVector = new Vector<>();
+        ResultSet result=select.executeQuery(" SELECT * FROM \"actor\"");
+        while (result.next()){
+            String id=result.getString("Id");
+            String firstName = result.getString("FirstName");
+            String lastName = result.getString("LastName");
+            Date startOfCareer = result.getDate("StartOfCareer");
+
+        }
+        select.execute("delete from \"actor\"");
+        return actorVector;
+    }
+
+    public void addActorsToTable() throws SQLException {
+        for(Actor actor:listOfActors){
+            insertFancy.setString(1,actor.getId());
+            insertFancy.setString(2,actor.getFirstName());
+            insertFancy.setString(3,actor.getLastName());
+            insertFancy.setDate(4,actor.getStartOfCareer());
+            insertFancy.executeUpdate();
+        }
     }
 
     public void add(Actor actor) {
