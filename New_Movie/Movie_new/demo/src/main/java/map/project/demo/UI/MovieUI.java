@@ -71,6 +71,33 @@ public class MovieUI {
         this.movieController.addMovie(new Movie(id, title, duration, new Vector<StageDirector>(), new Vector<>(), new Vector<Genre>()));
     }
 
+    public void addGenresToMovie(Movie movie) throws SQLException {
+        Vector<String> genreIds = movieController.getGenresFromMovieGenreTable(movie);
+        for (Genre genre : genreController.getAllGenres()) {
+            if (genreIds.contains(genre.getId())) {
+                movieController.addGenreToMovie(movie, genre);
+            }
+        }
+    }
+
+    public void addDirectorsToMovies(Movie movie) throws SQLException {
+        Vector<String> directors = movieController.getDirectorsFromMovieDirectorTable(movie);
+        for (StageDirector stageDirector : stageDirectorController.getAllStageDirectors()) {
+            if (directors.contains(stageDirector.getId())) {
+                movieController.addStageDirectorToMovie(movie, stageDirector);
+            }
+        }
+    }
+
+    public void addActorsToMovies(Movie movie) throws SQLException {
+        Vector<String> actorIds = movieController.getActorsFromActorMovieTable(movie);
+        for (Actor actor : actorController.getAllActors()) {
+            if (actorIds.contains(actor.getId())) {
+                movieController.addActorToMovie(movie, actor);
+            }
+        }
+    }
+
     public void deleteAMovie() {
         this.movieController.printAllMovies();
         System.out.println("Enter ID of the movie you want to delete:");

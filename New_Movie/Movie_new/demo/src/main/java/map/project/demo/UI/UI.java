@@ -266,7 +266,7 @@ public class UI {
         cinemaUI.mainCinemaUI();
     }
 
-    public static void genreMenu() {
+    public static void genreMenu() throws SQLException {
         genreUI.mainGenreUI();
     }
 

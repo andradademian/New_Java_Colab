@@ -72,6 +72,28 @@ public class StageDirectorRepository {
         }
     }
 
+    public Vector<String> getAwardsFromDirectorAwardTable(String directorId) throws SQLException {
+        Vector<String> awardIds = new Vector<>();
+        PreparedStatement awardStatement = connection.prepareStatement(" SELECT AA.awardid FROM \"StageDirector\" SD join \"DirectorAward\" AA on AA.directorid=?");
+        awardStatement.setString(1, directorId);
+        ResultSet result = awardStatement.executeQuery();
+        while (result.next()) {
+            awardIds.add(result.getString("awardid"));
+        }
+        return awardIds;
+    }
+
+    public Vector<String> getMoviesFromMovieDirectorTable(String directorId) throws SQLException {
+        Vector<String> moviesIds = new Vector<>();
+        PreparedStatement movieStatement = connection.prepareStatement(" SELECT AM.movieid FROM \"StageDirector\" SD join \"MovieDirector\" AM on AM.directorid=?");
+        movieStatement.setString(1, directorId);
+        ResultSet result = movieStatement.executeQuery();
+        while (result.next()) {
+            moviesIds.add(result.getString("movieid"));
+        }
+        return moviesIds;
+    }
+
     public void deleteAllFromDirectorAwardTable() throws SQLException {
         select.execute("delete from \"DirectorAward\"");
     }

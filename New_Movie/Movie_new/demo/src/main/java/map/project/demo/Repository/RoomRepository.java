@@ -13,7 +13,7 @@ public class RoomRepository {
 
     Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Movie", "MyUser", "castravete");
     Statement insert = connection.createStatement();
-    String insertStringFancy = "INSERT INTO \"Room\"(id, roomnumber, numberofseats) VALUES (?, ?, ?)";
+    String insertStringFancy = "INSERT INTO \"Room\"(id, roomnumber, numberofseats) VALUES (?, ?, ?) on conflict (id) do nothing";
     PreparedStatement insertFancy = connection.prepareStatement(insertStringFancy);
 
     Statement select = connection.createStatement();

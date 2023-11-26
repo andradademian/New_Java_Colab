@@ -32,6 +32,14 @@ public class ActorController {
         return null;
     }
 
+    public Vector<String> getMoviesFromActorMovieTable(Actor actor) throws SQLException {
+        return actorRepo.getMoviesFromActorMovieTable(actor.getId());
+    }
+
+    public Vector<String> getAwardsFromActorAwardTable(Actor actor) throws SQLException {
+        return actorRepo.getAwardsFromActorAwardTable(actor.getId());
+    }
+
     public Movie findMovieById(Actor actor, String id) {
         for (Movie movie : actor.getListOfMovies()) {
             if (Objects.equals(movie.getId(), id)) {

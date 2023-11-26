@@ -18,7 +18,7 @@ public class AwardRepository {
 
     Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Movie", "MyUser", "castravete");
     Statement insert = connection.createStatement();
-    String insertStringFancy = "INSERT INTO \"Award\"(id, awardType, category) VALUES (?, ?, ?)";
+    String insertStringFancy = "INSERT INTO \"Award\"(id, awardType, category) VALUES (?, ?, ?) on conflict (id) do nothing";
     PreparedStatement insertFancy = connection.prepareStatement(insertStringFancy);
 
     Statement select = connection.createStatement();

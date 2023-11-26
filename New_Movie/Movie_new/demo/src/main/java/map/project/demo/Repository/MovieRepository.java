@@ -87,6 +87,39 @@ public class MovieRepository {
         }
     }
 
+    public Vector<String> getDirectorsFromMovieDirectorTable(String movieId) throws SQLException {
+        Vector<String> directorIds = new Vector<>();
+        PreparedStatement awardStatement = connection.prepareStatement(" SELECT AA.directorid FROM \"Movie\" A join \"MovieDirector\" AA on AA.movieid=?");
+        awardStatement.setString(1, movieId);
+        ResultSet result = awardStatement.executeQuery();
+        while (result.next()) {
+            directorIds.add(result.getString("directorid"));
+        }
+        return directorIds;
+    }
+
+    public Vector<String> getActorsFromActorMovieTable(String movieId) throws SQLException {
+        Vector<String> actorsIds = new Vector<>();
+        PreparedStatement movieStatement = connection.prepareStatement(" SELECT AM.actorid FROM \"Movie\" A join \"ActorMovie\" AM on AM.movieid=?");
+        movieStatement.setString(1, movieId);
+        ResultSet result = movieStatement.executeQuery();
+        while (result.next()) {
+            actorsIds.add(result.getString("actorid"));
+        }
+        return actorsIds;
+    }
+
+    public Vector<String> getGenresFromMovieGenreTable(String movieId) throws SQLException {
+        Vector<String> genreIds = new Vector<>();
+        PreparedStatement movieStatement = connection.prepareStatement(" SELECT MG.genreid FROM \"Movie\" G join \"MovieGenre\" MG on MG.movieid=?");
+        movieStatement.setString(1, movieId);
+        ResultSet result = movieStatement.executeQuery();
+        while (result.next()) {
+            genreIds.add(result.getString("genreid"));
+        }
+        return genreIds;
+    }
+
     public void deleteAllFromMovieDirectorTable() throws SQLException {
         select.execute("delete from \"MovieDirector\"");
     }

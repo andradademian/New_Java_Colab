@@ -44,7 +44,8 @@ public class ActorRepository {
             String firstName = result.getString("FirstName");
             String lastName = result.getString("LastName");
             Date startOfCareer = result.getDate("StartOfCareer");
-            actorVector.add(new Actor(id, firstName, lastName, new Vector<>(), startOfCareer, new Vector<>()));
+            Actor actor = new Actor(id, firstName, lastName, new Vector<>(), startOfCareer, new Vector<>());
+            actorVector.add(actor);
         }
         return actorVector;
     }
@@ -89,6 +90,28 @@ public class ActorRepository {
                 insertFancyIntoActorAward.executeUpdate();
             }
         }
+    }
+
+    public Vector<String> getAwardsFromActorAwardTable(String actorId) throws SQLException {
+        Vector<String> awardIds = new Vector<>();
+        PreparedStatement awardStatement = connection.prepareStatement(" SELECT AA.awardid FROM \"Actor\" A join \"ActorAward\" AA on AA.actorid=?");
+        awardStatement.setString(1, actorId);
+        ResultSet result = awardStatement.executeQuery();
+        while (result.next()) {
+            awardIds.add(result.getString("awardid"));
+        }
+        return awardIds;
+    }
+
+    public Vector<String> getMoviesFromActorMovieTable(String actorId) throws SQLException {
+        Vector<String> moviesIds = new Vector<>();
+        PreparedStatement movieStatement = connection.prepareStatement(" SELECT AM.movieid FROM \"Actor\" A join \"ActorMovie\" AM on AM.actorid=?");
+        movieStatement.setString(1, actorId);
+        ResultSet result = movieStatement.executeQuery();
+        while (result.next()) {
+            moviesIds.add(result.getString("movieid"));
+        }
+        return moviesIds;
     }
 
     public void add(Actor actor) {

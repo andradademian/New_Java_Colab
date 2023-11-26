@@ -13,7 +13,7 @@ public class CinemaRepository {
 
     Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Movie", "MyUser", "castravete");
     Statement insert = connection.createStatement();
-    String insertStringFancy = "INSERT INTO \"Cinema\"(id,cinemaname,cinemaaddress) VALUES (?, ?, ?)";
+    String insertStringFancy = "INSERT INTO \"Cinema\"(id,cinemaname,cinemaaddress) VALUES (?, ?, ?) on conflict (id) do nothing";
     PreparedStatement insertFancy = connection.prepareStatement(insertStringFancy);
 
     Statement select = connection.createStatement();

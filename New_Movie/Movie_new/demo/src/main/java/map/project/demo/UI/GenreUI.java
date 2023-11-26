@@ -4,6 +4,7 @@ import map.project.demo.Controller.GenreController;
 import map.project.demo.Controller.MovieController;
 import map.project.demo.Domain.*;
 
+import java.sql.SQLException;
 import java.util.Scanner;
 import java.util.Vector;
 
@@ -16,9 +17,12 @@ public class GenreUI {
         this.movieController = movieController;
     }
 
-    public void mainGenreUI() {
+    public void mainGenreUI() throws SQLException {
         int choice;
         do {
+            for (Genre genre : genreController.getAllGenres()) {
+                addMoviesToGenre(genre);
+            }
             this.genreController.printAllGenres();
             genreMenu();
             Scanner keyboard = new Scanner(System.in);
@@ -60,6 +64,15 @@ public class GenreUI {
         String name = keyboard.next();
 
         this.genreController.addGenre(new Genre(id, name, new Vector<>()));
+    }
+
+    public void addMoviesToGenre(Genre genre) throws SQLException {
+        Vector<String> movieIds = genreController.getMoviesFromMovieGenreTable(genre);
+        for (Movie movie : movieController.getAllMovies()) {
+            if (movieIds.contains(movie.getId())) {
+                genreController.addMovieToGenre(genre, movie);
+            }
+        }
     }
 
     public void deleteAGenre() {

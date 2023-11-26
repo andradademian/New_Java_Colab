@@ -25,6 +25,10 @@ public class StageDirectorUI {
     public void mainStageDirectorUI() throws SQLException {
         int choice;
         do {
+            for (StageDirector stageDirector : stageDirectorController.getAllStageDirectors()) {
+                addMoviesToStageDirector(stageDirector);
+                addAwardsToStageDirector(stageDirector);
+            }
             this.stageDirectorController.printAllStageDirectors();
             stageDirectorMenu();
             Scanner keyboard = new Scanner(System.in);
@@ -170,6 +174,24 @@ public class StageDirectorUI {
         }
     }
 
+    public void addMoviesToStageDirector(StageDirector stageDirector) throws SQLException {
+        Vector<String> movieIds = stageDirectorController.getMoviesFromMovieDirectorTable(stageDirector);
+        for (Movie movie : movieController.getAllMovies()) {
+            if (movieIds.contains(movie.getId())) {
+                stageDirectorController.addMovie(stageDirector, movie);
+            }
+        }
+    }
+
+    public void addAwardsToStageDirector(StageDirector stageDirector) throws SQLException {
+        Vector<String> awardsIds = stageDirectorController.getAwardsFromDirectorAwardTable(stageDirector);
+        for (Award award : awardController.getAllAwards()) {
+            if (awardsIds.contains(award.getId())) {
+                stageDirectorController.addAward(stageDirector, award);
+            }
+        }
+    }
+
     public void updateStageDirector() {
         this.stageDirectorController.printAllStageDirectors();
         System.out.println("Enter ID of the stage director you want to update:");
@@ -194,7 +216,7 @@ public class StageDirectorUI {
         StageDirector stageDirectorToDelete = findStageDirectorById(id);
 
         if (stageDirectorToDelete != null) {
-            this.stageDirectorController.deleteStageDirector(String.valueOf(stageDirectorToDelete));
+            this.stageDirectorController.deleteStageDirector(stageDirectorToDelete);
             System.out.println("StageDirector with ID " + id + " has been deleted.");
         } else {
             System.out.println("No stage director with ID " + id + " found.");

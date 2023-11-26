@@ -27,6 +27,10 @@ public class ActorUI {
     public void mainActorUI() throws SQLException {
         int choice;
         do {
+            for (Actor actor : actorController.getAllActors()) {
+                addMoviesToActor(actor);
+                addAwardsToActor(actor);
+            }
             this.actorController.showAllActors();
             actorMenu();
             Scanner keyboard = new Scanner(System.in);
@@ -54,6 +58,24 @@ public class ActorUI {
         System.out.println("3. Delete all actors");
         System.out.println("4. Update an actor");
         System.out.println("5. Exit");
+    }
+
+    public void addMoviesToActor(Actor actor) throws SQLException {
+        Vector<String> movieIds = actorController.getMoviesFromActorMovieTable(actor);
+        for (Movie movie : movieController.getAllMovies()) {
+            if (movieIds.contains(movie.getId())) {
+                actorController.addMovie(actor, movie);
+            }
+        }
+    }
+
+    public void addAwardsToActor(Actor actor) throws SQLException {
+        Vector<String> awardsIds = actorController.getAwardsFromActorAwardTable(actor);
+        for (Award award : awardController.getAllAwards()) {
+            if (awardsIds.contains(award.getId())) {
+                actorController.addAward(actor, award);
+            }
+        }
     }
 
     public void addAnActor() throws SQLException {

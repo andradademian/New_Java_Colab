@@ -45,6 +45,17 @@ public class GenreRepository {
         return genreVector;
     }
 
+    public Vector<String> getMoviesFromMovieGenreTable(String genreId) throws SQLException {
+        Vector<String> moviesIds = new Vector<>();
+        PreparedStatement movieStatement = connection.prepareStatement(" SELECT MG.movieid FROM \"Genre\" G join \"MovieGenre\" MG on MG.genreid=?");
+        movieStatement.setString(1, genreId);
+        ResultSet result = movieStatement.executeQuery();
+        while (result.next()) {
+            moviesIds.add(result.getString("movieid"));
+        }
+        return moviesIds;
+    }
+
     public void deleteAllFromGenreTable() throws SQLException {
         select.execute("delete from \"Genre\"");
     }

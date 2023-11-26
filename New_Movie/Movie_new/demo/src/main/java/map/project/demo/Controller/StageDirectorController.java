@@ -6,6 +6,7 @@ import map.project.demo.Domain.Movie;
 import map.project.demo.Domain.StageDirector;
 import map.project.demo.Repository.StageDirectorRepository;
 
+import java.sql.SQLException;
 import java.util.Objects;
 import java.util.Scanner;
 import java.util.Vector;
@@ -31,11 +32,16 @@ public class StageDirectorController {
         return null;
     }
 
-    public void deleteStageDirector(String stageDirectorId) {
-        StageDirector stageDirectorToDelete = findStageDirectorById(stageDirectorId);
-        if (stageDirectorToDelete != null) {
-            stageDirectorRepo.delete(stageDirectorToDelete);
-        }
+    public void deleteStageDirector(StageDirector stageDirector) {
+        stageDirectorRepo.delete(stageDirector);
+    }
+
+    public Vector<String> getMoviesFromMovieDirectorTable(StageDirector stageDirector) throws SQLException {
+        return stageDirectorRepo.getMoviesFromMovieDirectorTable(stageDirector.getId());
+    }
+
+    public Vector<String> getAwardsFromDirectorAwardTable(StageDirector stageDirector) throws SQLException {
+        return stageDirectorRepo.getAwardsFromDirectorAwardTable(stageDirector.getId());
     }
 
     public void deleteAllStageDirectors() {

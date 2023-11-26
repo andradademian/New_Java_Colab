@@ -10,7 +10,7 @@ import java.util.Scanner;
 import java.util.Vector;
 
 public class MovieController {
-    private MovieRepository movieRepo = new MovieRepository();
+    private MovieRepository movieRepo;
     private final Vector<Movie> listOfMovies = new Vector<>();
 
     public MovieController(MovieRepository movieRepo) throws SQLException {
@@ -32,6 +32,18 @@ public class MovieController {
         if (movie != null) {
             movieRepo.delete(movie);
         }
+    }
+
+    public Vector<String> getGenresFromMovieGenreTable(Movie movie) throws SQLException {
+        return movieRepo.getGenresFromMovieGenreTable(movie.getId());
+    }
+
+    public Vector<String> getActorsFromActorMovieTable(Movie movie) throws SQLException {
+        return movieRepo.getActorsFromActorMovieTable(movie.getId());
+    }
+
+    public Vector<String> getDirectorsFromMovieDirectorTable(Movie movie) throws SQLException {
+        return movieRepo.getDirectorsFromMovieDirectorTable(movie.getId());
     }
 
     public StageDirector findDirectorById(Movie movie, String id) {

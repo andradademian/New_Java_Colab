@@ -4,6 +4,7 @@ import map.project.demo.Domain.*;
 
 import map.project.demo.Repository.GenreRepository;
 
+import java.sql.SQLException;
 import java.util.Objects;
 import java.util.Scanner;
 import java.util.Vector;
@@ -48,6 +49,10 @@ public class GenreController {
         }
         System.out.println("No movie with that id");
         return null;
+    }
+
+    public Vector<String> getMoviesFromMovieGenreTable(Genre genre) throws SQLException {
+        return genreRepo.getMoviesFromMovieGenreTable(genre.getId());
     }
 
     public void deleteAllGenres() {

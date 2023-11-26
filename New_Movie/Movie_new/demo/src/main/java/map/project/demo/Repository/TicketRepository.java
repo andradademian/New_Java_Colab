@@ -6,8 +6,6 @@ import map.project.demo.Strategy.Screening;
 
 import java.sql.*;
 import java.util.Objects;
-import java.util.Scanner;
-import java.util.Stack;
 import java.util.Vector;
 
 public class TicketRepository {
