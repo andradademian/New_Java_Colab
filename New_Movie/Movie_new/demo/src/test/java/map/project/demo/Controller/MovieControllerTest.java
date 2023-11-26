@@ -52,7 +52,7 @@ public class MovieControllerTest {
     }
 
     @Test
-    public void shouldFindDirectorById() {
+    public void shouldFindDirectorById() throws SQLException {
         //public StageDirector(String id, String firstName, String lastName, Vector<Movie> listOfMovies, Vector<Award> awards) {
         Movie movie = movieController.getAllMovies().get(0);
         StageDirector stageDirector = new StageDirector("1", "FirstName1", "LastName1", new Vector<Movie>(), new Vector<Award>());
@@ -65,7 +65,7 @@ public class MovieControllerTest {
     }
 
     @Test
-    public void shouldNotFindDirectorByInvalidId() {
+    public void shouldNotFindDirectorByInvalidId() throws SQLException {
         Movie movie = movieController.getAllMovies().get(0);
         StageDirector stageDirector = new StageDirector("1", "FirstName1", "LastName1", new Vector<Movie>(), new Vector<Award>());
         movieRepository.addStageDirector(movie, stageDirector);
@@ -76,7 +76,7 @@ public class MovieControllerTest {
     }
 
     @Test
-    public void shouldFindActorById() {
+    public void shouldFindActorById() throws SQLException {
         Movie movie = movieController.getAllMovies().get(0);
         Actor actor = new Actor("1", "FirstName1", "LastName1", new Vector<>(), null, new Vector<Award>());
         movieRepository.addActor(movie, actor);
@@ -88,7 +88,7 @@ public class MovieControllerTest {
     }
 
     @Test
-    public void shouldNotFindActorByInvalidId() {
+    public void shouldNotFindActorByInvalidId() throws SQLException {
         Movie movie = movieController.getAllMovies().get(0);
         Actor actor = new Actor("1", "FirstName1", "LastName1", new Vector<>(), null, new Vector<Award>());
         movieRepository.addActor(movie, actor);

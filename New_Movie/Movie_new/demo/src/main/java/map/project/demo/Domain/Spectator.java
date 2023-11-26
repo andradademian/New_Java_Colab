@@ -2,13 +2,16 @@ package map.project.demo.Domain;
 
 import map.project.demo.ObserverPattern.Observer;
 
+import java.sql.*;
+
 public class Spectator implements Observer {
     private String id;
     private String firstName;
     private String lastName;
     private Ticket ticket;
 
-    public Spectator(String id, String firstName, String lastName) {
+
+    public Spectator(String id, String firstName, String lastName) throws SQLException {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;

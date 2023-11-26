@@ -22,19 +22,19 @@ public class TicketRepoTest {
     }
 
     @Test
-    public void expectTicketAddedSuccessfully() {
+    public void expectTicketAddedSuccessfully() throws SQLException {
         ticketIsAddedToTheList();
         assertEquals(ticketRepository.getAll().size(), 1);
     }
 
     @Test
-    public void expectTicketNotAddedSuccessfully() {
+    public void expectTicketNotAddedSuccessfully() throws SQLException {
         ticketIsAddedToTheList();
         assertNotEquals(ticketRepository.getAll().size(), 0);
     }
 
     @Test
-    public void expectTicketRemovedSuccessfully() {
+    public void expectTicketRemovedSuccessfully() throws SQLException {
         ticketIsAddedToTheList();
         Ticket ticket = ticketRepository.getAll().get(0);
         ticketRepository.delete(ticket);
@@ -42,7 +42,7 @@ public class TicketRepoTest {
     }
 
     @Test
-    public void expectTicketNotRemovedSuccessfully() {
+    public void expectTicketNotRemovedSuccessfully() throws SQLException {
         ticketIsAddedToTheList();
         Ticket ticket = ticketRepository.getAll().get(0);
         ticketRepository.delete(ticket);
@@ -50,21 +50,21 @@ public class TicketRepoTest {
     }
 
     @Test
-    public void expectCorrectRemovalOfAllTickets() {
+    public void expectCorrectRemovalOfAllTickets() throws SQLException {
         ticketIsAddedToTheList();
         ticketRepository.deleteAll();
         assertEquals(ticketRepository.getAll().size(), 0);
     }
 
     @Test
-    public void expectIncorrectRemovalOfAllTickets() {
+    public void expectIncorrectRemovalOfAllTickets() throws SQLException {
         ticketIsAddedToTheList();
         ticketRepository.deleteAll();
         assertNotEquals(ticketRepository.getAll().size(), 1);
     }
 
     @Test
-    public void expectUpdatePriceSuccessfully() {
+    public void expectUpdatePriceSuccessfully() throws SQLException {
         ticketIsAddedToTheList();
         Ticket ticket = ticketRepository.getAll().get(0);
         float newPrice = 25.0f;
@@ -73,7 +73,7 @@ public class TicketRepoTest {
     }
 
     @Test
-    public void expectUpdateSeatNumberSuccessfully() {
+    public void expectUpdateSeatNumberSuccessfully() throws SQLException {
         ticketIsAddedToTheList();
         Ticket ticket = ticketRepository.getAll().get(0);
         int newSeatNumber = 101;
@@ -81,15 +81,14 @@ public class TicketRepoTest {
         assertEquals(ticket.getSeatNumber(), newSeatNumber);
     }
 
-    public void ticketIsAddedToTheList() {
+    public void ticketIsAddedToTheList() throws SQLException {
         ticketRepository.deleteAll();
         Movie movie = createMovie();
         Room room = createRoom();
         Time startTime = Time.valueOf("12:00:00");
         Screening2D screening2D = new Screening2D("1", movie, room, startTime);
-        Spectator spectator = new Spectator("15", "FirstName", "LastName");
 
-        Ticket ticket = new Ticket("1", screening2D, 42, 8, spectator);
+        Ticket ticket = new Ticket("1", screening2D, 42, 8);
         ticketRepository.add(ticket);
     }
 

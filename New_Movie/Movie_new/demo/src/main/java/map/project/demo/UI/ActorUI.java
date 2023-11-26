@@ -56,7 +56,7 @@ public class ActorUI {
         System.out.println("5. Exit");
     }
 
-    public void addAnActor() {
+    public void addAnActor() throws SQLException {
         this.actorController.showAllActors();
 
         Scanner keyboard = new Scanner(System.in);

@@ -76,7 +76,7 @@ public class SingletonTest {
     }
 
     @Test
-    public void testSingletonSpectator() {
+    public void testSingletonSpectator() throws SQLException {
         SpectatorRepository instance1 = SpectatorRepository.getInstance();
         SpectatorRepository instance2 = SpectatorRepository.getInstance();
 
@@ -84,7 +84,7 @@ public class SingletonTest {
     }
 
     @Test
-    public void testSingletonStageDirector() {
+    public void testSingletonStageDirector() throws SQLException {
         StageDirectorRepository instance1 = StageDirectorRepository.getInstance();
         StageDirectorRepository instance2 = StageDirectorRepository.getInstance();
 

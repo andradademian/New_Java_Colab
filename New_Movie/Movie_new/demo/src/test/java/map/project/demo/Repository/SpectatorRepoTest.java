@@ -6,6 +6,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 
+import java.sql.SQLException;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
@@ -13,24 +15,24 @@ public class SpectatorRepoTest {
     SpectatorRepository spectatorRepository;
 
     @BeforeEach
-    public void setUp() {
+    public void setUp() throws SQLException {
         spectatorRepository = SpectatorRepository.getInstance();
     }
 
     @Test
-    public void expectSpectatorAddedSuccessfully() {
+    public void expectSpectatorAddedSuccessfully() throws SQLException {
         spectatorIsAddedToTheList();
         assertEquals(spectatorRepository.getAll().size(), 1);
     }
 
     @Test
-    public void expectSpectatorNotAddedSuccessfully() {
+    public void expectSpectatorNotAddedSuccessfully() throws SQLException {
         spectatorIsAddedToTheList();
         assertNotEquals(spectatorRepository.getAll().size(), 0);
     }
 
     @Test
-    public void expectSpectatorRemovedSuccessfully() {
+    public void expectSpectatorRemovedSuccessfully() throws SQLException {
         spectatorIsAddedToTheList();
         Spectator spectator = spectatorRepository.getAll().get(0);
         spectatorRepository.delete(spectator);
@@ -38,7 +40,7 @@ public class SpectatorRepoTest {
     }
 
     @Test
-    public void expectSpectatorNotRemovedSuccessfully() {
+    public void expectSpectatorNotRemovedSuccessfully() throws SQLException {
         spectatorIsAddedToTheList();
         Spectator spectator = spectatorRepository.getAll().get(0);
         spectatorRepository.delete(spectator);
@@ -46,21 +48,21 @@ public class SpectatorRepoTest {
     }
 
     @Test
-    public void expectCorrectRemovalOfAllSpectators() {
+    public void expectCorrectRemovalOfAllSpectators() throws SQLException {
         spectatorIsAddedToTheList();
         spectatorRepository.deleteAll();
         assertEquals(spectatorRepository.getAll().size(), 0);
     }
 
     @Test
-    public void expectIncorrectRemovalOfAllSpectators() {
+    public void expectIncorrectRemovalOfAllSpectators() throws SQLException {
         spectatorIsAddedToTheList();
         spectatorRepository.deleteAll();
         assertNotEquals(spectatorRepository.getAll().size(), 1);
     }
 
     @Test
-    public void expectUpdateFirstNameSuccessfully() {
+    public void expectUpdateFirstNameSuccessfully() throws SQLException {
         spectatorIsAddedToTheList();
         Spectator spectator = spectatorRepository.getAll().get(0);
         String newFirstName = "NewFirstName";
@@ -69,7 +71,7 @@ public class SpectatorRepoTest {
     }
 
     @Test
-    public void expectUpdateLastNameSuccessfully() {
+    public void expectUpdateLastNameSuccessfully() throws SQLException {
         spectatorIsAddedToTheList();
         Spectator spectator = spectatorRepository.getAll().get(0);
         String newLastName = "NewLastName";
@@ -77,7 +79,7 @@ public class SpectatorRepoTest {
         assertEquals(spectator.getLastName(), newLastName);
     }
 
-    public void spectatorIsAddedToTheList() {
+    public void spectatorIsAddedToTheList() throws SQLException {
         spectatorRepository.deleteAll();
         Spectator spectator = new Spectator("1", "FirstName", "LastName");
         spectatorRepository.add(spectator);

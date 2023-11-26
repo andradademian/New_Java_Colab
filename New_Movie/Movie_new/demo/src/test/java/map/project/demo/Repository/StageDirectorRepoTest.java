@@ -5,6 +5,7 @@ import map.project.demo.Repository.StageDirectorRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.sql.SQLException;
 import java.util.Vector;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -13,24 +14,24 @@ public class StageDirectorRepoTest {
     StageDirectorRepository stageDirectorRepository;
 
     @BeforeEach
-    public void setUp() {
+    public void setUp() throws SQLException {
         stageDirectorRepository = StageDirectorRepository.getInstance();
     }
 
     @Test
-    public void expectStageDirectorAddedSuccessfully() {
+    public void expectStageDirectorAddedSuccessfully() throws SQLException {
         stageDirectorIsAddedToTheList();
         assertEquals(stageDirectorRepository.getAll().size(), 1);
     }
 
     @Test
-    public void expectStageDirectorNotAddedSuccessfully() {
+    public void expectStageDirectorNotAddedSuccessfully() throws SQLException {
         stageDirectorIsAddedToTheList();
         assertNotEquals(stageDirectorRepository.getAll().size(), 0);
     }
 
     @Test
-    public void expectStageDirectorRemovedSuccessfully() {
+    public void expectStageDirectorRemovedSuccessfully() throws SQLException {
         stageDirectorIsAddedToTheList();
         StageDirector stageDirector = stageDirectorRepository.getAll().get(0);
         stageDirectorRepository.delete(stageDirector);
@@ -38,7 +39,7 @@ public class StageDirectorRepoTest {
     }
 
     @Test
-    public void expectStageDirectorNotRemovedSuccessfully() {
+    public void expectStageDirectorNotRemovedSuccessfully() throws SQLException {
         stageDirectorIsAddedToTheList();
         StageDirector stageDirector = stageDirectorRepository.getAll().get(0);
         stageDirectorRepository.delete(stageDirector);
@@ -46,21 +47,21 @@ public class StageDirectorRepoTest {
     }
 
     @Test
-    public void expectCorrectRemovalOfAllStageDirectors() {
+    public void expectCorrectRemovalOfAllStageDirectors() throws SQLException {
         stageDirectorIsAddedToTheList();
         stageDirectorRepository.deleteAll();
         assertEquals(stageDirectorRepository.getAll().size(), 0);
     }
 
     @Test
-    public void expectIncorrectRemovalOfAllStageDirectors() {
+    public void expectIncorrectRemovalOfAllStageDirectors() throws SQLException {
         stageDirectorIsAddedToTheList();
         stageDirectorRepository.deleteAll();
         assertNotEquals(stageDirectorRepository.getAll().size(), 1);
     }
 
     @Test
-    public void expectUpdateFirstNameSuccessfully() {
+    public void expectUpdateFirstNameSuccessfully() throws SQLException {
         stageDirectorIsAddedToTheList();
         StageDirector stageDirector = stageDirectorRepository.getAll().get(0);
         String newFirstName = "NewFirstName";
@@ -69,7 +70,7 @@ public class StageDirectorRepoTest {
     }
 
     @Test
-    public void expectUpdateLastNameSuccessfully() {
+    public void expectUpdateLastNameSuccessfully() throws SQLException {
         stageDirectorIsAddedToTheList();
         StageDirector stageDirector = stageDirectorRepository.getAll().get(0);
         String newLastName = "NewLastName";
@@ -78,7 +79,7 @@ public class StageDirectorRepoTest {
     }
 
     @Test
-    public void expectMovieAddedSuccessfully() {
+    public void expectMovieAddedSuccessfully() throws SQLException {
         stageDirectorIsAddedToTheList();
         StageDirector stageDirector = stageDirectorRepository.getAll().get(0);
         Movie movie = createMovie();
@@ -87,7 +88,7 @@ public class StageDirectorRepoTest {
     }
 
     @Test
-    public void expectMovieNotAddedSuccessfully() {
+    public void expectMovieNotAddedSuccessfully() throws SQLException {
         stageDirectorIsAddedToTheList();
         StageDirector stageDirector = stageDirectorRepository.getAll().get(0);
         Movie movie = createMovie();
@@ -95,7 +96,7 @@ public class StageDirectorRepoTest {
     }
 
     @Test
-    public void expectMovieRemovedSuccessfully() {
+    public void expectMovieRemovedSuccessfully() throws SQLException {
         stageDirectorIsAddedToTheList();
         StageDirector stageDirector = stageDirectorRepository.getAll().get(0);
         Movie movie = createMovie();
@@ -105,7 +106,7 @@ public class StageDirectorRepoTest {
     }
 
     @Test
-    public void expectMovieNotRemovedSuccessfully() {
+    public void expectMovieNotRemovedSuccessfully() throws SQLException {
         stageDirectorIsAddedToTheList();
         StageDirector stageDirector = stageDirectorRepository.getAll().get(0);
         Movie movie = createMovie();
@@ -113,7 +114,7 @@ public class StageDirectorRepoTest {
         assertFalse(stageDirector.getListOfMovies().contains(movie), "Movies should be empty initially");
     }
 
-    public void stageDirectorIsAddedToTheList() {
+    public void stageDirectorIsAddedToTheList() throws SQLException {
         stageDirectorRepository.deleteAll();
         StageDirector stageDirector = new StageDirector("1", "FirstName", "LastName", new Vector<>(), new Vector<>());
         stageDirectorRepository.add(stageDirector);

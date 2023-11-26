@@ -10,6 +10,7 @@ import map.project.demo.Domain.Cinema;
 import map.project.demo.Domain.Room;
 import map.project.demo.Domain.Spectator;
 
+import java.sql.SQLException;
 import java.util.Scanner;
 import java.util.Vector;
 
@@ -24,7 +25,7 @@ public class CinemaUI {
         this.roomController = roomController;
     }
 
-    public void mainCinemaUI() {
+    public void mainCinemaUI() throws SQLException {
         int choice;
         do {
             this.cinemaController.printAllCinemas();
@@ -137,7 +138,7 @@ public class CinemaUI {
     }
 
 
-    public void addSubscriberToCinemaWithId(String cinemaId) {
+    public void addSubscriberToCinemaWithId(String cinemaId) throws SQLException {
         Cinema cinemaToUpdate = cinemaController.findCinemaById(cinemaId);
         if (cinemaToUpdate != null) {
             System.out.println("What do you want to do?");
@@ -191,7 +192,7 @@ public class CinemaUI {
         this.updateCinema(id);
     }
 
-    public void addSubscriberToCinema() {
+    public void addSubscriberToCinema() throws SQLException {
         this.cinemaController.printAllCinemas();
         System.out.println("Enter id of the cinema to which you want to add a subscriber:");
         Scanner keyboard = new Scanner(System.in);

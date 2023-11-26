@@ -7,6 +7,8 @@ import map.project.demo.Strategy.Screening;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.sql.SQLException;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -14,8 +16,11 @@ public class SpectatorControllerTest {
     SpectatorRepository spectatorRepository = SpectatorRepository.getInstance();
     SpectatorController spectatorController = new SpectatorController(spectatorRepository);
 
+    public SpectatorControllerTest() throws SQLException {
+    }
+
     @BeforeEach
-    public void setUp() {
+    public void setUp() throws SQLException {
         Spectator spectator1 = new Spectator("1", "First1", "Last1");
         Spectator spectator2 = new Spectator("2", "First2", "Last3");
         Spectator spectator3 = new Spectator("3", "First3", "Last3");

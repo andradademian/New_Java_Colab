@@ -22,10 +22,10 @@ public class TicketControllerTest {
     }
 
     @BeforeEach
-    public void setUp() {
-        Ticket ticket1 = new Ticket("1", new Screening3D("1", new Movie("1", "Movie", 120, new Vector<>(), new Vector<>(), new Vector<>()), RoomBuilder.buildRoom("1", 100, 120), Time.valueOf("10:10:10")), 10, 10, new Spectator("1", "First1", "Last1"));
-        Ticket ticket2 = new Ticket("2", new Screening3D("1", new Movie("1", "Movie", 120, new Vector<>(), new Vector<>(), new Vector<>()), RoomBuilder.buildRoom("1", 100, 120), Time.valueOf("10:10:10")), 10, 10, new Spectator("1", "First1", "Last1"));
-        Ticket ticket3 = new Ticket("3", new Screening3D("1", new Movie("1", "Movie", 120, new Vector<>(), new Vector<>(), new Vector<>()), RoomBuilder.buildRoom("1", 100, 120), Time.valueOf("10:10:10")), 10, 10, new Spectator("1", "First1", "Last1"));
+    public void setUp() throws SQLException {
+        Ticket ticket1 = new Ticket("1", new Screening3D("1", new Movie("1", "Movie", 120, new Vector<>(), new Vector<>(), new Vector<>()), RoomBuilder.buildRoom("1", 100, 120), Time.valueOf("10:10:10")), 10, 10);
+        Ticket ticket2 = new Ticket("2", new Screening3D("1", new Movie("1", "Movie", 120, new Vector<>(), new Vector<>(), new Vector<>()), RoomBuilder.buildRoom("1", 100, 120), Time.valueOf("10:10:10")), 10, 10);
+        Ticket ticket3 = new Ticket("3", new Screening3D("1", new Movie("1", "Movie", 120, new Vector<>(), new Vector<>(), new Vector<>()), RoomBuilder.buildRoom("1", 100, 120), Time.valueOf("10:10:10")), 10, 10);
         ticketController.addTicket(ticket1);
         ticketController.addTicket(ticket2);
         ticketController.addTicket(ticket3);

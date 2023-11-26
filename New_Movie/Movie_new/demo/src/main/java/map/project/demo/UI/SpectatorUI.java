@@ -1,19 +1,24 @@
 package map.project.demo.UI;
 
 import map.project.demo.Controller.SpectatorController;
+import map.project.demo.Controller.TicketController;
 import map.project.demo.Domain.Spectator;
+import map.project.demo.Domain.Ticket;
 
+import java.sql.SQLException;
 import java.util.Scanner;
 import java.util.Vector;
 
 public class SpectatorUI {
     private final SpectatorController spectatorController;
+    private final TicketController ticketController;
 
-    public SpectatorUI(SpectatorController spectatorController) {
+    public SpectatorUI(SpectatorController spectatorController, TicketController ticketController) {
         this.spectatorController = spectatorController;
+        this.ticketController = ticketController;
     }
 
-    public void mainSpectatorUI() {
+    public void mainSpectatorUI() throws SQLException {
         int choice;
         do {
             this.spectatorController.printAllSpectators();
@@ -48,7 +53,7 @@ public class SpectatorUI {
         System.out.println("5. Exit");
     }
 
-    public void addSpectator() {
+    public void addSpectator() throws SQLException {
         this.spectatorController.printAllSpectators();
 
         Scanner keyboard = new Scanner(System.in);
@@ -62,8 +67,17 @@ public class SpectatorUI {
         System.out.println("Enter last name:");
         String lastName = keyboard.next();
 
-        Spectator newSpectator = new Spectator(spectatorId, firstName, lastName);
-        spectatorController.addSpectator(newSpectator);
+        ticketController.printAllTickets();
+        System.out.println("Enter id of the ticket:");
+        String ticketId = keyboard.next();
+        Ticket ticket = ticketController.findTicketById(ticketId);
+        if (ticket != null) {
+            Spectator newSpectator = new Spectator(spectatorId, firstName, lastName);
+            newSpectator.setTicket(ticket);
+            spectatorController.addSpectator(newSpectator);
+        } else {
+            System.out.println("No valid ticket id, could not create spectator");
+        }
     }
 
     public void deleteSpectator() {

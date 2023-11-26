@@ -26,19 +26,19 @@ public class ActorRepoTest {
     }
 
     @Test
-    public void expectActorAddedSuccessfully() throws ParseException {
+    public void expectActorAddedSuccessfully() throws ParseException, SQLException {
         actorIsAddedToTheList();
         assertEquals(actorRepository.getAll().size(), 1);
     }
 
     @Test
-    public void expectActorNotAddedSuccessfully() throws ParseException {
+    public void expectActorNotAddedSuccessfully() throws ParseException, SQLException {
         actorIsAddedToTheList();
         assertNotEquals(actorRepository.getAll().size(), 0);
     }
 
     @Test
-    public void expectActorRemovedSuccessfully() throws ParseException {
+    public void expectActorRemovedSuccessfully() throws ParseException, SQLException {
         actorIsAddedToTheList();
         Actor actor = actorRepository.getAll().get(0);
         actorRepository.delete(actor);
@@ -46,7 +46,7 @@ public class ActorRepoTest {
     }
 
     @Test
-    public void expectActorNotRemovedSuccessfully() throws ParseException {
+    public void expectActorNotRemovedSuccessfully() throws ParseException, SQLException {
         actorIsAddedToTheList();
         Actor actor1 = actorRepository.getAll().get(0);
         actorRepository.delete(actor1);
@@ -54,21 +54,21 @@ public class ActorRepoTest {
     }
 
     @Test
-    public void expectCorrectRemovalOfAllActors() throws ParseException {
+    public void expectCorrectRemovalOfAllActors() throws ParseException, SQLException {
         actorIsAddedToTheList();
         actorRepository.deleteAll();
         assertEquals(actorRepository.getAll().size(), 0);
     }
 
     @Test
-    public void expectIncorrectRemovalOfAllActors() throws ParseException {
+    public void expectIncorrectRemovalOfAllActors() throws ParseException, SQLException {
         actorIsAddedToTheList();
         actorRepository.deleteAll();
         assertNotEquals(actorRepository.getAll().size(), 1);
     }
 
     @Test
-    public void expectCorrectUpdateOfFirstName() throws ParseException {
+    public void expectCorrectUpdateOfFirstName() throws ParseException, SQLException {
         actorIsAddedToTheList();
         actorRepository.updateFirstName(actorRepository.getAll().get(0), "Nora");
         String expected = "Nora";
@@ -77,7 +77,7 @@ public class ActorRepoTest {
     }
 
     @Test
-    public void expectIncorrectUpdateOfFirstName() throws ParseException {
+    public void expectIncorrectUpdateOfFirstName() throws ParseException, SQLException {
         actorIsAddedToTheList();
         actorRepository.updateFirstName(actorRepository.getAll().get(0), "Nora");
         String expected = "Lora";
@@ -86,7 +86,7 @@ public class ActorRepoTest {
     }
 
     @Test
-    public void expectCorrectUpdateOfLastName() throws ParseException {
+    public void expectCorrectUpdateOfLastName() throws ParseException, SQLException {
         actorIsAddedToTheList();
         actorRepository.updateLastName(actorRepository.getAll().get(0), "Johnson");
         String expected = "Johnson";
@@ -95,7 +95,7 @@ public class ActorRepoTest {
     }
 
     @Test
-    public void expectIncorrectUpdateOfLastName() throws ParseException {
+    public void expectIncorrectUpdateOfLastName() throws ParseException, SQLException {
         actorIsAddedToTheList();
         actorRepository.updateLastName(actorRepository.getAll().get(0), "Johnson");
         String expected = "Diesel";
@@ -104,14 +104,14 @@ public class ActorRepoTest {
     }
 
     @Test
-    public void expectCorrectAddingOfTheMovie() throws ParseException {
+    public void expectCorrectAddingOfTheMovie() throws ParseException, SQLException {
         actorIsAddedToTheList();
         movieIsAddedToTheActor();
         assertEquals(actorRepository.getAll().get(0).getListOfMovies().size(), 1);
     }
 
     @Test
-    public void expectIncorrectAddingOfTheMovie() throws ParseException {
+    public void expectIncorrectAddingOfTheMovie() throws ParseException, SQLException {
         actorIsAddedToTheList();
         movieIsAddedToTheActor();
         assertNotEquals(actorRepository.getAll().get(0).getListOfMovies().size(), 0);
@@ -134,21 +134,21 @@ public class ActorRepoTest {
     }
 
     @Test
-    public void expectCorrectAddingOfTheAward() throws ParseException {
+    public void expectCorrectAddingOfTheAward() throws ParseException, SQLException {
         actorIsAddedToTheList();
         awardIsAddedToTheActor();
         assertEquals(actorRepository.getAll().get(0).getListOfAwards().size(), 1);
     }
 
     @Test
-    public void expectIncorrectAddingOfTheAward() throws ParseException {
+    public void expectIncorrectAddingOfTheAward() throws ParseException, SQLException {
         actorIsAddedToTheList();
         awardIsAddedToTheActor();
         assertNotEquals(actorRepository.getAll().get(0).getListOfAwards().size(), 0);
     }
 
     @Test
-    public void expectCorrectDeletingOfTheAward() throws ParseException {
+    public void expectCorrectDeletingOfTheAward() throws ParseException, SQLException {
         actorIsAddedToTheList();
         awardIsAddedToTheActor();
         actorRepository.deleteAward(actorRepository.getAll().get(0), actorRepository.getAll().get(0).getListOfAwards().get(0));
@@ -156,7 +156,7 @@ public class ActorRepoTest {
     }
 
     @Test
-    public void expectIncorrectDeletingOfTheAward() throws ParseException {
+    public void expectIncorrectDeletingOfTheAward() throws ParseException, SQLException {
         actorIsAddedToTheList();
         awardIsAddedToTheActor();
         actorRepository.deleteAward(actorRepository.getAll().get(0), actorRepository.getAll().get(0).getListOfAwards().get(0));
@@ -164,12 +164,12 @@ public class ActorRepoTest {
     }
 
 
-    public void actorIsAddedToTheList() throws ParseException {
+    public void actorIsAddedToTheList() throws ParseException, SQLException {
         actorRepository.deleteAll();
         String startDate = "2000-01-01";
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         java.util.Date date = dateFormat.parse(startDate);
-        Date sqlDate=new Date(date.getTime());
+        Date sqlDate = new Date(date.getTime());
         Actor actor = new Actor("1", "Vin", "Diesel", new Vector<>(), sqlDate, new Vector<>());
         actorRepository.add(actor);
     }

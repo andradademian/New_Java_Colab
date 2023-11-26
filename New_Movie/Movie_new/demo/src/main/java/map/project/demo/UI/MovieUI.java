@@ -7,6 +7,7 @@ import map.project.demo.Controller.StageDirectorController;
 import map.project.demo.Domain.*;
 
 import java.sql.Date;
+import java.sql.SQLException;
 import java.util.Scanner;
 import java.util.Vector;
 
@@ -23,7 +24,7 @@ public class MovieUI {
         this.genreController = genreController;
     }
 
-    public void mainMovieUI() {
+    public void mainMovieUI() throws SQLException {
         int choice;
         do {
             this.movieController.printAllMovies();
@@ -78,7 +79,7 @@ public class MovieUI {
         this.movieController.deleteMovie(id);
     }
 
-    public void updateMovie(String movieId) {
+    public void updateMovie(String movieId) throws SQLException {
         Movie movieToUpdate = movieController.findMovieById(movieId);
         if (movieToUpdate != null) {
             System.out.println("What do you want to do?");
@@ -198,7 +199,7 @@ public class MovieUI {
         }
     }
 
-    public void updateAMovie() {
+    public void updateAMovie() throws SQLException {
         this.movieController.printAllMovies();
         System.out.println("Enter ID of the movie you want to update:");
         Scanner keyboard = new Scanner(System.in);

@@ -79,8 +79,26 @@ public class UI {
         }
     }
 
-    private static final SpectatorRepository spectatorRepository = SpectatorRepository.getInstance();
-    private static final StageDirectorRepository stageDirectorRepository = StageDirectorRepository.getInstance();
+    private static final SpectatorRepository spectatorRepository;
+
+    static {
+        try {
+            spectatorRepository = SpectatorRepository.getInstance();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static final StageDirectorRepository stageDirectorRepository;
+
+    static {
+        try {
+            stageDirectorRepository = StageDirectorRepository.getInstance();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private static final TicketRepository ticketRepository;
 
     static {
@@ -127,7 +145,7 @@ public class UI {
     private static final MovieUI movieUI = new MovieUI(movieController, stageDirectorController, actorController, genreController);
     private static final RoomUI roomUI = new RoomUI(roomController);
     private static final ScreeningUI SCREENING_2_DUI = new ScreeningUI(screeningController, roomController, movieController);
-    private static final SpectatorUI spectatorUI = new SpectatorUI(spectatorController);
+    private static final SpectatorUI spectatorUI = new SpectatorUI(spectatorController, ticketController);
     private static final StageDirectorUI stageDirectorUI = new StageDirectorUI(stageDirectorController, movieController, awardController);
     private static final TicketUI ticketUI = new TicketUI(ticketController, spectatorController, screeningController);
 
@@ -200,21 +218,27 @@ public class UI {
     }
 
     public static void exitMenu() throws SQLException {
+        spectatorRepository.deleteAllFromSpectatorTable();
+        ticketRepository.deleteAllFromTicketTable();
         screeningRepository.deleteAllFromScreeningTable();
         actorRepo.deleteAllFromActorMovieTable();
         actorRepo.deleteAllFromActorAwardTable();
+        stageDirectorRepository.deleteAllFromDirectorAwardTable();
+        stageDirectorRepository.deleteAllFromMovieDirectorTable();
         movieRepository.deleteAllFromMovieGenreTable();
         movieRepository.deleteAllFromMovieDirectorTable();
         awardRepository.deleteAllFromAwards();
         genreRepository.deleteAllFromGenreTable();
         roomRepository.deleteAllRoomsFromTable();
+        stageDirectorRepository.deleteAllFromDirectorTable();
         genreRepository.addGenresToTable();
         roomRepository.addRoomsToTable();
         awardRepository.addAwardsToTable();
         actorRepo.deleteAllFromActorTable();
-        actorRepo.addActorsToTable();
         movieRepository.deleteAllFromMovieTable();
         movieRepository.addMoviesToTable();
+        actorRepo.addActorsToTable();
+        stageDirectorRepository.addDirectorsToTable();
         cinemaRepository.deleteAllCinemasFromTable();
         cinemaRepository.addCinemasToTable();
         screeningRepository.addScreeningToTable();
@@ -223,7 +247,11 @@ public class UI {
         actorRepo.addToActorAwardTable();
         movieRepository.addToMovieGenreTable();
         movieRepository.addToMovieDirectorTable();
+        stageDirectorRepository.addToMovieDirectorTable();
+        stageDirectorRepository.addToDirectorAwardTable();
         genreRepository.addToMovieGenreTable();
+        spectatorRepository.addSpectatorsToTable();
+        ticketRepository.addTicketsToTable();
     }
 
     public static void actorMenu() throws SQLException {
@@ -234,7 +262,7 @@ public class UI {
         awardUI.mainAwardUI();
     }
 
-    public static void cinemaMenu() {
+    public static void cinemaMenu() throws SQLException {
         cinemaUI.mainCinemaUI();
     }
 
@@ -242,7 +270,7 @@ public class UI {
         genreUI.mainGenreUI();
     }
 
-    public static void movieMenu() {
+    public static void movieMenu() throws SQLException {
         movieUI.mainMovieUI();
     }
 
@@ -254,15 +282,15 @@ public class UI {
         SCREENING_2_DUI.mainScreeningUI();
     }
 
-    public static void spectatorMenu() {
+    public static void spectatorMenu() throws SQLException {
         spectatorUI.mainSpectatorUI();
     }
 
-    public static void stageDirectorMenu() {
+    public static void stageDirectorMenu() throws SQLException {
         stageDirectorUI.mainStageDirectorUI();
     }
 
-    public static void ticketMenu() throws ParseException {
+    public static void ticketMenu() throws ParseException, SQLException {
         ticketUI.mainTicketUI();
     }
 

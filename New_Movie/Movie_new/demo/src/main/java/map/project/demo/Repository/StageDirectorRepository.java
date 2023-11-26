@@ -5,23 +5,86 @@ import map.project.demo.Domain.Award;
 import map.project.demo.Domain.Movie;
 import map.project.demo.Domain.StageDirector;
 
+import java.sql.*;
 import java.util.Vector;
 
 public class StageDirectorRepository {
     private static StageDirectorRepository instance;
     private final Vector<StageDirector> stageDirectors;
+    Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Movie", "MyUser", "castravete");
+    Statement insert = connection.createStatement();
+    String insertStringFancy = "insert into \"StageDirector\"(id, firstName, lastName) VALUES (?, ?, ?) on conflict (id) do nothing";
+    PreparedStatement insertFancy = connection.prepareStatement(insertStringFancy);
+    String insertStringFancyIntoMovieDirector = "INSERT INTO \"MovieDirector\"(movieid,directorid) VALUES (?, ?) ON CONFLICT ( movieid,directorid) DO NOTHING";
+    PreparedStatement insertFancyIntoMovieDirector = connection.prepareStatement(insertStringFancyIntoMovieDirector);
 
-    public StageDirectorRepository() {
-        stageDirectors = new Vector<>();
+    String insertStringFancyIntoDirectorAward = "INSERT INTO \"DirectorAward\"(directorid,awardid) VALUES (?, ?) ON CONFLICT (directorid, awardid) DO NOTHING";
+    PreparedStatement insertFancyIntoDirectorAward = connection.prepareStatement(insertStringFancyIntoDirectorAward);
+    Statement select = connection.createStatement();
+
+    public StageDirectorRepository() throws SQLException {
+        stageDirectors = getDirectorsFromTable();
     }
 
-    public static StageDirectorRepository getInstance() {
+    public static StageDirectorRepository getInstance() throws SQLException {
         if (instance == null) {
             instance = new StageDirectorRepository();
         }
         return instance;
     }
 
+    public Vector<StageDirector> getDirectorsFromTable() throws SQLException {
+        Vector<StageDirector> stageDirectorVector = new Vector<>();
+        ResultSet result = select.executeQuery(" SELECT * FROM \"StageDirector\"");
+        while (result.next()) {
+            String id = result.getString("Id");
+            String firstName = result.getString("FirstName");
+            String lastName = result.getString("LastName");
+            stageDirectorVector.add(new StageDirector(id, firstName, lastName, new Vector<>(), new Vector<>()));
+        }
+        return stageDirectorVector;
+    }
+
+    public void deleteAllFromDirectorTable() throws SQLException {
+        select.execute("delete from \"StageDirector\"");
+    }
+
+    public void addDirectorsToTable() throws SQLException {
+        for (StageDirector stageDirector : stageDirectors) {
+            insertFancy.setString(1, stageDirector.getId());
+            insertFancy.setString(2, stageDirector.getFirstName());
+            insertFancy.setString(3, stageDirector.getLastName());
+            insertFancy.executeUpdate();
+        }
+    }
+
+    public void deleteAllFromMovieDirectorTable() throws SQLException {
+        select.execute("delete from \"MovieDirector\"");
+    }
+
+    public void addToMovieDirectorTable() throws SQLException {
+        for (StageDirector stageDirector : stageDirectors) {
+            for (Movie movie : stageDirector.getListOfMovies()) {
+                insertFancyIntoMovieDirector.setString(1, movie.getId());
+                insertFancyIntoMovieDirector.setString(2, stageDirector.getId());
+                insertFancyIntoMovieDirector.executeUpdate();
+            }
+        }
+    }
+
+    public void deleteAllFromDirectorAwardTable() throws SQLException {
+        select.execute("delete from \"DirectorAward\"");
+    }
+
+    public void addToDirectorAwardTable() throws SQLException {
+        for (StageDirector stageDirector : stageDirectors) {
+            for (Award award : stageDirector.getAwards()) {
+                insertFancyIntoDirectorAward.setString(1, stageDirector.getId());
+                insertFancyIntoDirectorAward.setString(2, award.getId());
+                insertFancyIntoDirectorAward.executeUpdate();
+            }
+        }
+    }
 
     public void add(StageDirector stageDirector) {
         stageDirectors.add(stageDirector);

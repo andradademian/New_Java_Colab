@@ -16,12 +16,12 @@ public class AwardRepository {
     private static AwardRepository instance;
     private final Vector<Award> awards;
 
-    Connection connection= DriverManager.getConnection("jdbc:postgresql://localhost:5432/Movie","MyUser","slay");
-    Statement insert=connection.createStatement();
-    String insertStringFancy="INSERT INTO \"Award\"(id, awardType, category) VALUES (?, ?, ?)";
-    PreparedStatement insertFancy=connection.prepareStatement(insertStringFancy);
+    Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Movie", "MyUser", "castravete");
+    Statement insert = connection.createStatement();
+    String insertStringFancy = "INSERT INTO \"Award\"(id, awardType, category) VALUES (?, ?, ?)";
+    PreparedStatement insertFancy = connection.prepareStatement(insertStringFancy);
 
-    Statement select=connection.createStatement();
+    Statement select = connection.createStatement();
 
 
     public AwardRepository() throws SQLException {
@@ -37,12 +37,12 @@ public class AwardRepository {
 
     public Vector<Award> getAwardsFromTable() throws SQLException {
         Vector<Award> awardVector = new Vector<>();
-        ResultSet result=select.executeQuery(" SELECT * FROM \"Award\"");
-        while (result.next()){
-            String id=result.getString("Id");
+        ResultSet result = select.executeQuery(" SELECT * FROM \"Award\"");
+        while (result.next()) {
+            String id = result.getString("Id");
             String awardType = result.getString("AwardType");
             String category = result.getString("Category");
-            if(Objects.equals(awardType, "Oscar")){
+            if (Objects.equals(awardType, "Oscar")) {
                 awardVector.add(new Oscar(id, category));
             } else if (Objects.equals(awardType, "PalmeDor")) {
                 awardVector.add(new PalmeDor(id, category));
@@ -51,15 +51,18 @@ public class AwardRepository {
             }
 
         }
-        select.execute("delete from \"Award\"");
         return awardVector;
     }
 
+    public void deleteAllFromAwards() throws SQLException {
+        select.execute("delete from \"Award\"");
+    }
+
     public void addAwardsToTable() throws SQLException {
-        for(Award award:awards){
-            insertFancy.setString(1,award.getId());
-            insertFancy.setString(2,award.getType());
-            insertFancy.setString(3,award.getCategory());
+        for (Award award : awards) {
+            insertFancy.setString(1, award.getId());
+            insertFancy.setString(2, award.getType());
+            insertFancy.setString(3, award.getCategory());
             insertFancy.executeUpdate();
         }
     }
@@ -80,6 +83,7 @@ public class AwardRepository {
     public void printAll() {
         System.out.println(awards);
     }
+
     public void updateCategory(Award award, String category) {
         awards.get(getAll().indexOf(award)).setCategory(category);
     }

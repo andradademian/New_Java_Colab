@@ -8,6 +8,7 @@ import map.project.demo.Strategy.Screening;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.sql.SQLException;
 import java.sql.Time;
 import java.util.Vector;
 
@@ -20,13 +21,13 @@ public class StrategyTest {
     Ticket ticket3;
 
     @BeforeEach
-    public void setUp() {
+    public void setUp() throws SQLException {
         screening2D = new Screening2D("1", new Movie("1", "Movie1", 120, new Vector<>(), new Vector<>(), new Vector<>()), RoomBuilder.buildRoom("1", 1, 120), Time.valueOf("12:00:00"));
         screening3D = new Screening3D("1", new Movie("2", "Movie2", 120, new Vector<>(), new Vector<>(), new Vector<>()), RoomBuilder.buildRoom("1", 1, 120), Time.valueOf("15:00:00"));
         screening4DX = new Screening4DX("1", new Movie("2", "Movie3", 120, new Vector<>(), new Vector<>(), new Vector<>()), RoomBuilder.buildRoom("1", 1, 120), Time.valueOf("19:00:00"));
-        ticket1 = new Ticket("1", screening2D, 100, 10, new Spectator("1", "Ion", "Popescu"));
-        ticket2 = new Ticket("1", screening3D, 100, 10, new Spectator("1", "Ion", "Popescu"));
-        ticket3 = new Ticket("1", screening4DX, 100, 10, new Spectator("1", "Ion", "Popescu"));
+        ticket1 = new Ticket("1", screening2D, 100, 10);
+        ticket2 = new Ticket("1", screening3D, 100, 10);
+        ticket3 = new Ticket("1", screening4DX, 100, 10);
     }
 
     @Test

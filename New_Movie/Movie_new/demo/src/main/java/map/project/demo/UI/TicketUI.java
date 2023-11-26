@@ -7,6 +7,7 @@ import map.project.demo.Controller.TicketController;
 import map.project.demo.Domain.*;
 import map.project.demo.Strategy.Screening;
 
+import java.sql.SQLException;
 import java.sql.SQLOutput;
 import java.sql.Time;
 import java.util.Objects;
@@ -24,7 +25,7 @@ public class TicketUI {
         this.screeningController = screeningController;
     }
 
-    public void mainTicketUI() {
+    public void mainTicketUI() throws SQLException {
         int choice;
         do {
             this.ticketController.printAllTickets();
@@ -60,7 +61,7 @@ public class TicketUI {
         System.out.println("6. Exit");
     }
 
-    public void addTicket() {
+    public void addTicket() throws SQLException {
         this.ticketController.printAllTickets();
         Scanner keyboard = new Scanner(System.in);
         Screening screening;
@@ -79,29 +80,29 @@ public class TicketUI {
         System.out.println("Enter the price for the ticket:");
         float price = keyboard.nextFloat();
 
-        System.out.println("What do you want to do?");
-        System.out.println("1. Add new spectator");
-        System.out.println("2. Add an existing spectator");
-        int choice = keyboard.nextInt();
-        Spectator spectator;
-        if (choice == 1) {
-            System.out.println("Enter id of the spectator:");
-            String spectatorId = keyboard.next();
-
-            System.out.println("Enter first name of the spectator:");
-            String firstName = keyboard.next();
-
-            System.out.println("Enter last name of the spectator:");
-            String lastName = keyboard.next();
-            spectator = new Spectator(spectatorId, firstName, lastName);
-            spectatorController.addSpectator(spectator);
-        } else {
-            spectatorController.printAllSpectators();
-            System.out.println("Enter id of the spectator:");
-            String specId = keyboard.next();
-            spectator = spectatorController.findSpectatorById(specId);
-        }
-        this.ticketController.addTicket(new Ticket(ticketId, screening, price, seatNumber, spectator));
+//        System.out.println("What do you want to do?");
+//        System.out.println("1. Add new spectator");
+//        System.out.println("2. Add an existing spectator");
+//        int choice = keyboard.nextInt();
+//        Spectator spectator;
+//        if (choice == 1) {
+//            System.out.println("Enter id of the spectator:");
+//            String spectatorId = keyboard.next();
+//
+//            System.out.println("Enter first name of the spectator:");
+//            String firstName = keyboard.next();
+//
+//            System.out.println("Enter last name of the spectator:");
+//            String lastName = keyboard.next();
+//            spectator = new Spectator(spectatorId, firstName, lastName);
+//            spectatorController.addSpectator(spectator);
+//        } else {
+//            spectatorController.printAllSpectators();
+//            System.out.println("Enter id of the spectator:");
+//            String specId = keyboard.next();
+//            spectator = spectatorController.findSpectatorById(specId);
+//        }
+        this.ticketController.addTicket(new Ticket(ticketId, screening, price, seatNumber));
     }
 
     public void deleteTicket() {

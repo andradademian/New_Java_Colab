@@ -26,11 +26,11 @@ public class ActorControllerTest {
     }
 
     @BeforeEach
-    public void setUp() throws ParseException {
+    public void setUp() throws ParseException, SQLException {
         String startDate = "2000-01-01";
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        java.util.Date utilDate =dateFormat.parse(startDate);
-        java.sql.Date date=new Date(utilDate.getTime());
+        java.util.Date utilDate = dateFormat.parse(startDate);
+        java.sql.Date date = new Date(utilDate.getTime());
         actorRepository.add(new Actor("1", "First1", "Last1", new Vector<Movie>(), date, new Vector<Award>()));
         actorRepository.add(new Actor("2", "First2", "Last2", new Vector<Movie>(), date, new Vector<Award>()));
         actorRepository.add(new Actor("3", "First3", "Last3", new Vector<Movie>(), date, new Vector<Award>()));

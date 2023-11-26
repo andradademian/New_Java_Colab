@@ -2,6 +2,7 @@ package map.project.demo.Domain;
 
 import java.sql.Date;
 //import java.util.Date;
+import java.sql.SQLException;
 import java.util.Vector;
 
 public class Actor extends Spectator {
@@ -9,7 +10,7 @@ public class Actor extends Spectator {
     private Vector<Award> listOfAwards;
     private Date startOfCareer;
 
-    public Actor(String id, String firstName, String lastName, Vector<Movie> listOfMovies, Date startOfCareer, Vector<Award> awards) {
+    public Actor(String id, String firstName, String lastName, Vector<Movie> listOfMovies, Date startOfCareer, Vector<Award> awards) throws SQLException {
         super(id, firstName, lastName);
         this.listOfMovies = listOfMovies;
         this.startOfCareer = startOfCareer;

@@ -2,6 +2,7 @@ package map.project.demo.Domain;
 
 import map.project.demo.Controller.AwardController;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Vector;
 
@@ -10,7 +11,7 @@ public class StageDirector extends Spectator {
     private Vector<Movie> listOfMovies;
     private Vector<Award> awards;
 
-    public StageDirector(String id, String firstName, String lastName, Vector<Movie> listOfMovies, Vector<Award> awards) {
+    public StageDirector(String id, String firstName, String lastName, Vector<Movie> listOfMovies, Vector<Award> awards) throws SQLException {
         super(id, firstName, lastName);
         this.listOfMovies = listOfMovies;
         this.awards = awards;

@@ -6,6 +6,7 @@ import map.project.demo.Controller.MovieController;
 import map.project.demo.Controller.StageDirectorController;
 import map.project.demo.Domain.*;
 
+import java.sql.SQLException;
 import java.util.Objects;
 import java.util.Scanner;
 import java.util.Vector;
@@ -21,7 +22,7 @@ public class StageDirectorUI {
         this.awardController = awardController;
     }
 
-    public void mainStageDirectorUI() {
+    public void mainStageDirectorUI() throws SQLException {
         int choice;
         do {
             this.stageDirectorController.printAllStageDirectors();
@@ -53,7 +54,7 @@ public class StageDirectorUI {
         System.out.println("5. Exit");
     }
 
-    public void addStageDirector() {
+    public void addStageDirector() throws SQLException {
         this.stageDirectorController.printAllStageDirectors();
 
         Scanner keyboard = new Scanner(System.in);

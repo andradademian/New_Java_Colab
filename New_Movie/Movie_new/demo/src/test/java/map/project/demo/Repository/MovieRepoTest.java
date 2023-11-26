@@ -129,21 +129,21 @@ public class MovieRepoTest {
     }
 
     @Test
-    public void expectCorrectAddingOfTheDirector() {
+    public void expectCorrectAddingOfTheDirector() throws SQLException {
         movieIsAddedToTheList();
         stageDirectorIsAddedToTheMovie();
         assertEquals(movieRepository.getAll().get(0).getStageDirectors().size(), 1);
     }
 
     @Test
-    public void expectIncorrectAddingOfTheDirector() {
+    public void expectIncorrectAddingOfTheDirector() throws SQLException {
         movieIsAddedToTheList();
         stageDirectorIsAddedToTheMovie();
         assertNotEquals(movieRepository.getAll().get(0).getStageDirectors().size(), 0);
     }
 
     @Test
-    public void expectCorrectDeletingOfTheDirector() {
+    public void expectCorrectDeletingOfTheDirector() throws SQLException {
         movieIsAddedToTheList();
         stageDirectorIsAddedToTheMovie();
         movieRepository.deleteStageDirector(movieRepository.getAll().get(0), movieRepository.getAll().get(0).getStageDirectors().get(0));
@@ -151,7 +151,7 @@ public class MovieRepoTest {
     }
 
     @Test
-    public void expectIncorrectDeletingOfTheDirector() {
+    public void expectIncorrectDeletingOfTheDirector() throws SQLException {
         movieIsAddedToTheList();
         stageDirectorIsAddedToTheMovie();
         movieRepository.deleteStageDirector(movieRepository.getAll().get(0), movieRepository.getAll().get(0).getStageDirectors().get(0));
@@ -169,7 +169,7 @@ public class MovieRepoTest {
         movieRepository.addGenre(movieRepository.getAll().get(0), genre);
     }
 
-    public void stageDirectorIsAddedToTheMovie() {
+    public void stageDirectorIsAddedToTheMovie() throws SQLException {
         StageDirector stageDirector = new StageDirector("1", "Mel", "Gibson", new Vector<>(), new Vector<>());
         movieRepository.addStageDirector(movieRepository.getAll().get(0), stageDirector);
     }

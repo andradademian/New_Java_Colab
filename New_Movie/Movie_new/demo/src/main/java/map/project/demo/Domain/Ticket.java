@@ -7,14 +7,12 @@ public class Ticket {
     private Screening screening;
     private float price;
     private int seatNumber;
-    private Spectator spectator;
 
-    public Ticket(String id, Screening screening, float price, int seatNumber, Spectator spectator) {
+    public Ticket(String id, Screening screening, float price, int seatNumber) {
         this.id = id;
         this.screening = screening;
         this.price = price;
         this.seatNumber = seatNumber;
-        this.spectator = spectator;
     }
 
     public String getId() {
@@ -47,14 +45,6 @@ public class Ticket {
 
     public void setSeatNumber(int seatNumber) {
         this.seatNumber = seatNumber;
-    }
-
-    public Spectator getSpectator() {
-        return spectator;
-    }
-
-    public void setSpectator(Spectator spectator) {
-        this.spectator = spectator;
     }
 
     public void addDiscount() {
