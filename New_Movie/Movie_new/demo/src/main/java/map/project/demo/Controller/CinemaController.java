@@ -1,15 +1,18 @@
 package map.project.demo.Controller;
 
+import map.project.demo.Decorator.RoomDecorator;
 import map.project.demo.Domain.*;
 import map.project.demo.Repository.AwardRepository;
 import map.project.demo.Repository.CinemaRepository;
+import map.project.demo.Repository.CinemaRepositoryComponent;
 
 import java.util.Objects;
 import java.util.Scanner;
 import java.util.Vector;
 
 public class CinemaController {
-    private final CinemaRepository cinemaRepo;
+    //private final CinemaRepository cinemaRepo;
+    private final CinemaRepositoryComponent cinemaRepo;
 
     public CinemaController(CinemaRepository cinemaRepo) {
         this.cinemaRepo = cinemaRepo;

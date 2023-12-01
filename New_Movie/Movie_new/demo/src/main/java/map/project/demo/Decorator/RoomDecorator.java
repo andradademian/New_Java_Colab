@@ -48,4 +48,16 @@ public class RoomDecorator implements CinemaRepositoryComponent {
         System.out.println("Decorator: Deleting room with ID " + roomId);
         decoratedComponent.deleteRoom(cinema, roomId);
     }
+
+    @Override
+    public void updateName(Cinema cinema, String name) {
+
+    }
+
+    @Override
+    public void updateAddress(Cinema cinema, String address) {
+
+    }
+
+
 }

@@ -14,4 +14,9 @@ public interface CinemaRepositoryComponent {
     void addRoom(Cinema cinema, String roomId);
 
     void deleteRoom(Cinema cinema, String roomId);
+
+
+    void updateName(Cinema cinema, String name);
+
+    void updateAddress(Cinema cinema, String address);
 }
