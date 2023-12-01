@@ -11,14 +11,14 @@ import java.util.Vector;
 public class StageDirectorRepository {
     private static StageDirectorRepository instance;
     private final Vector<StageDirector> stageDirectors;
-    Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Movie", "MyUser", "castravete");
+    Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Movie", "MyUser", "slay");
     Statement insert = connection.createStatement();
     String insertStringFancy = "insert into \"StageDirector\"(id, firstName, lastName) VALUES (?, ?, ?) on conflict (id) do nothing";
     PreparedStatement insertFancy = connection.prepareStatement(insertStringFancy);
-    String insertStringFancyIntoMovieDirector = "INSERT INTO \"MovieDirector\"(movieid,directorid) VALUES (?, ?) ON CONFLICT ( movieid,directorid) DO NOTHING";
+    String insertStringFancyIntoMovieDirector = "INSERT INTO \"MovieDirector\"(movieid,stageDirectorid) VALUES (?, ?) ON CONFLICT ( movieid,stageDirectorid) DO NOTHING";
     PreparedStatement insertFancyIntoMovieDirector = connection.prepareStatement(insertStringFancyIntoMovieDirector);
 
-    String insertStringFancyIntoDirectorAward = "INSERT INTO \"DirectorAward\"(directorid,awardid) VALUES (?, ?) ON CONFLICT (directorid, awardid) DO NOTHING";
+    String insertStringFancyIntoDirectorAward = "INSERT INTO \"DirectorAward\"(stageDirectorid,awardid) VALUES (?, ?) ON CONFLICT (stageDirectorid, awardid) DO NOTHING";
     PreparedStatement insertFancyIntoDirectorAward = connection.prepareStatement(insertStringFancyIntoDirectorAward);
     Statement select = connection.createStatement();
 
@@ -74,7 +74,7 @@ public class StageDirectorRepository {
 
     public Vector<String> getAwardsFromDirectorAwardTable(String directorId) throws SQLException {
         Vector<String> awardIds = new Vector<>();
-        PreparedStatement awardStatement = connection.prepareStatement(" SELECT AA.awardid FROM \"StageDirector\" SD join \"DirectorAward\" AA on AA.directorid=?");
+        PreparedStatement awardStatement = connection.prepareStatement(" SELECT AA.awardid FROM \"StageDirector\" SD join \"DirectorAward\" AA on AA.stageDirectorid=?");
         awardStatement.setString(1, directorId);
         ResultSet result = awardStatement.executeQuery();
         while (result.next()) {
@@ -85,7 +85,7 @@ public class StageDirectorRepository {
 
     public Vector<String> getMoviesFromMovieDirectorTable(String directorId) throws SQLException {
         Vector<String> moviesIds = new Vector<>();
-        PreparedStatement movieStatement = connection.prepareStatement(" SELECT AM.movieid FROM \"StageDirector\" SD join \"MovieDirector\" AM on AM.directorid=?");
+        PreparedStatement movieStatement = connection.prepareStatement(" SELECT AM.movieid FROM \"StageDirector\" SD join \"MovieDirector\" AM on AM.stageDirectorid=?");
         movieStatement.setString(1, directorId);
         ResultSet result = movieStatement.executeQuery();
         while (result.next()) {

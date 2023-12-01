@@ -13,7 +13,7 @@ public class ScreeningRepository {
     private static ScreeningRepository instance;
     private final Vector<Screening> screenings;
 
-    Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Movie", "MyUser", "castravete");
+    Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Movie", "MyUser", "slay");
     Statement insert = connection.createStatement();
     String insertStringFancy = "INSERT INTO \"Screening\"(id, screeningformat,starttime,movieid,roomid) VALUES (?, ?, ?, ?, ?) on conflict (id) do nothing";
     PreparedStatement insertFancy = connection.prepareStatement(insertStringFancy);

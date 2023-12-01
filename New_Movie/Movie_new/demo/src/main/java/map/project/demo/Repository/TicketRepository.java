@@ -12,9 +12,9 @@ public class TicketRepository {
     private static TicketRepository instance;
     private final Vector<Ticket> tickets;
 
-    Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Movie", "MyUser", "castravete");
+    Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Movie", "MyUser", "slay");
     Statement insert = connection.createStatement();
-    String insertStringFancy = "INSERT INTO \"Ticket\"(id, screeningid, price,seatnumber,\"SpectatorId\") VALUES (?, ?, ?, ?, ?) on conflict (id) do nothing";
+    String insertStringFancy = "INSERT INTO \"Ticket\"(id, screeningid, price,seatnumber,\"spectatorId\") VALUES (?, ?, ?, ?, ?) on conflict (id) do nothing";
     PreparedStatement insertFancy = connection.prepareStatement(insertStringFancy);
 
     Statement select = connection.createStatement();

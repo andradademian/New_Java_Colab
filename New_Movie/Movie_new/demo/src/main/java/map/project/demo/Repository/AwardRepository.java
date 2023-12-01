@@ -16,7 +16,7 @@ public class AwardRepository {
     private static AwardRepository instance;
     private final Vector<Award> awards;
 
-    Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Movie", "MyUser", "castravete");
+    Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Movie", "MyUser", "slay");
     Statement insert = connection.createStatement();
     String insertStringFancy = "INSERT INTO \"Award\"(id, awardType, category) VALUES (?, ?, ?) on conflict (id) do nothing";
     PreparedStatement insertFancy = connection.prepareStatement(insertStringFancy);

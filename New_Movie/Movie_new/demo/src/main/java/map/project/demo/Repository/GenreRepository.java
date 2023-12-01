@@ -15,7 +15,7 @@ import java.util.Vector;
 public class GenreRepository {
     private static GenreRepository instance;
     private final Vector<Genre> genres;
-    Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Movie", "MyUser", "castravete");
+    Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Movie", "MyUser", "slay");
     Statement insert = connection.createStatement();
     String insertStringFancy = "insert into \"Genre\"(id,genrename) VALUES (?, ?) on conflict (id) do nothing";
     PreparedStatement insertFancy = connection.prepareStatement(insertStringFancy);
