@@ -25,7 +25,7 @@ public class ObserverTest {
         observer1 = new Spectator("1", "Angelina", "Jolie");
         observer2 = new Spectator("2", "Lionel", "Messi");
         observer3 = new Spectator("3", "Taylor", "Swift");
-        observable = new Cinema("111", "Cinema City", "Strada Unirii", new Vector<Room>());
+        observable = new Cinema("111", "Cinema City", "Strada Unirii", new Vector<String>());
     }
 
     @Test

@@ -68,34 +68,7 @@ public class MovieUI {
         System.out.println("Enter duration of the movie");
         int duration = keyboard.nextInt();
 
-        this.movieController.addMovie(new Movie(id, title, duration, new Vector<StageDirector>(), new Vector<>(), new Vector<Genre>()));
-    }
-
-    public void addGenresToMovie(Movie movie) throws SQLException {
-        Vector<String> genreIds = movieController.getGenresFromMovieGenreTable(movie);
-        for (Genre genre : genreController.getAllGenres()) {
-            if (genreIds.contains(genre.getId())) {
-                movieController.addGenreToMovie(movie, genre);
-            }
-        }
-    }
-
-    public void addDirectorsToMovies(Movie movie) throws SQLException {
-        Vector<String> directors = movieController.getDirectorsFromMovieDirectorTable(movie);
-        for (StageDirector stageDirector : stageDirectorController.getAllStageDirectors()) {
-            if (directors.contains(stageDirector.getId())) {
-                movieController.addStageDirectorToMovie(movie, stageDirector);
-            }
-        }
-    }
-
-    public void addActorsToMovies(Movie movie) throws SQLException {
-        Vector<String> actorIds = movieController.getActorsFromActorMovieTable(movie);
-        for (Actor actor : actorController.getAllActors()) {
-            if (actorIds.contains(actor.getId())) {
-                movieController.addActorToMovie(movie, actor);
-            }
-        }
+        this.movieController.addMovie(new Movie(id, title, duration, new Vector<String>(), new Vector<>(), new Vector<String>()));
     }
 
     public void deleteAMovie() {
@@ -144,23 +117,24 @@ public class MovieUI {
                     System.out.println("Enter last Name:");
                     String lastName = keyboard.next();
                     StageDirector stageDirector = new StageDirector(id, firstName, lastName, new Vector<>(), new Vector<>());
-                    movieController.addStageDirectorToMovie(movieToUpdate, stageDirector);
+                    movieController.addStageDirectorToMovie(movieToUpdate, id);
                     stageDirectorController.addStageDirector(stageDirector);
                 } else if (directorChoice == 2) {
                     stageDirectorController.printAllStageDirectors();
                     System.out.println("Enter id of the stage director you want to add");
                     String id = keyboard.next();
                     StageDirector stageDirector = stageDirectorController.findStageDirectorById(id);
-                    movieController.addStageDirectorToMovie(movieToUpdate, stageDirector);
-                    stageDirectorController.addStageDirector(stageDirector);
+                    if (stageDirector != null) {
+                        movieController.addStageDirectorToMovie(movieToUpdate, id);
+                    }
                 }
             } else if (choice == 4) {
                 System.out.println(movieToUpdate.getStageDirectors().toString());
                 System.out.println("Enter id of the stage director you want to delete");
                 String id = keyboard.next();
-                StageDirector stageDirector = movieController.findDirectorById(movieToUpdate, id);
-                if (stageDirector != null) {
-                    movieController.deleteStageDirectorFromMovie(movieToUpdate, stageDirector);
+                boolean directorExists = movieController.findDirectorById(movieToUpdate, id);
+                if (directorExists) {
+                    movieController.deleteStageDirectorFromMovie(movieToUpdate, id);
                 }
             } else if (choice == 5) {
                 System.out.println("What do you want to do?");
@@ -173,22 +147,24 @@ public class MovieUI {
                     System.out.println("Enter name for genre:");
                     String name = keyboard.next();
                     Genre genre = new Genre(id, name, new Vector<>());
-                    movieController.addGenreToMovie(movieToUpdate, genre);
+                    movieController.addGenreToMovie(movieToUpdate, id);
                     genreController.addGenre(genre);
                 } else if (genreChoice == 2) {
                     genreController.printAllGenres();
                     System.out.println("Enter id of the genre you want to add");
                     String id = keyboard.next();
                     Genre genre = genreController.findGenreById(id);
-                    movieController.addGenreToMovie(movieToUpdate, genre);
+                    if (genre != null) {
+                        movieController.addGenreToMovie(movieToUpdate, id);
+                    }
                 }
             } else if (choice == 6) {
                 System.out.println(movieToUpdate.getGenres().toString());
                 System.out.println("Enter id of the genre you want to delete");
                 String id = keyboard.next();
-                Genre genre = movieController.findGenreById(movieToUpdate, id);
-                if (genre != null) {
-                    movieController.deleteGenreFromMovie(movieToUpdate, genre);
+                boolean genreExists = movieController.findGenreById(movieToUpdate, id);
+                if (genreExists) {
+                    movieController.deleteGenreFromMovie(movieToUpdate, id);
                 }
             } else if (choice == 7) {
                 System.out.println("What do you want to do?");
@@ -205,22 +181,24 @@ public class MovieUI {
                     System.out.println("Enter start of career (YYYY-MM-DD):");
                     Date startCareer = java.sql.Date.valueOf(keyboard.next());
                     Actor actor = new Actor(id, firstName, lastName, new Vector<>(), startCareer, new Vector<>());
-                    movieController.addActorToMovie(movieToUpdate, actor);
+                    movieController.addActorToMovie(movieToUpdate, id);
                     actorController.addActor(actor);
                 } else if (actorChoice == 2) {
                     actorController.showAllActors();
                     System.out.println("Enter id of the actor you want to add");
                     String id = keyboard.next();
                     Actor actor = actorController.findActorById(id);
-                    movieController.addActorToMovie(movieToUpdate, actor);
+                    if (actor != null) {
+                        movieController.addActorToMovie(movieToUpdate, id);
+                    }
                 }
             } else if (choice == 8) {
                 System.out.println(movieToUpdate.getActors().toString());
                 System.out.println("Enter id of the actor you want to delete");
                 String id = keyboard.next();
-                Actor actor = movieController.findActorById(movieToUpdate, id);
-                if (actor != null) {
-                    movieController.deleteActorFromMovie(movieToUpdate, actor);
+                boolean actorExists = movieController.findActorById(movieToUpdate, id);
+                if (actorExists) {
+                    movieController.deleteActorFromMovie(movieToUpdate, id);
                 }
             }
         }

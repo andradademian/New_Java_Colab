@@ -176,12 +176,12 @@ public class ActorRepoTest {
 
     public void movieIsAddedToTheActor() {
         Movie movie = new Movie("1", "Title", 120, new Vector<>(), new Vector<>(), new Vector<>());
-        actorRepository.addMovie(actorRepository.getAll().get(0), movie);
+        actorRepository.addMovie(actorRepository.getAll().get(0), movie.getId());
     }
 
     public void awardIsAddedToTheActor() {
         Award award = new Award("1", "Best actor");
-        actorRepository.addAward(actorRepository.getAll().get(0), award);
+        actorRepository.addAward(actorRepository.getAll().get(0), award.getId());
     }
 
 }

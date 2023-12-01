@@ -28,97 +28,80 @@ public class MovieControllerTest {
 
     @Test
     public void shouldFindMovieById() {
-        // Arrange
         String movieId = "1";
-
-        // Act
         Movie foundMovie = movieController.findMovieById(movieId);
-
-        // Assert
         assertNotNull(foundMovie);
         assertEquals(movieId, foundMovie.getId());
     }
 
     @Test
     public void shouldNotFindMovieByInvalidId() {
-        // Arrange
         String invalidMovieId = "InvalidId";
-
-        // Act
         Movie foundMovie = movieController.findMovieById(invalidMovieId);
-
-        // Assert
         assertNull(foundMovie);
     }
 
     @Test
     public void shouldFindDirectorById() throws SQLException {
-        //public StageDirector(String id, String firstName, String lastName, Vector<Movie> listOfMovies, Vector<Award> awards) {
         Movie movie = movieController.getAllMovies().get(0);
-        StageDirector stageDirector = new StageDirector("1", "FirstName1", "LastName1", new Vector<Movie>(), new Vector<Award>());
-        movieRepository.addStageDirector(movie, stageDirector);
+        StageDirector stageDirector = new StageDirector("1", "FirstName1", "LastName1", new Vector<String>(), new Vector<String>());
+        movieRepository.addStageDirector(movie, stageDirector.getId());
 
-        StageDirector foundDirector = movieController.findDirectorById(movie, "1");
+        boolean foundDirector = movieController.findDirectorById(movie, "1");
 
-        assertNotNull(foundDirector);
-        assertEquals("1", foundDirector.getId());
+        assertTrue(foundDirector);
     }
 
     @Test
     public void shouldNotFindDirectorByInvalidId() throws SQLException {
         Movie movie = movieController.getAllMovies().get(0);
-        StageDirector stageDirector = new StageDirector("1", "FirstName1", "LastName1", new Vector<Movie>(), new Vector<Award>());
-        movieRepository.addStageDirector(movie, stageDirector);
+        StageDirector stageDirector = new StageDirector("1", "FirstName1", "LastName1", new Vector<String>(), new Vector<String>());
+        movieRepository.addStageDirector(movie, stageDirector.getId());
 
-        StageDirector foundDirector = movieController.findDirectorById(movie, "2");
+        boolean foundDirector = movieController.findDirectorById(movie, "2");
 
-        assertNull(foundDirector);
+        assertFalse(foundDirector);
     }
 
     @Test
     public void shouldFindActorById() throws SQLException {
         Movie movie = movieController.getAllMovies().get(0);
-        Actor actor = new Actor("1", "FirstName1", "LastName1", new Vector<>(), null, new Vector<Award>());
-        movieRepository.addActor(movie, actor);
+        Actor actor = new Actor("1", "FirstName1", "LastName1", new Vector<>(), null, new Vector<String>());
+        movieRepository.addActor(movie, actor.getId());
+        boolean foundActor = movieController.findActorById(movie, "1");
 
-        Actor foundActor = movieController.findActorById(movie, "1");
-
-        assertNotNull(foundActor);
-        assertEquals("1", foundActor.getId());
+        assertTrue(foundActor);
     }
 
     @Test
     public void shouldNotFindActorByInvalidId() throws SQLException {
         Movie movie = movieController.getAllMovies().get(0);
-        Actor actor = new Actor("1", "FirstName1", "LastName1", new Vector<>(), null, new Vector<Award>());
-        movieRepository.addActor(movie, actor);
+        Actor actor = new Actor("1", "FirstName1", "LastName1", new Vector<>(), null, new Vector<String>());
+        movieRepository.addActor(movie, actor.getId());
 
-        Actor foundActor = movieController.findActorById(movie, "2");
+        boolean foundActor = movieController.findActorById(movie, "2");
 
-        assertNull(foundActor);
+        assertFalse(foundActor);
     }
 
     @Test
     public void shouldFindGenreById() {
         Movie movie = movieController.getAllMovies().get(0);
         Genre genre = new Genre("1", "Action", new Vector<>());
-        movieRepository.addGenre(movie, genre);
+        movieRepository.addGenre(movie, genre.getId());
+        boolean foundGenre = movieController.findGenreById(movie, "1");
 
-        Genre foundGenre = movieController.findGenreById(movie, "1");
-
-        assertNotNull(foundGenre);
-        assertEquals("1", foundGenre.getId());
+        assertTrue(foundGenre);
     }
 
     @Test
     public void shouldNotFindGenreByInvalidId() {
         Movie movie = movieController.getAllMovies().get(0);
         Genre genre = new Genre("1", "Action", new Vector<>());
-        movieRepository.addGenre(movie, genre);
+        movieRepository.addGenre(movie, genre.getId());
+        boolean foundGenre = movieController.findGenreById(movie, "2");
 
-        Genre foundGenre = movieController.findGenreById(movie, "2");
-
-        assertNull(foundGenre);
+        assertFalse(foundGenre);
     }
 
 }

@@ -36,14 +36,14 @@ public class CinemaController {
         }
     }
 
-    public Room findRoomById(Cinema cinema, String id) {
-        for (Room room : cinema.getListOfRooms()) {
-            if (Objects.equals(room.getId(), id)) {
-                return room;
+    public boolean findRoomById(Cinema cinema, String id) {
+        for (String room : cinema.getListOfRooms()) {
+            if (Objects.equals(room, id)) {
+                return true;
             }
         }
         System.out.println("No room with that id");
-        return null;
+        return false;
     }
 
     public void deleteCinema(Cinema cinema) {
@@ -62,11 +62,11 @@ public class CinemaController {
         cinemaRepo.updateAddress(cinema, address);
     }
 
-    public void addRoomToCinema(Cinema cinema, Room room) {
+    public void addRoomToCinema(Cinema cinema, String room) {
         cinemaRepo.addRoom(cinema, room);
     }
 
-    public void deleteRoomFromCinema(Cinema cinema, Room room) {
+    public void deleteRoomFromCinema(Cinema cinema, String room) {
         cinemaRepo.deleteRoom(cinema, room);
     }
 

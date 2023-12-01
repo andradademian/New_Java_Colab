@@ -34,46 +34,34 @@ public class MovieController {
         }
     }
 
-    public Vector<String> getGenresFromMovieGenreTable(Movie movie) throws SQLException {
-        return movieRepo.getGenresFromMovieGenreTable(movie.getId());
-    }
-
-    public Vector<String> getActorsFromActorMovieTable(Movie movie) throws SQLException {
-        return movieRepo.getActorsFromActorMovieTable(movie.getId());
-    }
-
-    public Vector<String> getDirectorsFromMovieDirectorTable(Movie movie) throws SQLException {
-        return movieRepo.getDirectorsFromMovieDirectorTable(movie.getId());
-    }
-
-    public StageDirector findDirectorById(Movie movie, String id) {
-        for (StageDirector stageDirector : movie.getStageDirectors()) {
-            if (Objects.equals(movie.getId(), id)) {
-                return stageDirector;
+    public boolean findDirectorById(Movie movie, String id) {
+        for (String stageDirector : movie.getStageDirectors()) {
+            if (Objects.equals(stageDirector, id)) {
+                return true;
             }
         }
         System.out.println("No stage director with that id");
-        return null;
+        return false;
     }
 
-    public Actor findActorById(Movie movie, String id) {
-        for (Actor actor : movie.getActors()) {
-            if (Objects.equals(movie.getId(), id)) {
-                return actor;
+    public boolean findActorById(Movie movie, String id) {
+        for (String actor : movie.getActors()) {
+            if (Objects.equals(actor, id)) {
+                return true;
             }
         }
         System.out.println("No actor with that id");
-        return null;
+        return false;
     }
 
-    public Genre findGenreById(Movie movie, String id) {
-        for (Genre genre : movie.getGenres()) {
-            if (Objects.equals(movie.getId(), id)) {
-                return genre;
+    public boolean findGenreById(Movie movie, String id) {
+        for (String genre : movie.getGenres()) {
+            if (Objects.equals(genre, id)) {
+                return true;
             }
         }
         System.out.println("No genre with that id");
-        return null;
+        return false;
     }
 
     public void addMovie(Movie movie) {
@@ -96,27 +84,27 @@ public class MovieController {
         movieRepo.updateDuration(movie, duration);
     }
 
-    public void deleteStageDirectorFromMovie(Movie movie, StageDirector stageDirector) {
+    public void deleteStageDirectorFromMovie(Movie movie, String stageDirector) {
         movieRepo.deleteStageDirector(movie, stageDirector);
     }
 
-    public void addStageDirectorToMovie(Movie movie, StageDirector stageDirector) {
+    public void addStageDirectorToMovie(Movie movie, String stageDirector) {
         movieRepo.addStageDirector(movie, stageDirector);
     }
 
-    public void addGenreToMovie(Movie movie, Genre genre) {
+    public void addGenreToMovie(Movie movie, String genre) {
         movieRepo.addGenre(movie, genre);
     }
 
-    public void deleteGenreFromMovie(Movie movie, Genre genre) {
+    public void deleteGenreFromMovie(Movie movie, String genre) {
         movieRepo.deleteGenre(movie, genre);
     }
 
-    public void addActorToMovie(Movie movie, Actor actor) {
+    public void addActorToMovie(Movie movie, String actor) {
         movieRepo.addActor(movie, actor);
     }
 
-    public void deleteActorFromMovie(Movie movie, Actor actor) {
+    public void deleteActorFromMovie(Movie movie, String actor) {
         movieRepo.deleteActor(movie, actor);
     }
 

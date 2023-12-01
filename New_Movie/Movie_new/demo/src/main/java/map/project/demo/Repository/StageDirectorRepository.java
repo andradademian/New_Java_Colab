@@ -40,7 +40,7 @@ public class StageDirectorRepository {
             String id = result.getString("Id");
             String firstName = result.getString("FirstName");
             String lastName = result.getString("LastName");
-            stageDirectorVector.add(new StageDirector(id, firstName, lastName, new Vector<>(), new Vector<>()));
+            stageDirectorVector.add(new StageDirector(id, firstName, lastName, getMoviesFromMovieDirectorTable(id), getAwardsFromDirectorAwardTable(id)));
         }
         return stageDirectorVector;
     }
@@ -64,8 +64,8 @@ public class StageDirectorRepository {
 
     public void addToMovieDirectorTable() throws SQLException {
         for (StageDirector stageDirector : stageDirectors) {
-            for (Movie movie : stageDirector.getListOfMovies()) {
-                insertFancyIntoMovieDirector.setString(1, movie.getId());
+            for (String movie : stageDirector.getListOfMovies()) {
+                insertFancyIntoMovieDirector.setString(1, movie);
                 insertFancyIntoMovieDirector.setString(2, stageDirector.getId());
                 insertFancyIntoMovieDirector.executeUpdate();
             }
@@ -100,9 +100,9 @@ public class StageDirectorRepository {
 
     public void addToDirectorAwardTable() throws SQLException {
         for (StageDirector stageDirector : stageDirectors) {
-            for (Award award : stageDirector.getAwards()) {
+            for (String awardId : stageDirector.getAwards()) {
                 insertFancyIntoDirectorAward.setString(1, stageDirector.getId());
-                insertFancyIntoDirectorAward.setString(2, award.getId());
+                insertFancyIntoDirectorAward.setString(2, awardId);
                 insertFancyIntoDirectorAward.executeUpdate();
             }
         }
@@ -132,20 +132,20 @@ public class StageDirectorRepository {
         stageDirectors.get(getAll().indexOf(stageDirector)).setLastName(lastName);
     }
 
-    public void deleteMovie(StageDirector stageDirector, Movie movie) {
-        stageDirectors.get(getAll().indexOf(stageDirector)).deleteMovie(movie);
+    public void deleteMovie(StageDirector stageDirector, String movieId) {
+        stageDirectors.get(getAll().indexOf(stageDirector)).deleteMovie(movieId);
     }
 
-    public void addMovie(StageDirector stageDirector, Movie movie) {
-        stageDirectors.get(getAll().indexOf(stageDirector)).addMovie(movie);
+    public void addMovie(StageDirector stageDirector, String movieId) {
+        stageDirectors.get(getAll().indexOf(stageDirector)).addMovie(movieId);
     }
 
-    public void addAward(StageDirector stageDirector, Award award) {
-        stageDirectors.get(getAll().indexOf(stageDirector)).addAward(award);
+    public void addAward(StageDirector stageDirector, String awardId) {
+        stageDirectors.get(getAll().indexOf(stageDirector)).addAward(awardId);
     }
 
-    public void deleteAward(StageDirector stageDirector, Award award) {
-        stageDirectors.get(getAll().indexOf(stageDirector)).deleteAward(award);
+    public void deleteAward(StageDirector stageDirector, String awardId) {
+        stageDirectors.get(getAll().indexOf(stageDirector)).deleteAward(awardId);
     }
 
     public Vector<StageDirector> getAll() {

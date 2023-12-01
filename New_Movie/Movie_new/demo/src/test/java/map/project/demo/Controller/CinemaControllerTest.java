@@ -54,14 +54,13 @@ public class CinemaControllerTest {
         assertNotNull(cinema);
 
         Room roomToAdd = RoomBuilder.buildRoom("1", 100, 120);
-        cinemaController.addRoomToCinema(cinema, roomToAdd);
+        cinemaController.addRoomToCinema(cinema, roomToAdd.getId());
 
         String roomId = "1";
 
-        Room foundRoom = cinemaController.findRoomById(cinema, roomId);
+        boolean foundRoom = cinemaController.findRoomById(cinema, roomId);
 
-        assertNotNull(foundRoom);
-        assertEquals(roomId, foundRoom.getId());
+        assertTrue(foundRoom);
     }
 
 
@@ -70,9 +69,9 @@ public class CinemaControllerTest {
         Cinema cinema = cinemaController.findCinemaById("1");
         String invalidRoomId = "InvalidId";
 
-        Room foundRoom = cinemaController.findRoomById(cinema, invalidRoomId);
+        boolean foundRoom = cinemaController.findRoomById(cinema, invalidRoomId);
 
-        assertNull(foundRoom);
+        assertFalse(foundRoom);
     }
 
 

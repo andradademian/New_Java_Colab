@@ -48,7 +48,7 @@ public class ScreeningRepository {
             if (resultRoom.next() && resultMovie.next()) {
                 String title = resultMovie.getString("title");
                 int duration = resultMovie.getInt("durationinminutes");
-                Movie movie = new Movie(movieId, title, duration, new Vector<StageDirector>(), new Vector<Actor>(), new Vector<Genre>());
+                Movie movie = new Movie(movieId, title, duration, new Vector<String>(), new Vector<String>(), new Vector<String>());
                 Room room = RoomBuilder.buildRoom(roomId, resultRoom.getInt("roomnumber"), resultRoom.getInt("numberofseats"));
                 Screening screening;
                 if (Objects.equals(format, "2D")) {

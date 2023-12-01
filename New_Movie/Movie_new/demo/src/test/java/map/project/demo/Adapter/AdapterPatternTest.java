@@ -48,7 +48,7 @@ public class AdapterPatternTest {
     }
 
     public Movie createMovie() {
-        return new Movie("1", "MovieTitle", 90, new Vector<StageDirector>(), new Vector<Actor>(), new Vector<Genre>());
+        return new Movie("1", "MovieTitle", 90, new Vector<String>(), new Vector<String>(), new Vector<String>());
     }
 
     public Room createRoom() {

@@ -6,11 +6,11 @@ public class Movie {
     private String id;
     private String title;
     private int durationInMinutes;
-    private Vector<StageDirector> stageDirectors;
-    private Vector<Actor> actors;
-    private Vector<Genre> genres;
+    private Vector<String> stageDirectors;
+    private Vector<String> actors;
+    private Vector<String> genres;
 
-    public Movie(String id, String title, int durationInMinutes, Vector<StageDirector> stageDirectors, Vector<Actor> actors, Vector<Genre> genres) {
+    public Movie(String id, String title, int durationInMinutes, Vector<String> stageDirectors, Vector<String> actors, Vector<String> genres) {
         this.id = id;
         this.title = title;
         this.durationInMinutes = durationInMinutes;
@@ -19,11 +19,11 @@ public class Movie {
         this.genres = genres;
     }
 
-    public Vector<Actor> getActors() {
+    public Vector<String> getActors() {
         return actors;
     }
 
-    public void setActors(Vector<Actor> actors) {
+    public void setActors(Vector<String> actors) {
         this.actors = actors;
     }
 
@@ -51,44 +51,44 @@ public class Movie {
         this.durationInMinutes = durationInMinutes;
     }
 
-    public Vector<StageDirector> getStageDirectors() {
+    public Vector<String> getStageDirectors() {
         return stageDirectors;
     }
 
-    public void setStageDirectors(Vector<StageDirector> stageDirectors) {
+    public void setStageDirectors(Vector<String> stageDirectors) {
         this.stageDirectors = stageDirectors;
     }
 
-    public Vector<Genre> getGenres() {
+    public Vector<String> getGenres() {
         return genres;
     }
 
-    public void addGenre(Genre genre) {
+    public void addGenre(String genre) {
         genres.add(genre);
     }
 
-    public void deleteGenre(Genre genre) {
+    public void deleteGenre(String genre) {
         genres.remove(genre);
     }
 
-    public void deleteStageDirector(StageDirector stageDirector) {
+    public void deleteStageDirector(String stageDirector) {
         stageDirectors.remove(stageDirector);
     }
 
-    public void addStageDirector(StageDirector stageDirector) {
+    public void addStageDirector(String stageDirector) {
         stageDirectors.add(stageDirector);
     }
 
-    public void addActor(Actor actor) {
+    public void addActor(String actor) {
         actors.add(actor);
     }
 
-    public void deleteActor(Actor actor) {
+    public void deleteActor(String actor) {
         actors.remove(actor);
     }
 
 
-    public void setGenres(Vector<Genre> genres) {
+    public void setGenres(Vector<String> genres) {
         this.genres = genres;
     }
 

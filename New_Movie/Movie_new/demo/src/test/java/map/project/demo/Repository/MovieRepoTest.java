@@ -166,11 +166,11 @@ public class MovieRepoTest {
 
     public void genreIsAddedToTheMovie() {
         Genre genre = new Genre("1", "Title", new Vector<>());
-        movieRepository.addGenre(movieRepository.getAll().get(0), genre);
+        movieRepository.addGenre(movieRepository.getAll().get(0), genre.getId());
     }
 
     public void stageDirectorIsAddedToTheMovie() throws SQLException {
         StageDirector stageDirector = new StageDirector("1", "Mel", "Gibson", new Vector<>(), new Vector<>());
-        movieRepository.addStageDirector(movieRepository.getAll().get(0), stageDirector);
+        movieRepository.addStageDirector(movieRepository.getAll().get(0), stageDirector.getId());
     }
 }

@@ -41,18 +41,14 @@ public class GenreController {
         }
     }
 
-    public Movie findMovieById(Genre genre, String id) {
-        for (Movie movie : genre.getListOfMovies()) {
-            if (Objects.equals(movie.getId(), id)) {
-                return movie;
+    public boolean findMovieById(Genre genre, String id) {
+        for (String movie : genre.getListOfMovies()) {
+            if (Objects.equals(movie, id)) {
+                return true;
             }
         }
         System.out.println("No movie with that id");
-        return null;
-    }
-
-    public Vector<String> getMoviesFromMovieGenreTable(Genre genre) throws SQLException {
-        return genreRepo.getMoviesFromMovieGenreTable(genre.getId());
+        return false;
     }
 
     public void deleteAllGenres() {
@@ -63,12 +59,12 @@ public class GenreController {
         genreRepo.updateName(genre, name);
     }
 
-    public void deleteMovieFromGenre(Genre genre, Movie movie) {
-        genreRepo.deleteMovie(genre, movie);
+    public void deleteMovieFromGenre(Genre genre, String movieId) {
+        genreRepo.deleteMovie(genre, movieId);
     }
 
-    public void addMovieToGenre(Genre genre, Movie movie) {
-        genreRepo.addMovie(genre, movie);
+    public void addMovieToGenre(Genre genre, String movieId) {
+        genreRepo.addMovie(genre, movieId);
     }
 
     public Vector<Genre> getAllGenres() {

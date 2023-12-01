@@ -36,14 +36,6 @@ public class StageDirectorController {
         stageDirectorRepo.delete(stageDirector);
     }
 
-    public Vector<String> getMoviesFromMovieDirectorTable(StageDirector stageDirector) throws SQLException {
-        return stageDirectorRepo.getMoviesFromMovieDirectorTable(stageDirector.getId());
-    }
-
-    public Vector<String> getAwardsFromDirectorAwardTable(StageDirector stageDirector) throws SQLException {
-        return stageDirectorRepo.getAwardsFromDirectorAwardTable(stageDirector.getId());
-    }
-
     public void deleteAllStageDirectors() {
         stageDirectorRepo.deleteAll();
     }
@@ -57,40 +49,36 @@ public class StageDirectorController {
         stageDirectorRepo.updateLastName(stageDirector, lastName);
     }
 
-    public void deleteMovie(StageDirector stageDirector, Movie movie) {
+    public void deleteMovie(StageDirector stageDirector, String movie) {
         stageDirectorRepo.deleteMovie(stageDirector, movie);
     }
 
-    public void addMovie(StageDirector stageDirector, Movie movie) {
+    public void addMovie(StageDirector stageDirector, String movie) {
         stageDirectorRepo.addMovie(stageDirector, movie);
     }
 
-    public void addAward(StageDirector stageDirector, Award award) {
+    public void addAward(StageDirector stageDirector, String award) {
         stageDirectorRepo.addAward(stageDirector, award);
     }
 
-    public void deleteAward(StageDirector stageDirector, Award award) {
+    public void deleteAward(StageDirector stageDirector, String award) {
         stageDirectorRepo.deleteAward(stageDirector, award);
     }
 
-    public Movie findMovieById(StageDirector stageDirector, String id) {
-        for (Movie movie : stageDirector.getListOfMovies()) {
-            if (Objects.equals(movie.getId(), id)) {
-                return movie;
-            }
+    public boolean findMovieById(StageDirector stageDirector, String id) {
+        if (stageDirector.getListOfMovies().contains(id)) {
+            return true;
         }
         System.out.println("No movie with that id");
-        return null;
+        return false;
     }
 
-    public Award findAwardById(StageDirector stageDirector, String id) {
-        for (Award award : stageDirector.getAwards()) {
-            if (Objects.equals(award.getId(), id)) {
-                return award;
-            }
+    public boolean findAwardById(StageDirector stageDirector, String id) {
+        if (stageDirector.getAwards().contains(id)) {
+            return true;
         }
         System.out.println("No award with that id");
-        return null;
+        return false;
     }
 
     public Vector<StageDirector> getAllStageDirectors() {

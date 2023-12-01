@@ -141,6 +141,6 @@ public class CinemaRepoTest {
 
     public void roomIsAddedToTheCinema() {
         Room room = RoomBuilder.buildRoom("1", 1, 50);
-        cinemaRepository.addRoom(cinemaRepository.getAll().get(0), room);
+        cinemaRepository.addRoom(cinemaRepository.getAll().get(0), room.getId());
     }
 }

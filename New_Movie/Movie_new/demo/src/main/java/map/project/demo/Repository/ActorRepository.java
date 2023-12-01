@@ -44,7 +44,7 @@ public class ActorRepository {
             String firstName = result.getString("FirstName");
             String lastName = result.getString("LastName");
             Date startOfCareer = result.getDate("StartOfCareer");
-            Actor actor = new Actor(id, firstName, lastName, new Vector<>(), startOfCareer, new Vector<>());
+            Actor actor = new Actor(id, firstName, lastName, getMoviesFromActorMovieTable(id), startOfCareer, getAwardsFromActorAwardTable(id));
             actorVector.add(actor);
         }
         return actorVector;
@@ -70,9 +70,9 @@ public class ActorRepository {
 
     public void addToActorMovieTable() throws SQLException {
         for (Actor actor : listOfActors) {
-            for (Movie movie : actor.getListOfMovies()) {
+            for (String movie : actor.getListOfMovies()) {
                 insertFancyIntoActorMovie.setString(1, actor.getId());
-                insertFancyIntoActorMovie.setString(2, movie.getId());
+                insertFancyIntoActorMovie.setString(2, movie);
                 insertFancyIntoActorMovie.executeUpdate();
             }
         }
@@ -84,9 +84,9 @@ public class ActorRepository {
 
     public void addToActorAwardTable() throws SQLException {
         for (Actor actor : listOfActors) {
-            for (Award award : actor.getListOfAwards()) {
+            for (String award : actor.getListOfAwards()) {
                 insertFancyIntoActorAward.setString(1, actor.getId());
-                insertFancyIntoActorAward.setString(2, award.getId());
+                insertFancyIntoActorAward.setString(2, award);
                 insertFancyIntoActorAward.executeUpdate();
             }
         }
@@ -138,21 +138,21 @@ public class ActorRepository {
         listOfActors.get(getAll().indexOf(actor)).setLastName(lastName);
     }
 
-    public void deleteMovie(Actor actor, Movie movie) throws SQLException {
-        listOfActors.get(getAll().indexOf(actor)).removeMovie(movie);
+    public void deleteMovie(Actor actor, String movieId) throws SQLException {
+        listOfActors.get(getAll().indexOf(actor)).removeMovie(movieId);
     }
 
-    public void addMovie(Actor actor, Movie movie) {
-        listOfActors.get(getAll().indexOf(actor)).addMovie(movie);
+    public void addMovie(Actor actor, String movieId) {
+        listOfActors.get(getAll().indexOf(actor)).addMovie(movieId);
 
     }
 
-    public void deleteAward(Actor actor, Award award) {
-        listOfActors.get(getAll().indexOf(actor)).removeAward(award);
+    public void deleteAward(Actor actor, String awardId) {
+        listOfActors.get(getAll().indexOf(actor)).removeAward(awardId);
     }
 
-    public void addAward(Actor actor, Award award) {
-        listOfActors.get(getAll().indexOf(actor)).addAward(award);
+    public void addAward(Actor actor, String awardId) {
+        listOfActors.get(getAll().indexOf(actor)).addAward(awardId);
     }
 
     public Vector<Actor> getAll() {

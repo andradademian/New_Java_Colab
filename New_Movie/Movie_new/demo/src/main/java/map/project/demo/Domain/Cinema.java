@@ -11,10 +11,10 @@ public class Cinema implements Observable {
     private String id;
     private String name;
     private String address;
-    private Vector<Room> listOfRooms;
+    private Vector<String> listOfRooms;
     private final List<Observer> observers;
 
-    public Cinema(String id, String name, String address, Vector<Room> listOfRooms) {
+    public Cinema(String id, String name, String address, Vector<String> listOfRooms) {
         this.id = id;
         this.name = name;
         this.address = address;
@@ -46,20 +46,20 @@ public class Cinema implements Observable {
         this.address = address;
     }
 
-    public Vector<Room> getListOfRooms() {
+    public Vector<String> getListOfRooms() {
         return listOfRooms;
     }
 
-    public void setListOfRooms(Vector<Room> listOfRooms) {
+    public void setListOfRooms(Vector<String> listOfRooms) {
         this.listOfRooms = listOfRooms;
     }
 
-    public void addRoom(Room room) {
-        listOfRooms.add(room);
+    public void addRoom(String roomId) {
+        listOfRooms.add(roomId);
     }
 
-    public void removeRoom(Room room) {
-        listOfRooms.remove(room);
+    public void removeRoom(String roomId) {
+        listOfRooms.remove(roomId);
     }
 
     @Override

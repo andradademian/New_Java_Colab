@@ -83,11 +83,11 @@ public class CinemaRepository {
         cinemas.get(getAll().indexOf(cinema)).setAddress(address);
     }
 
-    public void addRoom(Cinema cinema, Room room) {
-        cinemas.get(getAll().indexOf(cinema)).addRoom(room);
+    public void addRoom(Cinema cinema, String roomId) {
+        cinemas.get(getAll().indexOf(cinema)).addRoom(roomId);
     }
 
-    public void deleteRoom(Cinema cinema, Room room) {
-        cinemas.get(getAll().indexOf(cinema)).removeRoom(room);
+    public void deleteRoom(Cinema cinema, String roomId) {
+        cinemas.get(getAll().indexOf(cinema)).removeRoom(roomId);
     }
 }

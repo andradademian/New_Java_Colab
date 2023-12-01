@@ -32,32 +32,24 @@ public class ActorController {
         return null;
     }
 
-    public Vector<String> getMoviesFromActorMovieTable(Actor actor) throws SQLException {
-        return actorRepo.getMoviesFromActorMovieTable(actor.getId());
-    }
-
-    public Vector<String> getAwardsFromActorAwardTable(Actor actor) throws SQLException {
-        return actorRepo.getAwardsFromActorAwardTable(actor.getId());
-    }
-
-    public Movie findMovieById(Actor actor, String id) {
-        for (Movie movie : actor.getListOfMovies()) {
-            if (Objects.equals(movie.getId(), id)) {
-                return movie;
+    public boolean findMovieById(Actor actor, String id) {
+        for (String movieId : actor.getListOfMovies()) {
+            if (Objects.equals(movieId, id)) {
+                return true;
             }
         }
         System.out.println("No movie with that id");
-        return null;
+        return false;
     }
 
-    public Award findAwardById(Actor actor, String id) {
-        for (Award award : actor.getListOfAwards()) {
-            if (Objects.equals(award.getId(), id)) {
-                return award;
+    public boolean findAwardById(Actor actor, String id) {
+        for (String awardId : actor.getListOfAwards()) {
+            if (Objects.equals(awardId, id)) {
+                return true;
             }
         }
         System.out.println("No award with that id");
-        return null;
+        return false;
     }
 
     public void deleteActor(String actorId) {
@@ -83,19 +75,19 @@ public class ActorController {
         actorRepo.updateLastName(actor, lastName);
     }
 
-    public void deleteMovie(Actor actor, Movie movie) throws SQLException {
+    public void deleteMovie(Actor actor, String movie) throws SQLException {
         actorRepo.deleteMovie(actor, movie);
     }
 
-    public void addMovie(Actor actor, Movie movie) {
+    public void addMovie(Actor actor, String movie) {
         actorRepo.addMovie(actor, movie);
     }
 
-    public void deleteAward(Actor actor, Award award) {
+    public void deleteAward(Actor actor, String award) {
         actorRepo.deleteAward(actor, award);
     }
 
-    public void addAward(Actor actor, Award award) {
+    public void addAward(Actor actor, String award) {
         actorRepo.addAward(actor, award);
     }
 

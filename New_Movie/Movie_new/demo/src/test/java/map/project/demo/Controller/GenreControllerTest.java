@@ -22,9 +22,9 @@ public class GenreControllerTest {
 
     @BeforeEach
     public void setUp() {
-        genreRepository.add(new Genre("1", "Action", new Vector<Movie>()));
-        genreRepository.add(new Genre("2", "Drama", new Vector<Movie>()));
-        genreRepository.add(new Genre("3", "Comedy", new Vector<Movie>()));
+        genreRepository.add(new Genre("1", "Action", new Vector<String>()));
+        genreRepository.add(new Genre("2", "Drama", new Vector<String>()));
+        genreRepository.add(new Genre("3", "Comedy", new Vector<String>()));
     }
 
 
@@ -49,17 +49,16 @@ public class GenreControllerTest {
 
     @Test
     public void expectCorrectFindingOfTheMovieById() {
-        genreRepository.addMovie(genreController.getAllGenres().get(0), new Movie("111", "Movie", 120, new Vector<>(), new Vector<>(), new Vector<>()));
-        Movie movie = genreController.findMovieById(genreController.getAllGenres().get(0), "111");
-        assertEquals(movie.getId(), "111");
+        genreRepository.addMovie(genreController.getAllGenres().get(0), "111");
+        boolean movieExists = genreController.findMovieById(genreController.getAllGenres().get(0), "111");
+        assertTrue(movieExists);
     }
 
     @Test
     public void expectIncorrectFindingOfTheMovieById() {
-        genreRepository.addMovie(genreController.getAllGenres().get(0), new Movie("111", "Movie", 120, new Vector<>(), new Vector<>(), new Vector<>()));
-        genreRepository.addMovie(genreController.getAllGenres().get(0), new Movie("112", "Movie2", 120, new Vector<>(), new Vector<>(), new Vector<>()));
-        Movie movie = genreController.findMovieById(genreController.getAllGenres().get(0), "112");
-        assertNotEquals(movie.getId(), "111");
+        genreRepository.addMovie(genreController.getAllGenres().get(0), "111");
+        boolean movieExists = genreController.findMovieById(genreController.getAllGenres().get(0), "112");
+        assertFalse(movieExists);
     }
 
 }

@@ -25,10 +25,6 @@ public class StageDirectorUI {
     public void mainStageDirectorUI() throws SQLException {
         int choice;
         do {
-            for (StageDirector stageDirector : stageDirectorController.getAllStageDirectors()) {
-                addMoviesToStageDirector(stageDirector);
-                addAwardsToStageDirector(stageDirector);
-            }
             this.stageDirectorController.printAllStageDirectors();
             stageDirectorMenu();
             Scanner keyboard = new Scanner(System.in);
@@ -72,7 +68,7 @@ public class StageDirectorUI {
         System.out.println("Enter last name:");
         String lastName = keyboard.next();
 
-        this.stageDirectorController.addStageDirector(new StageDirector(id, firstName, lastName, new Vector<Movie>(), new Vector<Award>()));
+        this.stageDirectorController.addStageDirector(new StageDirector(id, firstName, lastName, new Vector<String>(), new Vector<String>()));
     }
 
     public void updateStageDirector(String stageDirectorId) {
@@ -102,9 +98,9 @@ public class StageDirectorUI {
                     System.out.println(stageDirectorToUpdate.getListOfMovies().toString());
                     System.out.println("Enter Id of the movie you want to delete:");
                     String id = keyboard.next();
-                    Movie movieToDelete = stageDirectorController.findMovieById(stageDirectorToUpdate, id);
-                    if (movieToDelete != null) {
-                        stageDirectorController.deleteMovie(stageDirectorToUpdate, movieToDelete);
+                    boolean movieExists = stageDirectorController.findMovieById(stageDirectorToUpdate, id);
+                    if (movieExists) {
+                        stageDirectorController.deleteMovie(stageDirectorToUpdate, id);
                     }
                 }
             } else if (choice == 3) {
@@ -120,15 +116,17 @@ public class StageDirectorUI {
                     String title = keyboard.next();
                     System.out.println("Enter duration of the movie");
                     int duration = keyboard.nextInt();
-                    Movie movie = new Movie(id, title, duration, new Vector<StageDirector>(), new Vector<Actor>(), new Vector<Genre>());
-                    stageDirectorController.addMovie(stageDirectorToUpdate, movie);
+                    Movie movie = new Movie(id, title, duration, new Vector<String>(), new Vector<String>(), new Vector<String>());
+                    stageDirectorController.addMovie(stageDirectorToUpdate, id);
                     movieController.addMovie(movie);
                 } else if (movieChoice == 2) {
                     movieController.printAllMovies();
                     System.out.println("Enter id of the movie you want to add");
                     String id = keyboard.next();
                     Movie movie = movieController.findMovieById(id);
-                    stageDirectorController.addMovie(stageDirectorToUpdate, movie);
+                    if (movie != null) {
+                        stageDirectorController.addMovie(stageDirectorToUpdate, id);
+                    }
                 }
             } else if (choice == 5) {
                 System.out.println("What do you want to do?");
@@ -151,43 +149,27 @@ public class StageDirectorUI {
                     System.out.println();
                     String category = keyboard.next();
                     Award award = new Award(id, category);
-                    stageDirectorController.addAward(stageDirectorToUpdate, award);
+                    stageDirectorController.addAward(stageDirectorToUpdate, id);
                     awardController.addAward(title, id, category);
                 } else if (awardChoice == 2) {
                     awardController.printAllAwards();
                     System.out.println("Enter id of the award you want to add");
                     String id = keyboard.next();
                     Award award = awardController.findAwardById(id);
-                    stageDirectorController.addAward(stageDirectorToUpdate, award);
+                    if (award != null) {
+                        stageDirectorController.addAward(stageDirectorToUpdate, id);
+                    }
                 }
             } else if (choice == 6) {
                 if (!stageDirectorToUpdate.getAwards().isEmpty()) {
                     System.out.println(stageDirectorToUpdate.getAwards().toString());
                     System.out.println("Enter Id of the award you want to delete:");
                     String id = keyboard.next();
-                    Award awardToDelete = stageDirectorController.findAwardById(stageDirectorToUpdate, id);
-                    if (awardToDelete != null) {
-                        stageDirectorController.deleteAward(stageDirectorToUpdate, awardToDelete);
+                    boolean awardExists = stageDirectorController.findAwardById(stageDirectorToUpdate, id);
+                    if (awardExists) {
+                        stageDirectorController.deleteAward(stageDirectorToUpdate, id);
                     }
                 }
-            }
-        }
-    }
-
-    public void addMoviesToStageDirector(StageDirector stageDirector) throws SQLException {
-        Vector<String> movieIds = stageDirectorController.getMoviesFromMovieDirectorTable(stageDirector);
-        for (Movie movie : movieController.getAllMovies()) {
-            if (movieIds.contains(movie.getId())) {
-                stageDirectorController.addMovie(stageDirector, movie);
-            }
-        }
-    }
-
-    public void addAwardsToStageDirector(StageDirector stageDirector) throws SQLException {
-        Vector<String> awardsIds = stageDirectorController.getAwardsFromDirectorAwardTable(stageDirector);
-        for (Award award : awardController.getAllAwards()) {
-            if (awardsIds.contains(award.getId())) {
-                stageDirectorController.addAward(stageDirector, award);
             }
         }
     }

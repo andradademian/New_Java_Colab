@@ -8,44 +8,44 @@ import java.util.Vector;
 
 public class StageDirector extends Spectator {
 
-    private Vector<Movie> listOfMovies;
-    private Vector<Award> awards;
+    private Vector<String> listOfMovies;
+    private Vector<String> awards;
 
-    public StageDirector(String id, String firstName, String lastName, Vector<Movie> listOfMovies, Vector<Award> awards) throws SQLException {
+    public StageDirector(String id, String firstName, String lastName, Vector<String> listOfMovies, Vector<String> awards) throws SQLException {
         super(id, firstName, lastName);
         this.listOfMovies = listOfMovies;
         this.awards = awards;
     }
 
-    public Vector<Movie> getListOfMovies() {
+    public Vector<String> getListOfMovies() {
         return listOfMovies;
     }
 
-    public void setListOfMovies(Vector<Movie> listOfMovies) {
+    public void setListOfMovies(Vector<String> listOfMovies) {
         this.listOfMovies = listOfMovies;
     }
 
-    public Vector<Award> getAwards() {
+    public Vector<String> getAwards() {
         return awards;
     }
 
-    public void setAwards(Vector<Award> awards) {
+    public void setAwards(Vector<String> awards) {
         this.awards = awards;
     }
 
-    public void addMovie(Movie movie) {
+    public void addMovie(String movie) {
         this.listOfMovies.add(movie);
     }
 
-    public void deleteMovie(Movie movie) {
+    public void deleteMovie(String movie) {
         this.listOfMovies.remove(movie);
     }
 
-    public void addAward(Award award) {
+    public void addAward(String award) {
         this.awards.add(award);
     }
 
-    public void deleteAward(Award award) {
+    public void deleteAward(String award) {
         this.awards.remove(award);
     }
 

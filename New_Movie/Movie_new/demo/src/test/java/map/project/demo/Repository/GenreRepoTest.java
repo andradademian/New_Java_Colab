@@ -117,7 +117,7 @@ public class GenreRepoTest {
     }
 
     public void movieIsAddedToTheGenre() {
-        Movie movie = new Movie("1", "Title", 120, new Vector<StageDirector>(), new Vector<Actor>(), new Vector<Genre>());
-        genreRepository.addMovie(genreRepository.getAll().get(0), movie);
+        Movie movie = new Movie("1", "Title", 120, new Vector<String>(), new Vector<String>(), new Vector<String>());
+        genreRepository.addMovie(genreRepository.getAll().get(0), movie.getId());
     }
 }

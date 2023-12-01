@@ -83,8 +83,8 @@ public class StageDirectorRepoTest {
         stageDirectorIsAddedToTheList();
         StageDirector stageDirector = stageDirectorRepository.getAll().get(0);
         Movie movie = createMovie();
-        stageDirectorRepository.addMovie(stageDirector, movie);
-        assertTrue(stageDirector.getListOfMovies().contains(movie), "Movie was not added to the stage director");
+        stageDirectorRepository.addMovie(stageDirector, movie.getId());
+        assertTrue(stageDirector.getListOfMovies().contains(movie.getId()));
     }
 
     @Test
@@ -92,7 +92,7 @@ public class StageDirectorRepoTest {
         stageDirectorIsAddedToTheList();
         StageDirector stageDirector = stageDirectorRepository.getAll().get(0);
         Movie movie = createMovie();
-        assertTrue(stageDirector.getListOfMovies().isEmpty(), "Movies should be empty initially");
+        assertTrue(stageDirector.getListOfMovies().isEmpty());
     }
 
     @Test
@@ -100,9 +100,9 @@ public class StageDirectorRepoTest {
         stageDirectorIsAddedToTheList();
         StageDirector stageDirector = stageDirectorRepository.getAll().get(0);
         Movie movie = createMovie();
-        stageDirector.addMovie(movie);
-        stageDirectorRepository.deleteMovie(stageDirector, movie);
-        assertFalse(stageDirector.getListOfMovies().contains(movie), "Movie was not removed from the stage director");
+        stageDirector.addMovie(movie.getId());
+        stageDirectorRepository.deleteMovie(stageDirector, movie.getId());
+        assertFalse(stageDirector.getListOfMovies().contains(movie.getId()));
     }
 
     @Test
@@ -110,8 +110,8 @@ public class StageDirectorRepoTest {
         stageDirectorIsAddedToTheList();
         StageDirector stageDirector = stageDirectorRepository.getAll().get(0);
         Movie movie = createMovie();
-        stageDirectorRepository.deleteMovie(stageDirector, movie);
-        assertFalse(stageDirector.getListOfMovies().contains(movie), "Movies should be empty initially");
+        stageDirectorRepository.deleteMovie(stageDirector, movie.getId());
+        assertFalse(stageDirector.getListOfMovies().contains(movie.getId()));
     }
 
     public void stageDirectorIsAddedToTheList() throws SQLException {

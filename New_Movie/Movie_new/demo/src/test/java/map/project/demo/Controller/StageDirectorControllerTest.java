@@ -1,6 +1,5 @@
 package map.project.demo.Controller;
 
-import map.project.demo.Controller.StageDirectorController;
 import map.project.demo.Domain.*;
 import map.project.demo.Repository.StageDirectorRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,8 +8,7 @@ import org.junit.jupiter.api.Test;
 import java.sql.SQLException;
 import java.util.Vector;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class StageDirectorControllerTest {
     StageDirectorRepository stageDirectorRepository = StageDirectorRepository.getInstance();
@@ -40,32 +38,29 @@ public class StageDirectorControllerTest {
 
     @Test
     public void expectCorrectFindingOfTheMovieById() {
-        stageDirectorRepository.addMovie(stageDirectorController.getAllStageDirectors().get(0), new Movie("111", "Movie", 120, new Vector<>(), new Vector<>(), new Vector<>()));
-        Movie movie = stageDirectorController.findMovieById(stageDirectorController.getAllStageDirectors().get(0), "111");
-        assertEquals(movie.getId(), "111");
+        stageDirectorRepository.addMovie(stageDirectorController.getAllStageDirectors().get(0), "111");
+        boolean movieExists = stageDirectorController.findMovieById(stageDirectorController.getAllStageDirectors().get(0), "111");
+        assertTrue(movieExists);
     }
 
     @Test
     public void expectIncorrectFindingOfTheMovieById() {
-        stageDirectorController.addMovie(stageDirectorController.getAllStageDirectors().get(0), new Movie("111", "Movie", 120, new Vector<>(), new Vector<>(), new Vector<>()));
-        stageDirectorRepository.addMovie(stageDirectorController.getAllStageDirectors().get(0), new Movie("112", "Movie2", 120, new Vector<>(), new Vector<>(), new Vector<>()));
-        Movie movie = stageDirectorController.findMovieById(stageDirectorController.getAllStageDirectors().get(0), "112");
-        assertNotEquals(movie.getId(), "111");
+        stageDirectorController.addMovie(stageDirectorController.getAllStageDirectors().get(0), "111");
+        boolean movieExists = stageDirectorController.findMovieById(stageDirectorController.getAllStageDirectors().get(0), "112");
+        assertFalse(movieExists);
     }
 
     @Test
     public void expectIncorrectFindingOfTheAwardById() {
-        stageDirectorRepository.addAward(stageDirectorController.getAllStageDirectors().get(0), new Award("111", "BestActor"));
-        stageDirectorRepository.addAward(stageDirectorController.getAllStageDirectors().get(0), new Award("112", "BestActor"));
-        Award award = stageDirectorController.findAwardById(stageDirectorController.getAllStageDirectors().get(0), "112");
-        assertNotEquals(award.getId(), "111");
+        stageDirectorRepository.addAward(stageDirectorController.getAllStageDirectors().get(0), "111");
+        boolean award = stageDirectorController.findAwardById(stageDirectorController.getAllStageDirectors().get(0), "112");
+        assertFalse(award);
     }
 
     @Test
     public void expectCorrectFindingOfTheAwardById() {
-        stageDirectorRepository.addAward(stageDirectorController.getAllStageDirectors().get(0), new Award("111", "BestActor"));
-        stageDirectorRepository.addAward(stageDirectorController.getAllStageDirectors().get(0), new Award("112", "BestActor"));
-        Award award = stageDirectorController.findAwardById(stageDirectorController.getAllStageDirectors().get(0), "112");
-        assertEquals(award.getId(), "112");
+        stageDirectorRepository.addAward(stageDirectorController.getAllStageDirectors().get(0), "111");
+        boolean award = stageDirectorController.findAwardById(stageDirectorController.getAllStageDirectors().get(0), "111");
+        assertTrue(award);
     }
 }

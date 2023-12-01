@@ -112,23 +112,23 @@ public class CinemaUI {
                 cinemaController.updateCinemaAddress(cinemaToUpdate, address);
             } else if (choice == 3) {
                 System.out.println(cinemaToUpdate.getListOfRooms().toString());
-                System.out.println("Enter id for cinema:");
+                System.out.println("Enter id for the room:");
                 String id = keyboard.next();
                 System.out.println("Enter room number:");
                 int number = keyboard.nextInt();
                 System.out.println("Enter number of seats:");
                 int seats = keyboard.nextInt();
                 Room room = RoomBuilder.buildRoom(id, number, seats);
-                cinemaController.addRoomToCinema(cinemaToUpdate, room);
+                cinemaController.addRoomToCinema(cinemaToUpdate, id);
                 roomController.addRoom(room);
             } else if (choice == 4) {
                 if (!cinemaToUpdate.getListOfRooms().isEmpty()) {
                     System.out.println(cinemaToUpdate.getListOfRooms().toString());
                     System.out.println("Enter id of the room you want to delete");
                     String id = keyboard.next();
-                    Room roomToDelete = cinemaController.findRoomById(cinemaToUpdate, id);
-                    if (roomToDelete != null) {
-                        cinemaController.deleteRoomFromCinema(cinemaToUpdate, roomToDelete);
+                    boolean roomExists = cinemaController.findRoomById(cinemaToUpdate, id);
+                    if (roomExists) {
+                        cinemaController.deleteRoomFromCinema(cinemaToUpdate, id);
                     }
                 } else {
                     System.out.println("No rooms in the list");

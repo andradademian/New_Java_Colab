@@ -20,9 +20,6 @@ public class GenreUI {
     public void mainGenreUI() throws SQLException {
         int choice;
         do {
-            for (Genre genre : genreController.getAllGenres()) {
-                addMoviesToGenre(genre);
-            }
             this.genreController.printAllGenres();
             genreMenu();
             Scanner keyboard = new Scanner(System.in);
@@ -66,15 +63,6 @@ public class GenreUI {
         this.genreController.addGenre(new Genre(id, name, new Vector<>()));
     }
 
-    public void addMoviesToGenre(Genre genre) throws SQLException {
-        Vector<String> movieIds = genreController.getMoviesFromMovieGenreTable(genre);
-        for (Movie movie : movieController.getAllMovies()) {
-            if (movieIds.contains(movie.getId())) {
-                genreController.addMovieToGenre(genre, movie);
-            }
-        }
-    }
-
     public void deleteAGenre() {
         this.genreController.printAllGenres();
         System.out.println("Enter ID of the genre you want to delete:");
@@ -111,24 +99,26 @@ public class GenreUI {
                     String title = keyboard.next();
                     System.out.println("Enter duration of the movie");
                     int duration = keyboard.nextInt();
-                    Movie movie = new Movie(id, title, duration, new Vector<StageDirector>(), new Vector<Actor>(), new Vector<Genre>());
-                    genreController.addMovieToGenre(genreToUpdate, movie);
+                    Movie movie = new Movie(id, title, duration, new Vector<String>(), new Vector<String>(), new Vector<String>());
+                    genreController.addMovieToGenre(genreToUpdate, id);
                     movieController.addMovie(movie);
                 } else if (movieChoice == 2) {
                     movieController.printAllMovies();
                     System.out.println("Enter id of the movie you want to add");
                     String id = keyboard.next();
                     Movie movie = movieController.findMovieById(id);
-                    genreController.addMovieToGenre(genreToUpdate, movie);
+                    if (movie != null) {
+                        genreController.addMovieToGenre(genreToUpdate, id);
+                    }
                 }
             } else if (choice == 3) {
                 if (!genreToUpdate.getListOfMovies().isEmpty()) {
                     System.out.println(genreToUpdate.getListOfMovies().toString());
                     System.out.println("Enter Id of the movie you want to delete:");
                     String id = keyboard.next();
-                    Movie movieToDelete = genreController.findMovieById(genreToUpdate, id);
-                    if (movieToDelete != null) {
-                        genreController.deleteMovieFromGenre(genreToUpdate, movieToDelete);
+                    boolean movieExists = genreController.findMovieById(genreToUpdate, id);
+                    if (movieExists) {
+                        genreController.deleteMovieFromGenre(genreToUpdate, id);
                     }
                 } else {
                     System.out.println("No movies in the list.");

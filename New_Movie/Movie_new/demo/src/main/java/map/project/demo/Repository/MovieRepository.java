@@ -41,7 +41,7 @@ public class MovieRepository {
             String id = result.getString("id");
             String movieTitle = result.getString("title");
             int durationInMinutes = result.getInt("durationInMinutes");
-            movieVector.add(new Movie(id, movieTitle, durationInMinutes, new Vector<>(), new Vector<>(), new Vector<>()));
+            movieVector.add(new Movie(id, movieTitle, durationInMinutes, getDirectorsFromMovieDirectorTable(id), getActorsFromActorMovieTable(id), getGenresFromMovieGenreTable(id)));
         }
         return movieVector;
     }
@@ -65,8 +65,8 @@ public class MovieRepository {
 
     public void addToActorMovieTable() throws SQLException {
         for (Movie movie : movies) {
-            for (Actor actor : movie.getActors()) {
-                insertFancyIntoActorMovie.setString(1, actor.getId());
+            for (String actorId : movie.getActors()) {
+                insertFancyIntoActorMovie.setString(1, actorId);
                 insertFancyIntoActorMovie.setString(2, movie.getId());
                 insertFancyIntoActorMovie.executeUpdate();
             }
@@ -79,9 +79,9 @@ public class MovieRepository {
 
     public void addToMovieGenreTable() throws SQLException {
         for (Movie movie : movies) {
-            for (Genre genre : movie.getGenres()) {
+            for (String genreId : movie.getGenres()) {
                 insertFancyIntoMovieGenre.setString(1, movie.getId());
-                insertFancyIntoMovieGenre.setString(2, genre.getId());
+                insertFancyIntoMovieGenre.setString(2, genreId);
                 insertFancyIntoMovieGenre.executeUpdate();
             }
         }
@@ -126,9 +126,9 @@ public class MovieRepository {
 
     public void addToMovieDirectorTable() throws SQLException {
         for (Movie movie : movies) {
-            for (StageDirector stageDirector : movie.getStageDirectors()) {
+            for (String stageDirectorId : movie.getStageDirectors()) {
                 insertFancyIntoMovieDirector.setString(1, movie.getId());
-                insertFancyIntoMovieDirector.setString(2, stageDirector.getId());
+                insertFancyIntoMovieDirector.setString(2, stageDirectorId);
                 insertFancyIntoMovieDirector.executeUpdate();
             }
         }
@@ -158,27 +158,27 @@ public class MovieRepository {
         movies.get(getAll().indexOf(movie)).setDurationInMinutes(duration);
     }
 
-    public void deleteStageDirector(Movie movie, StageDirector stageDirector) {
+    public void deleteStageDirector(Movie movie, String stageDirector) {
         movies.get(getAll().indexOf(movie)).deleteStageDirector(stageDirector);
     }
 
-    public void addStageDirector(Movie movie, StageDirector stageDirector) {
+    public void addStageDirector(Movie movie, String stageDirector) {
         movies.get(getAll().indexOf(movie)).addStageDirector(stageDirector);
     }
 
-    public void addActor(Movie movie, Actor actor) {
+    public void addActor(Movie movie, String actor) {
         movies.get(getAll().indexOf(movie)).addActor(actor);
     }
 
-    public void deleteActor(Movie movie, Actor actor) {
+    public void deleteActor(Movie movie, String actor) {
         movies.get(getAll().indexOf(movie)).deleteActor(actor);
     }
 
-    public void addGenre(Movie movie, Genre genre) {
+    public void addGenre(Movie movie, String genre) {
         movies.get(getAll().indexOf(movie)).addGenre(genre);
     }
 
-    public void deleteGenre(Movie movie, Genre genre) {
+    public void deleteGenre(Movie movie, String genre) {
         movies.get(getAll().indexOf(movie)).deleteGenre(genre);
     }
 

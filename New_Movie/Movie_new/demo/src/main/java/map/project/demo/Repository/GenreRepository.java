@@ -40,13 +40,13 @@ public class GenreRepository {
         while (result.next()) {
             String id = result.getString("id");
             String name = result.getString("genrename");
-            genreVector.add(new Genre(id, name, new ArrayList<>()));
+            genreVector.add(new Genre(id, name, getMoviesFromMovieGenreTable(id)));
         }
         return genreVector;
     }
 
-    public Vector<String> getMoviesFromMovieGenreTable(String genreId) throws SQLException {
-        Vector<String> moviesIds = new Vector<>();
+    public List<String> getMoviesFromMovieGenreTable(String genreId) throws SQLException {
+        List<String> moviesIds = new ArrayList<>();
         PreparedStatement movieStatement = connection.prepareStatement(" SELECT MG.movieid FROM \"Genre\" G join \"MovieGenre\" MG on MG.genreid=?");
         movieStatement.setString(1, genreId);
         ResultSet result = movieStatement.executeQuery();
@@ -74,8 +74,8 @@ public class GenreRepository {
 
     public void addToMovieGenreTable() throws SQLException {
         for (Genre genre : genres) {
-            for (Movie movie : genre.getListOfMovies()) {
-                insertFancyIntoMovieGenre.setString(1, movie.getId());
+            for (String movieId : genre.getListOfMovies()) {
+                insertFancyIntoMovieGenre.setString(1, movieId);
                 insertFancyIntoMovieGenre.setString(2, genre.getId());
                 insertFancyIntoMovieGenre.executeUpdate();
             }
@@ -102,11 +102,11 @@ public class GenreRepository {
         genres.get(getAll().indexOf(genre)).setName(name);
     }
 
-    public void deleteMovie(Genre genre, Movie movie) {
+    public void deleteMovie(Genre genre, String movie) {
         genres.get(getAll().indexOf(genre)).deleteMovie(movie);
     }
 
-    public void addMovie(Genre genre, Movie movie) {
+    public void addMovie(Genre genre, String movie) {
         genres.get(getAll().indexOf(genre)).addMovie(movie);
     }
 

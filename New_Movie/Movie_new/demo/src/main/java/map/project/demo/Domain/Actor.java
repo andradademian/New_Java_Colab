@@ -5,46 +5,46 @@ import java.sql.SQLException;
 import java.util.Vector;
 
 public class Actor extends Spectator {
-    private Vector<Movie> listOfMovies;
-    private Vector<Award> listOfAwards;
+    private Vector<String> listOfMovies;
+    private Vector<String> listOfAwards;
     private Date startOfCareer;
 
-    public Actor(String id, String firstName, String lastName, Vector<Movie> listOfMovies, Date startOfCareer, Vector<Award> awards) throws SQLException {
+    public Actor(String id, String firstName, String lastName, Vector<String> listOfMovies, Date startOfCareer, Vector<String> awards) throws SQLException {
         super(id, firstName, lastName);
         this.listOfMovies = listOfMovies;
         this.startOfCareer = startOfCareer;
         this.listOfAwards = awards;
     }
 
-    public Vector<Movie> getListOfMovies() {
+    public Vector<String> getListOfMovies() {
         return listOfMovies;
     }
 
-    public Vector<Award> getListOfAwards() {
+    public Vector<String> getListOfAwards() {
         return listOfAwards;
     }
 
-    public void setListOfAwards(Vector<Award> listOfAwards) {
+    public void setListOfAwards(Vector<String> listOfAwards) {
         this.listOfAwards = listOfAwards;
     }
 
-    public void addMovie(Movie movie) {
-        listOfMovies.add(movie);
+    public void addMovie(String movieId) {
+        listOfMovies.add(movieId);
     }
 
-    public void removeMovie(Movie movie) {
-        listOfMovies.remove(movie);
+    public void removeMovie(String movieId) {
+        listOfMovies.remove(movieId);
     }
 
-    public void addAward(Award award) {
-        listOfAwards.add(award);
+    public void addAward(String awardId) {
+        listOfAwards.add(awardId);
     }
 
-    public void removeAward(Award award) {
-        listOfAwards.remove(award);
+    public void removeAward(String awardId) {
+        listOfAwards.remove(awardId);
     }
 
-    public void setListOfMovies(Vector<Movie> listOfMovies) {
+    public void setListOfMovies(Vector<String> listOfMovies) {
         this.listOfMovies = listOfMovies;
     }
 

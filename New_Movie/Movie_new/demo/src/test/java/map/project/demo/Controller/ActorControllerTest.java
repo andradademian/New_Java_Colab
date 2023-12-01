@@ -1,6 +1,6 @@
 package map.project.demo.Controller;
 
-import map.project.demo.Controller.ActorController;
+
 import map.project.demo.Domain.Actor;
 import map.project.demo.Domain.Award;
 import map.project.demo.Domain.Movie;
@@ -15,8 +15,7 @@ import java.text.SimpleDateFormat;
 import java.sql.Date;
 import java.util.Vector;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ActorControllerTest {
     ActorRepository actorRepository = ActorRepository.getInstance();
@@ -31,9 +30,9 @@ public class ActorControllerTest {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         java.util.Date utilDate = dateFormat.parse(startDate);
         java.sql.Date date = new Date(utilDate.getTime());
-        actorRepository.add(new Actor("1", "First1", "Last1", new Vector<Movie>(), date, new Vector<Award>()));
-        actorRepository.add(new Actor("2", "First2", "Last2", new Vector<Movie>(), date, new Vector<Award>()));
-        actorRepository.add(new Actor("3", "First3", "Last3", new Vector<Movie>(), date, new Vector<Award>()));
+        actorRepository.add(new Actor("1", "First1", "Last1", new Vector<String>(), date, new Vector<String>()));
+        actorRepository.add(new Actor("2", "First2", "Last2", new Vector<String>(), date, new Vector<String>()));
+        actorRepository.add(new Actor("3", "First3", "Last3", new Vector<String>(), date, new Vector<String>()));
     }
 
     @Test
@@ -50,34 +49,15 @@ public class ActorControllerTest {
 
     @Test
     public void expectCorrectFindingOfTheMovieById() {
-        actorRepository.addMovie(actorController.getAllActors().get(0), new Movie("111", "Movie", 120, new Vector<>(), new Vector<>(), new Vector<>()));
-        Movie movie = actorController.findMovieById(actorController.getAllActors().get(0), "111");
-        assertEquals(movie.getId(), "111");
+        actorRepository.addMovie(actorController.getAllActors().get(0), "111");
+        boolean movieExists = actorController.findMovieById(actorController.getAllActors().get(0), "111");
+        assertTrue(movieExists);
     }
 
     @Test
     public void expectIncorrectFindingOfTheMovieById() {
-        actorRepository.addMovie(actorController.getAllActors().get(0), new Movie("111", "Movie", 120, new Vector<>(), new Vector<>(), new Vector<>()));
-        actorRepository.addMovie(actorController.getAllActors().get(0), new Movie("112", "Movie2", 120, new Vector<>(), new Vector<>(), new Vector<>()));
-        Movie movie = actorController.findMovieById(actorController.getAllActors().get(0), "112");
-        assertNotEquals(movie.getId(), "111");
+        actorRepository.addMovie(actorController.getAllActors().get(0), "111");
+        boolean movieExists = actorController.findMovieById(actorController.getAllActors().get(0), "112");
+        assertFalse(movieExists);
     }
-
-    @Test
-    public void expectIncorrectFindingOfTheAwardById() {
-        actorRepository.addAward(actorController.getAllActors().get(0), new Award("111", "BestActor"));
-        actorRepository.addAward(actorController.getAllActors().get(0), new Award("112", "BestActor"));
-        Award award = actorController.findAwardById(actorController.getAllActors().get(0), "112");
-        assertNotEquals(award.getId(), "111");
-    }
-
-    @Test
-    public void expectCorrectFindingOfTheAwardById() {
-        actorRepository.addAward(actorController.getAllActors().get(0), new Award("111", "BestActor"));
-        actorRepository.addAward(actorController.getAllActors().get(0), new Award("112", "BestActor"));
-        Award award = actorController.findAwardById(actorController.getAllActors().get(0), "112");
-        assertEquals(award.getId(), "112");
-    }
-
-
 }

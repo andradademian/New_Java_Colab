@@ -27,10 +27,6 @@ public class ActorUI {
     public void mainActorUI() throws SQLException {
         int choice;
         do {
-            for (Actor actor : actorController.getAllActors()) {
-                addMoviesToActor(actor);
-                addAwardsToActor(actor);
-            }
             this.actorController.showAllActors();
             actorMenu();
             Scanner keyboard = new Scanner(System.in);
@@ -60,24 +56,6 @@ public class ActorUI {
         System.out.println("5. Exit");
     }
 
-    public void addMoviesToActor(Actor actor) throws SQLException {
-        Vector<String> movieIds = actorController.getMoviesFromActorMovieTable(actor);
-        for (Movie movie : movieController.getAllMovies()) {
-            if (movieIds.contains(movie.getId())) {
-                actorController.addMovie(actor, movie);
-            }
-        }
-    }
-
-    public void addAwardsToActor(Actor actor) throws SQLException {
-        Vector<String> awardsIds = actorController.getAwardsFromActorAwardTable(actor);
-        for (Award award : awardController.getAllAwards()) {
-            if (awardsIds.contains(award.getId())) {
-                actorController.addAward(actor, award);
-            }
-        }
-    }
-
     public void addAnActor() throws SQLException {
         this.actorController.showAllActors();
 
@@ -95,7 +73,7 @@ public class ActorUI {
         System.out.println("Enter start of career (YYYY-MM-DD):");
         Date startCareer = java.sql.Date.valueOf(keyboard.next());
 
-        this.actorController.addActor(new Actor(id, firstName, lastName, new Vector<Movie>(), startCareer, new Vector<Award>()));
+        this.actorController.addActor(new Actor(id, firstName, lastName, new Vector<String>(), startCareer, new Vector<String>()));
     }
 
     public void deleteAnActor() {
@@ -104,7 +82,7 @@ public class ActorUI {
         Scanner keyboard = new Scanner(System.in);
         String id = keyboard.next();
         for (Movie movie : movieController.getAllMovies()) {
-            movieController.deleteActorFromMovie(movie, actorController.findActorById(id));
+            movieController.deleteActorFromMovie(movie, id);
         }
         this.actorController.deleteActor(id);
     }
@@ -144,9 +122,9 @@ public class ActorUI {
                     System.out.println(actorToUpdate.getListOfMovies().toString());
                     System.out.println("Enter Id of the movie you want to delete:");
                     String id = keyboard.next();
-                    Movie movieToDelete = actorController.findMovieById(actorToUpdate, id);
-                    if (movieToDelete != null) {
-                        actorController.deleteMovie(actorToUpdate, movieToDelete);
+                    boolean movieExists = actorController.findMovieById(actorToUpdate, id);
+                    if (movieExists) {
+                        actorController.deleteMovie(actorToUpdate, id);
                     }
                 }
             } else if (choice == 4) {
@@ -162,8 +140,8 @@ public class ActorUI {
                     String title = keyboard.next();
                     System.out.println("Enter duration of the movie");
                     int duration = keyboard.nextInt();
-                    Movie movie = new Movie(id, title, duration, new Vector<StageDirector>(), new Vector<Actor>(), new Vector<Genre>());
-                    actorController.addMovie(actorToUpdate, movie);
+                    Movie movie = new Movie(id, title, duration, new Vector<String>(), new Vector<String>(), new Vector<String>());
+                    actorController.addMovie(actorToUpdate, id);
                     movieController.addMovie(movie);
                 } else if (movieChoice == 2) {
                     movieController.printAllMovies();
@@ -171,7 +149,7 @@ public class ActorUI {
                     String id = keyboard.next();
                     Movie movie = movieController.findMovieById(id);
                     if (movie != null) {
-                        actorController.addMovie(actorToUpdate, movie);
+                        actorController.addMovie(actorToUpdate, movie.getId());
                     }
                 }
             } else if (choice == 5) {
@@ -179,9 +157,9 @@ public class ActorUI {
                     System.out.println(actorToUpdate.getListOfAwards().toString());
                     System.out.println("Enter Id of the award you want to delete:");
                     String id = keyboard.next();
-                    Award awardToDelete = actorController.findAwardById(actorToUpdate, id);
-                    if (awardToDelete != null) {
-                        actorController.deleteAward(actorToUpdate, awardToDelete);
+                    boolean awardExists = actorController.findAwardById(actorToUpdate, id);
+                    if (awardExists) {
+                        actorController.deleteAward(actorToUpdate, id);
                     }
                 }
             } else if (choice == 6) {
@@ -204,14 +182,14 @@ public class ActorUI {
                     System.out.println();
                     String category = keyboard.next();
                     Award award = new Award(id, category);
-                    actorController.addAward(actorToUpdate, award);
+                    actorController.addAward(actorToUpdate, id);
                     awardController.addAward(type, id, category);
                 } else if (awardChoice == 2) {
                     awardController.printAllAwards();
                     System.out.println("Enter id of the award you want to add");
                     String id = keyboard.next();
                     Award award = awardController.findAwardById(id);
-                    actorController.addAward(actorToUpdate, award);
+                    actorController.addAward(actorToUpdate, award.getId());
                 }
             }
         }
