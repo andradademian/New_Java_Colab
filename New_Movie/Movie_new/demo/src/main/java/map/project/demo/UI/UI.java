@@ -149,7 +149,7 @@ public class UI {
     private static final StageDirectorUI stageDirectorUI = new StageDirectorUI(stageDirectorController, movieController, awardController);
     private static final TicketUI ticketUI = new TicketUI(ticketController, spectatorController, screeningController);
 
-    public static void mainUI() throws ParseException, SQLException {
+    public static void mainUI() throws Exception {
         int choice;
         Scanner keyboard = new Scanner(System.in);
 
@@ -270,7 +270,7 @@ public class UI {
         genreUI.mainGenreUI();
     }
 
-    public static void movieMenu() throws SQLException {
+    public static void movieMenu() throws Exception {
         movieUI.mainMovieUI();
     }
 

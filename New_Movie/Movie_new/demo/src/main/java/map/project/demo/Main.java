@@ -11,7 +11,7 @@ import java.text.ParseException;
 @SpringBootApplication
 public class Main {
 
-	public static void main(String[] args) throws ParseException, SQLException {
+	public static void main(String[] args) throws Exception {
 		UI.mainUI();
 	}
 

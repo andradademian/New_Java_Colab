@@ -5,6 +5,8 @@ import map.project.demo.Controller.GenreController;
 import map.project.demo.Controller.MovieController;
 import map.project.demo.Controller.StageDirectorController;
 import map.project.demo.Domain.*;
+import map.project.demo.Proxy.IMovie;
+import map.project.demo.Proxy.ProxyMovieFilter;
 
 import java.sql.Date;
 import java.sql.SQLException;
@@ -24,7 +26,7 @@ public class MovieUI {
         this.genreController = genreController;
     }
 
-    public void mainMovieUI() throws SQLException {
+    public void mainMovieUI() throws Exception {
         int choice;
         do {
             this.movieController.printAllMovies();
@@ -44,7 +46,10 @@ public class MovieUI {
             if (choice == 4) {
                 updateAMovie();
             }
-        } while (choice > 0 && choice < 5);
+            if(choice==5){
+                showMovie();
+            }
+        } while (choice > 0 && choice < 6);
     }
 
     public static void movieMenu() {
@@ -53,7 +58,8 @@ public class MovieUI {
         System.out.println("2. Delete a movie");
         System.out.println("3. Delete all movies");
         System.out.println("4. Update a movie");
-        System.out.println("5. Exit");
+        System.out.println("5. Show a movie");
+        System.out.println("6. Exit");
     }
 
     public void addAMovie() {
@@ -77,6 +83,20 @@ public class MovieUI {
         Scanner keyboard = new Scanner(System.in);
         String id = keyboard.next();
         this.movieController.deleteMovie(id);
+    }
+
+    public void showMovie() throws Exception {
+        this.movieController.printAllMovies();
+        System.out.println("Enter ID of the movie you want to show:");
+        Scanner keyboard = new Scanner(System.in);
+        String id = keyboard.next();
+        this.showMovieWithId(id);
+    }
+
+    public void showMovieWithId(String movieId) throws Exception {
+        Movie movieToShow=movieController.findMovieById(movieId);
+        IMovie movieFilter=new ProxyMovieFilter();
+        movieFilter.showMovie(movieToShow);
     }
 
     public void updateMovie(String movieId) throws SQLException {

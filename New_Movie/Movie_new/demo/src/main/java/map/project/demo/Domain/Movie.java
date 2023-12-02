@@ -1,8 +1,10 @@
 package map.project.demo.Domain;
 
+import map.project.demo.Proxy.IMovie;
+
 import java.util.*;
 
-public class Movie {
+public class Movie{
     private String id;
     private String title;
     private int durationInMinutes;
@@ -102,5 +104,10 @@ public class Movie {
                 ", actors=" + actors +
                 ", genres=" + genres +
                 '}';
+    }
+
+
+    public void showMovie() {
+        System.out.println("Movie \""+this.title+"\" is showed.");
     }
 }
