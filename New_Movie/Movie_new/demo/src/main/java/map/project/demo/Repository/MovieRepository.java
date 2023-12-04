@@ -9,15 +9,15 @@ public class MovieRepository {
     private static MovieRepository instance;
     private final Vector<Movie> movies;
 
-    Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Movie", "MyUser", "slay");
+    Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Movie", "MyUser", "castravete");
     Statement insert = connection.createStatement();
-    String insertStringFancyIntoMovie = "INSERT INTO \"Movie\"(id, movieTitle, durationInMinutes) VALUES (?, ?, ?) on conflict (id) do nothing";
+    String insertStringFancyIntoMovie = "INSERT INTO \"Movie\"(id, title, durationInMinutes) VALUES (?, ?, ?) on conflict (id) do nothing";
     PreparedStatement insertFancyIntoMovie = connection.prepareStatement(insertStringFancyIntoMovie);
     String insertStringFancyIntoActorMovie = "INSERT INTO \"ActorMovie\"(actorid, movieid) VALUES (?, ?) ON CONFLICT (actorid, movieid) DO NOTHING";
     PreparedStatement insertFancyIntoActorMovie = connection.prepareStatement(insertStringFancyIntoActorMovie);
     String insertStringFancyIntoMovieGenre = "INSERT INTO \"MovieGenre\"(movieid, genreid) VALUES (?, ?) ON CONFLICT (movieid, genreid) DO NOTHING";
     PreparedStatement insertFancyIntoMovieGenre = connection.prepareStatement(insertStringFancyIntoMovieGenre);
-    String insertStringFancyIntoMovieDirector = "INSERT INTO \"MovieDirector\"(movieid, stageDirectorid) VALUES (?, ?) ON CONFLICT (movieid, stageDirectorid) DO NOTHING";
+    String insertStringFancyIntoMovieDirector = "INSERT INTO \"MovieDirector\"(movieid, directorid) VALUES (?, ?) ON CONFLICT (movieid, directorid) DO NOTHING";
     PreparedStatement insertFancyIntoMovieDirector = connection.prepareStatement(insertStringFancyIntoMovieDirector);
 
     Statement select = connection.createStatement();
@@ -89,7 +89,7 @@ public class MovieRepository {
 
     public Vector<String> getDirectorsFromMovieDirectorTable(String movieId) throws SQLException {
         Vector<String> directorIds = new Vector<>();
-        PreparedStatement awardStatement = connection.prepareStatement(" SELECT AA.movieDirectorid FROM \"Movie\" A join \"MovieDirector\" AA on AA.movieid=?");
+        PreparedStatement awardStatement = connection.prepareStatement(" SELECT AA.directorid FROM \"MovieDirector\" AA where AA.movieid=?");
         awardStatement.setString(1, movieId);
         ResultSet result = awardStatement.executeQuery();
         while (result.next()) {
@@ -100,7 +100,7 @@ public class MovieRepository {
 
     public Vector<String> getActorsFromActorMovieTable(String movieId) throws SQLException {
         Vector<String> actorsIds = new Vector<>();
-        PreparedStatement movieStatement = connection.prepareStatement(" SELECT AM.actorid FROM \"Movie\" A join \"ActorMovie\" AM on AM.movieid=?");
+        PreparedStatement movieStatement = connection.prepareStatement(" SELECT AM.actorid FROM  \"ActorMovie\" AM where AM.movieid=?");
         movieStatement.setString(1, movieId);
         ResultSet result = movieStatement.executeQuery();
         while (result.next()) {
@@ -111,7 +111,7 @@ public class MovieRepository {
 
     public Vector<String> getGenresFromMovieGenreTable(String movieId) throws SQLException {
         Vector<String> genreIds = new Vector<>();
-        PreparedStatement movieStatement = connection.prepareStatement(" SELECT MG.genreid FROM \"Movie\" G join \"MovieGenre\" MG on MG.movieid=?");
+        PreparedStatement movieStatement = connection.prepareStatement(" SELECT MG.genreid FROM \"MovieGenre\" MG where MG.movieid=?");
         movieStatement.setString(1, movieId);
         ResultSet result = movieStatement.executeQuery();
         while (result.next()) {

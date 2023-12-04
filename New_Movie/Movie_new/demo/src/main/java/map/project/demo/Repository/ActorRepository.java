@@ -1,11 +1,6 @@
 package map.project.demo.Repository;
 
-import map.project.demo.AwardFactory.GoldenGlobe;
-import map.project.demo.AwardFactory.Oscar;
-import map.project.demo.AwardFactory.PalmeDor;
 import map.project.demo.Domain.Actor;
-import map.project.demo.Domain.Award;
-import map.project.demo.Domain.Movie;
 
 import java.sql.*;
 import java.util.Vector;
@@ -14,7 +9,7 @@ public class ActorRepository {
     private static ActorRepository instance;
     private final Vector<Actor> listOfActors;
 
-    Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Movie", "MyUser", "slay");
+    Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Movie", "MyUser", "castravete");
     Statement insert = connection.createStatement();
     String insertStringFancy = "insert into \"Actor\"(id, firstName, lastName, startOfCareer) VALUES (?, ?, ?, ?) on conflict (id) do nothing";
     PreparedStatement insertFancy = connection.prepareStatement(insertStringFancy);
@@ -38,7 +33,7 @@ public class ActorRepository {
 
     public Vector<Actor> getActorsFromTable() throws SQLException {
         Vector<Actor> actorVector = new Vector<>();
-        ResultSet result = select.executeQuery(" SELECT * FROM \"actor\"");
+        ResultSet result = select.executeQuery(" SELECT * FROM \"Actor\"");
         while (result.next()) {
             String id = result.getString("Id");
             String firstName = result.getString("FirstName");
@@ -51,7 +46,7 @@ public class ActorRepository {
     }
 
     public void deleteAllFromActorTable() throws SQLException {
-        select.execute("delete from \"actor\"");
+        select.execute("delete from \"Actor\"");
     }
 
     public void addActorsToTable() throws SQLException {
@@ -94,7 +89,7 @@ public class ActorRepository {
 
     public Vector<String> getAwardsFromActorAwardTable(String actorId) throws SQLException {
         Vector<String> awardIds = new Vector<>();
-        PreparedStatement awardStatement = connection.prepareStatement(" SELECT AA.awardid FROM \"Actor\" A join \"ActorAward\" AA on AA.actorid=?");
+        PreparedStatement awardStatement = connection.prepareStatement(" SELECT AA.awardid FROM \"ActorAward\" AA where AA.actorid=?");
         awardStatement.setString(1, actorId);
         ResultSet result = awardStatement.executeQuery();
         while (result.next()) {
@@ -105,7 +100,7 @@ public class ActorRepository {
 
     public Vector<String> getMoviesFromActorMovieTable(String actorId) throws SQLException {
         Vector<String> moviesIds = new Vector<>();
-        PreparedStatement movieStatement = connection.prepareStatement(" SELECT AM.movieid FROM \"Actor\" A join \"ActorMovie\" AM on AM.actorid=?");
+        PreparedStatement movieStatement = connection.prepareStatement(" SELECT AM.movieid FROM \"ActorMovie\" AM where AM.actorid=?");
         movieStatement.setString(1, actorId);
         ResultSet result = movieStatement.executeQuery();
         while (result.next()) {
