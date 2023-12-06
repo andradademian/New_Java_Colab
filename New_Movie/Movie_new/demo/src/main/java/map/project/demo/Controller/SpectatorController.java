@@ -1,57 +1,71 @@
 package map.project.demo.Controller;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import map.project.demo.Domain.Spectator;
 import map.project.demo.Repository.SpectatorRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.Scanner;
+import java.sql.SQLException;
 import java.util.Vector;
 
+@RestController
+@RequestMapping("/api/spectator")
+@Getter
+@Setter
+@NoArgsConstructor
 public class SpectatorController {
-    private final SpectatorRepository spectatorRepo;
+    @Autowired
+    private SpectatorRepository spectatorRepo;
 
-    public SpectatorController(SpectatorRepository spectatorRepo) {
-        this.spectatorRepo = spectatorRepo;
+    @PostMapping
+    public Spectator addSpectator(@RequestBody Spectator spectator) throws SQLException {
+        spectatorRepo.addSpectatorToTable(spectator);
+        return spectator;
     }
 
-    public void addSpectator(Spectator spectator) {
-        spectatorRepo.add(spectator);
+    @GetMapping("/{id}")
+    public Spectator findSpectatorById(@PathVariable String id) throws SQLException {
+        return spectatorRepo.getSpectatorWithIdFromTable(id);
     }
 
-    public Spectator findSpectatorById(String spectatorId) {
-        for (Spectator spectator : spectatorRepo.getAll()) {
-            if (spectator.getId().equals(spectatorId)) {
-                return spectator;
-            }
-        }
-        System.out.println("No spectator with that ID");
-        return null;
+    @DeleteMapping("/{id}")
+    public void deleteSpectator(@PathVariable String id) throws SQLException {
+//        Spectator spectatorToDelete = findSpectatorById(id);
+//        if (spectatorToDelete != null) {
+//            spectatorRepo.delete(spectatorToDelete);
+//        }
+        spectatorRepo.deleteSpectatorWithIdFromTable(id);
     }
 
-    public void deleteSpectator(String spectatorId) {
-        Spectator spectatorToDelete = findSpectatorById(spectatorId);
-        if (spectatorToDelete != null) {
-            spectatorRepo.delete(spectatorToDelete);
-        }
-    }
-
-    public void deleteAllSpectators() {
-        spectatorRepo.deleteAll();
+    @DeleteMapping
+    public void deleteAllSpectators() throws SQLException {
+        spectatorRepo.deleteAllFromSpectatorTable();
     }
 
 
-    public void updateSpectatorFirstName(Spectator spectator, String firstName) {
-        spectatorRepo.updateFirstName(spectator, firstName);
+    //    public void updateSpectatorFirstName(Spectator spectator, String firstName) {
+//        spectatorRepo.updateFirstName(spectator, firstName);
+//    }
+//
+//    public void updateSpectatorLastName(Spectator spectator, String lastName) {
+//        spectatorRepo.updateLastName(spectator, lastName);
+//    }
+    @PutMapping("/{id}")
+    public void updateSpectator(@RequestBody Spectator spectator, @PathVariable String id) throws SQLException {
+        spectatorRepo.deleteSpectatorWithIdFromTable(id);
+        spectator.setId(id);
+        spectatorRepo.addSpectatorToTable(spectator);
     }
 
-    public void updateSpectatorLastName(Spectator spectator, String lastName) {
-        spectatorRepo.updateLastName(spectator, lastName);
+    @GetMapping
+    public Vector<Spectator> getAllSpectators() throws SQLException {
+        return spectatorRepo.getSpectatorsFromTable();
     }
 
-    public Vector<Spectator> getAllSpectators() {
-        return spectatorRepo.getAll();
-    }
-
-    public void printAllSpectators() {
-        spectatorRepo.printAll();
-    }
+//    public void printAllSpectators() {
+//        spectatorRepo.printAll();
+//    }
 }

@@ -1,5 +1,7 @@
 package map.project.demo.Domain;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import map.project.demo.ObserverPattern.Observer;
 
 import java.sql.*;
@@ -10,6 +12,9 @@ public class Spectator implements Observer {
     private String lastName;
     private Ticket ticket;
 
+    public Spectator() {
+
+    }
 
     public Spectator(String id, String firstName, String lastName) throws SQLException {
         this.id = id;

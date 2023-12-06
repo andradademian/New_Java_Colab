@@ -1,13 +1,10 @@
 package map.project.demo.Controller;
 
-import map.project.demo.Domain.Award;
-import map.project.demo.Domain.Movie;
 import map.project.demo.Repository.ActorRepository;
 import map.project.demo.Domain.Actor;
 
 import java.sql.SQLException;
 import java.util.Objects;
-import java.util.Scanner;
 import java.util.Vector;
 
 

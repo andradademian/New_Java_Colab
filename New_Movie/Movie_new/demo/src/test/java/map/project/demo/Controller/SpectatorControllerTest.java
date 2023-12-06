@@ -13,8 +13,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class SpectatorControllerTest {
-    SpectatorRepository spectatorRepository = SpectatorRepository.getInstance();
-    SpectatorController spectatorController = new SpectatorController(spectatorRepository);
+    SpectatorRepository spectatorRepository = new SpectatorRepository();
+    SpectatorController spectatorController = new SpectatorController();
 
     public SpectatorControllerTest() throws SQLException {
     }
@@ -30,33 +30,33 @@ public class SpectatorControllerTest {
     }
 
     @Test
-    public void expectCorrectAddingOfTheSpectator() {
+    public void expectCorrectAddingOfTheSpectator() throws SQLException {
         assertEquals(spectatorController.getAllSpectators().size(), 3);
         spectatorController.deleteAllSpectators();
     }
 
     @Test
-    public void expectIncorrectAddingOfTheScreenings() {
+    public void expectIncorrectAddingOfTheScreenings() throws SQLException {
         assertNotEquals(spectatorController.getAllSpectators().size(), 0);
         spectatorController.deleteAllSpectators();
     }
 
     @Test
-    public void expectCorrectFindingOfTheSpectatorById() {
+    public void expectCorrectFindingOfTheSpectatorById() throws SQLException {
         Spectator spectator = spectatorController.findSpectatorById("2");
         assertEquals(spectator.getId(), "2");
         spectatorController.deleteAllSpectators();
     }
 
     @Test
-    public void expectIncorrectFindingOfTheSpectatorById() {
+    public void expectIncorrectFindingOfTheSpectatorById() throws SQLException {
         Spectator spectator = spectatorController.findSpectatorById("1");
         assertNotEquals(spectator.getId(), "2");
         spectatorController.deleteAllSpectators();
     }
 
     @Test
-    public void expectCorrectDeletingOfTheSpectatorById() {
+    public void expectCorrectDeletingOfTheSpectatorById() throws SQLException {
         spectatorController.deleteSpectator("1");
         Spectator spectator = spectatorController.findSpectatorById("1");
         assertNull(spectator);
@@ -64,7 +64,7 @@ public class SpectatorControllerTest {
     }
 
     @Test
-    public void expectIncorrectDeletingOfTheSpectatorById() {
+    public void expectIncorrectDeletingOfTheSpectatorById() throws SQLException {
         spectatorController.deleteSpectator("2");
         Spectator spectator = spectatorController.findSpectatorById("3");
         assertNotNull(spectator);
