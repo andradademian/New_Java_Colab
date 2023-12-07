@@ -1,32 +1,34 @@
 package map.project.demo.Controller;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import map.project.demo.Repository.ActorRepository;
 import map.project.demo.Domain.Actor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
 import java.util.Objects;
 import java.util.Vector;
 
-
+@RestController
+@RequestMapping("/api/actor")
+@Getter
+@Setter
+@NoArgsConstructor
 public class ActorController {
-    private final ActorRepository actorRepo;
+    @Autowired
+    private ActorRepository actorRepo;
 
-    public ActorController(ActorRepository actorRepo) {
-        this.actorRepo = actorRepo;
+    @PostMapping
+    public void addActor(@RequestBody Actor actor) throws SQLException {
+        actorRepo.addActorToTable(actor);
     }
 
-    public void addActor(Actor actor) {
-        actorRepo.add(actor);
-    }
-
-    public Actor findActorById(String actorId) {
-        for (Actor actor : actorRepo.getAll()) {
-            if (actor.getId().equals(actorId)) {
-                return actor;
-            }
-        }
-        System.out.println("No actor with that ID");
-        return null;
+    @GetMapping("/{id}")
+    public Actor findActorById(@PathVariable String id) throws SQLException {
+        return actorRepo.getActorWithIdFromTable(id);
     }
 
     public boolean findMovieById(Actor actor, String id) {
@@ -49,46 +51,64 @@ public class ActorController {
         return false;
     }
 
-    public void deleteActor(String actorId) {
-        Actor actorToDelete = findActorById(actorId);
-        if (actorToDelete != null) {
-            actorRepo.delete(actorToDelete);
-        }
+    @DeleteMapping
+    public void deleteAllActors() throws SQLException {
+        actorRepo.deleteAllFromActorTable();
     }
 
-    public void deleteAllActors() {
-        actorRepo.deleteAll();
+    @DeleteMapping("/movies")
+    public void deleteAllFromActorMovieTable() throws SQLException {
+        actorRepo.deleteAllFromActorMovieTable();
     }
 
-    public void showAllActors() {
-        actorRepo.printAll();
+    @DeleteMapping("/awards")
+    public void deleteAllFromActorAwardTable() throws SQLException {
+        actorRepo.deleteAllFromActorAwardTable();
     }
 
-    public void updateFirstName(Actor actor, String firstName) {
-        actorRepo.updateFirstName(actor, firstName);
+    @DeleteMapping("/{id}")
+    public void deleteActorWithIdFromTable(@PathVariable String id) throws SQLException {
+        actorRepo.deleteActorWithIdFromTable(id);
     }
 
-    public void updateLastName(Actor actor, String lastName) {
-        actorRepo.updateLastName(actor, lastName);
+    @PutMapping("/{id}/updateFirstName")
+    public void updateFirstName(@PathVariable String id, @RequestBody String firstName) throws SQLException {
+        Actor actor = actorRepo.getActorWithIdFromTable(id);
+        actorRepo.deleteActorWithIdFromTable(id);
+        actor.setFirstName(firstName);
+        actorRepo.addActorToTable(actor);
     }
 
-    public void deleteMovie(Actor actor, String movie) throws SQLException {
-        actorRepo.deleteMovie(actor, movie);
+    @PutMapping("/{id}/updateLastName")
+    public void updateLastName(@PathVariable String id, @RequestBody String lastName) throws SQLException {
+        Actor actor = actorRepo.getActorWithIdFromTable(id);
+        actorRepo.deleteActorWithIdFromTable(id);
+        actor.setLastName(lastName);
+        actorRepo.addActorToTable(actor);
     }
 
-    public void addMovie(Actor actor, String movie) {
-        actorRepo.addMovie(actor, movie);
+    @DeleteMapping("/{actorId}/movies/{movieId}")
+    public void deleteMovie(@PathVariable String actorId, @PathVariable String movieId) throws SQLException {
+        actorRepo.deleteMovie(actorId, movieId);
     }
 
-    public void deleteAward(Actor actor, String award) {
-        actorRepo.deleteAward(actor, award);
+    @PostMapping("{actorId}/movies")
+    public void addMovie(@PathVariable String actorId, @RequestBody String movieId) throws SQLException {
+        actorRepo.addMovie(actorId, movieId);
     }
 
-    public void addAward(Actor actor, String award) {
-        actorRepo.addAward(actor, award);
+    @DeleteMapping("/{actorId}/awards/{awardId}")
+    public void deleteAward(@PathVariable String actorId, @PathVariable String awardId) throws SQLException {
+        actorRepo.deleteAward(actorId, awardId);
     }
 
-    public Vector<Actor> getAllActors() {
-        return actorRepo.getAll();
+    @PostMapping("{actorId}/awards")
+    public void addAward(@PathVariable String actorId, @RequestBody String awardId) throws SQLException {
+        actorRepo.addAward(actorId, awardId);
+    }
+
+    @GetMapping
+    public Vector<Actor> getAllActors() throws SQLException {
+        return actorRepo.getActorsFromTable();
     }
 }

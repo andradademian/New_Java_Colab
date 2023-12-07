@@ -9,6 +9,10 @@ public class Actor extends Spectator {
     private Vector<String> listOfAwards;
     private Date startOfCareer;
 
+    public Actor() {
+
+    }
+
     public Actor(String id, String firstName, String lastName, Vector<String> listOfMovies, Date startOfCareer, Vector<String> awards) throws SQLException {
         super(id, firstName, lastName);
         this.listOfMovies = listOfMovies;
