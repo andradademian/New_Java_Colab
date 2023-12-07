@@ -27,13 +27,6 @@ public class SpectatorRepository {
         spectators = getSpectatorsFromTable();
     }
 
-//    public static SpectatorRepository getInstance() throws SQLException {
-//        if (instance == null) {
-//            instance = new SpectatorRepository();
-//        }
-//        return instance;
-//    }
-
     @Transactional
     public Vector<Spectator> getSpectatorsFromTable() throws SQLException {
         Vector<Spectator> spectatorVector = new Vector<>();
@@ -167,12 +160,6 @@ public class SpectatorRepository {
 
     @Transactional
     public void addSpectatorToTable(Spectator spectator) throws SQLException {
-//        insertFancyTicket.setString(1, spectator.getTicket().getId());
-//        insertFancyTicket.setString(2, spectator.getTicket().getScreening().getId());
-//        insertFancyTicket.setDouble(3, spectator.getTicket().getPrice());
-//        insertFancyTicket.setInt(4, spectator.getTicket().getSeatNumber());
-//        insertFancyTicket.setString(5, spectator.getId());
-//        insertFancyTicket.executeUpdate();
         insertFancy.setString(1, spectator.getId());
         insertFancy.setString(2, spectator.getFirstName());
         insertFancy.setString(3, spectator.getLastName());
@@ -183,11 +170,6 @@ public class SpectatorRepository {
         }
         insertFancy.executeUpdate();
     }
-
-//    @Transactional
-//    public void add(Spectator spectator) {
-//        spectators.add(spectator);
-//    }
 
     @Transactional
     public void delete(Spectator spectator) {
@@ -204,29 +186,9 @@ public class SpectatorRepository {
         System.out.println(spectators);
     }
 
-//    @Transactional
-//    public void updateFirstName(Spectator spectator, String firstName) {
-//        spectators.get(getAll().indexOf(spectator)).setFirstName(firstName);
-//    }
-//
-//    @Transactional
-//    public void updateLastName(Spectator spectator, String lastName) {
-//        spectators.get(getAll().indexOf(spectator)).setLastName(lastName);
-//    }
-
     @Transactional
     public Vector<Spectator> getAll() {
         return this.spectators;
     }
 
-    @Transactional
-    public Spectator findSpectatorById(String spectatorId) {
-        for (Spectator spectator : getAll()) {
-            if (spectator.getId().equals(spectatorId)) {
-                return spectator;
-            }
-        }
-        System.out.println("No spectator with that ID");
-        return null;
-    }
 }
