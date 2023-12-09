@@ -11,6 +11,10 @@ public class Award {
     private String name;
     private String category;
 
+    public Award() {
+
+    }
+
     public Award(String id, String category) {
         this.id = id;
         this.category = category;

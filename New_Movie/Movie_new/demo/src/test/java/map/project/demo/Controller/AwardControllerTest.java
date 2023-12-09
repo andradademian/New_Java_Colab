@@ -16,7 +16,7 @@ import java.util.Vector;
 public class AwardControllerTest {
     AwardRepository awardRepository = AwardRepository.getInstance();
     AwardFactory awardFactory = AwardFactory.getInstance();
-    AwardController awardController = new AwardController(awardRepository, awardFactory);
+    AwardController awardController = new AwardController();
 
     public AwardControllerTest() throws SQLException {
     }
@@ -30,7 +30,7 @@ public class AwardControllerTest {
 
 
     @Test
-    public void shouldFindAwardById() {
+    public void shouldFindAwardById() throws SQLException {
         String awardId = "2";
 
         Award foundAward = awardController.findAwardById(awardId);
@@ -40,7 +40,7 @@ public class AwardControllerTest {
     }
 
     @Test
-    public void shouldNotFindInvalidAwardById() {
+    public void shouldNotFindInvalidAwardById() throws SQLException {
         String invalidAwardId = "InvalidId";
 
         Award foundAward = awardController.findAwardById(invalidAwardId);

@@ -1,71 +1,65 @@
 package map.project.demo.Controller;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import map.project.demo.Repository.ActorRepository;
 import map.project.demo.Domain.Actor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+
 import map.project.demo.Domain.Award;
 
-import map.project.demo.Domain.Movie;
 import map.project.demo.Repository.AwardRepository;
 import map.project.demo.AwardFactory.AwardFactory;
 
 import java.sql.SQLException;
-import java.util.Objects;
-import java.util.Scanner;
+
 import java.util.Vector;
 
+@RestController
+@RequestMapping("/api/award")
+@Getter
+@Setter
+@NoArgsConstructor
 public class AwardController {
+    @Autowired
     private AwardRepository awardRepo;
-    private final Vector<Award> listOfAwards = new Vector<>();
-    private final AwardFactory awardFactory;
 
-    public AwardController(AwardRepository awardRepo, AwardFactory awardFactory) throws SQLException {
-        this.awardRepo = awardRepo;
-        this.awardFactory = awardFactory;
+    @PostMapping
+    public void addAward(@RequestBody Award award) throws SQLException {
+        awardRepo.addAwardToTable(award);
     }
 
-    public void addAward(String type, String id, String category) {
-        Award newAward = awardFactory.buildAward(type, id, category);
-
-        if (newAward != null) {
-            awardRepo.add(newAward);
-            System.out.println("Award added successfully!");
-        } else {
-            System.out.println("Failed to add award. Please check the input.");
-        }
-    }
-    public void deleteAward(Award award) {
-        awardRepo.delete(award);
+    @DeleteMapping("/{id}")
+    public void deleteAwardWithIdFromTable(@PathVariable String id) throws SQLException {
+        awardRepo.deleteAwardWithIdFromTable(id);
     }
 
+    @DeleteMapping
     public void deleteAllAwards() {
         awardRepo.deleteAll();
     }
 
-    public Award findAwardById(String awardId) {
-        for (Award award : awardRepo.getAll()) {
-            if (award.getId().equals(awardId)) {
-                return award;
-            }
-        }
-        System.out.println("No award with that ID");
-        return null;
+    @GetMapping("/{id}")
+    public Award findAwardById(@PathVariable String id) throws SQLException {
+        return awardRepo.getAwardWithIdFromTable(id);
     }
 
-    public void deleteAward(String awardId) {
-        Award awardToDelete = findAwardById(awardId);
-        if (awardToDelete != null) {
-            awardRepo.delete(awardToDelete);
-        }
+
+    @PutMapping("/{id}/updateAwardCategory")
+    public void updateAwardCategory(@PathVariable String id, @RequestBody String category) throws SQLException {
+        Award award = awardRepo.getAwardWithIdFromTable(id);
+        awardRepo.deleteAwardWithIdFromTable(id);
+        award.setCategory(category);
+        awardRepo.addAwardToTable(award);
+
     }
 
-    public void updateAwardCategory(Award award, String category) {
-        awardRepo.updateCategory(award, category);
-    }
-
+    @GetMapping
     public Vector<Award> getAllAwards() {
         return awardRepo.getAll();
     }
 
-    public void printAllAwards() {
-        awardRepo.printAll();
-    }
 }
