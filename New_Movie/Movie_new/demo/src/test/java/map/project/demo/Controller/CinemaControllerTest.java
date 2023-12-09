@@ -16,7 +16,7 @@ import java.util.Vector;
 
 public class CinemaControllerTest {
     CinemaRepository cinemaRepository = CinemaRepository.getInstance();
-    CinemaController cinemaController = new CinemaController(cinemaRepository);
+    CinemaController cinemaController = new CinemaController();
 
     public CinemaControllerTest() throws SQLException {
     }
