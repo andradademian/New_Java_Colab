@@ -66,7 +66,7 @@ public class ScreeningController {
     }
 
     @PutMapping("/{id}/movie")
-    public void updateScreeningMovie(@PathVariable String id, String movieId) throws SQLException {
+    public void updateScreeningMovie(@PathVariable String id, @RequestBody String movieId) throws SQLException {
         screeningRepo.updateMovie(id, movieId);
     }
 

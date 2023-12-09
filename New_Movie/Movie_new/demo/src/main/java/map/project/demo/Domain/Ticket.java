@@ -8,6 +8,10 @@ public class Ticket {
     private float price;
     private int seatNumber;
 
+    public Ticket() {
+
+    }
+
     public Ticket(String id, Screening screening, float price, int seatNumber) {
         this.id = id;
         this.screening = screening;

@@ -1,61 +1,57 @@
 package map.project.demo.Controller;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import map.project.demo.Domain.Ticket;
 import map.project.demo.Repository.TicketRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLException;
 import java.util.Vector;
 
+@RestController
+@RequestMapping("/api/ticket")
+@Getter
+@Setter
+@NoArgsConstructor
 public class TicketController {
-    private final TicketRepository ticketRepo;
+    @Autowired
+    private TicketRepository ticketRepo;
 
-    public TicketController(TicketRepository ticketRepo) {
-        this.ticketRepo = ticketRepo;
+    @PostMapping
+    public void addTicket(@RequestBody Ticket ticket) throws SQLException {
+        ticketRepo.addTicketToTable(ticket);
     }
 
-    public void addTicket(Ticket ticket) {
-        ticketRepo.add(ticket);
+    @GetMapping("/{id}")
+    public Ticket getTicketWithId(@PathVariable String id) throws SQLException {
+        return ticketRepo.getTicketWithIdFromTable(id);
     }
 
-    public void deleteTicket(String ticketId) {
-        Ticket ticketToDelete = findTicketById(ticketId);
-        if (ticketToDelete != null) {
-            ticketRepo.delete(ticketToDelete);
-        }
+    @DeleteMapping("/{ticketId}")
+    public void deleteTicket(@PathVariable String ticketId) throws SQLException {
+        ticketRepo.deleteTicketWithId(ticketId);
     }
 
-    public void deleteAllTickets() {
-        ticketRepo.deleteAll();
+    @DeleteMapping
+    public void deleteAllTickets() throws SQLException {
+        ticketRepo.deleteAllFromTicketTable();
     }
 
-    public void updateTicketPrice(String ticketId, float price) {
-        Ticket ticketToUpdate = findTicketById(ticketId);
-        if (ticketToUpdate != null) {
-            ticketRepo.updatePrice(ticketToUpdate, price);
-        }
+    @PutMapping("/{ticketId}/price")
+    public void updateTicketPrice(@PathVariable String ticketId, @RequestBody float price) throws SQLException {
+        ticketRepo.updatePrice(ticketId, price);
     }
 
-    public void updateTicketSeatNumber(String ticketId, int seatNumber) {
-        Ticket ticketToUpdate = findTicketById(ticketId);
-        if (ticketToUpdate != null) {
-            ticketRepo.updateSeatNumber(ticketToUpdate, seatNumber);
-        }
+    @PutMapping("/{ticketId}/seatNumber")
+    public void updateTicketSeatNumber(@PathVariable String ticketId, @RequestBody int seatNumber) throws SQLException {
+        ticketRepo.updateSeatNumber(ticketId, seatNumber);
     }
 
-    public Vector<Ticket> getAllTickets() {
-        return ticketRepo.getAll();
-    }
-
-    public void printAllTickets() {
-        ticketRepo.printAll();
-    }
-
-    public Ticket findTicketById(String ticketId) {
-        for (Ticket ticket : ticketRepo.getAll()) {
-            if (ticket.getId().equals(ticketId)) {
-                return ticket;
-            }
-        }
-        System.out.println("No ticket with that ID");
-        return null;
+    @GetMapping
+    public Vector<Ticket> getAllTickets() throws SQLException {
+        return ticketRepo.getTicketsFromTable();
     }
 }

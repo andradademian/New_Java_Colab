@@ -30,13 +30,6 @@ public class MovieRepository {
         movies = getMoviesFromTable();
     }
 
-//    public static MovieRepository getInstance() throws SQLException {
-//        if (instance == null) {
-//            instance = new MovieRepository();
-//        }
-//        return instance;
-//    }
-
     @Transactional
     public Vector<Movie> getMoviesFromTable() throws SQLException {
         Vector<Movie> movieVector = new Vector<>();
@@ -117,30 +110,10 @@ public class MovieRepository {
         select.execute("delete from \"ActorMovie\"");
     }
 
-//    public void addToActorMovieTable() throws SQLException {
-//        for (Movie movie : movies) {
-//            for (String actorId : movie.getActors()) {
-//                insertFancyIntoActorMovie.setString(1, actorId);
-//                insertFancyIntoActorMovie.setString(2, movie.getId());
-//                insertFancyIntoActorMovie.executeUpdate();
-//            }
-//        }
-//    }
-
     @Transactional
     public void deleteAllFromMovieGenreTable() throws SQLException {
         select.execute("delete from \"MovieGenre\"");
     }
-
-//    public void addToMovieGenreTable() throws SQLException {
-//        for (Movie movie : movies) {
-//            for (String genreId : movie.getGenres()) {
-//                insertFancyIntoMovieGenre.setString(1, movie.getId());
-//                insertFancyIntoMovieGenre.setString(2, genreId);
-//                insertFancyIntoMovieGenre.executeUpdate();
-//            }
-//        }
-//    }
 
     @Transactional
     public Vector<String> getDirectorsFromMovieDirectorTable(String movieId) throws SQLException {
