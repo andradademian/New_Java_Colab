@@ -5,7 +5,11 @@ public class Room {
     private int roomNumber;
     private int numberOfSeats;
 
-    private Room(String id, int roomNumber, int numberOfSeats) {
+    public Room() {
+
+    }
+
+    public Room(String id, int roomNumber, int numberOfSeats) {
         this.id = id;
         this.roomNumber = roomNumber;
         this.numberOfSeats = numberOfSeats;

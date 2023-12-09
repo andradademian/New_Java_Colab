@@ -3,54 +3,61 @@ package map.project.demo.Controller;
 import map.project.demo.Domain.Room;
 import map.project.demo.Repository.RoomRepository;
 
-import java.util.Scanner;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import map.project.demo.Repository.ActorRepository;
+import map.project.demo.Domain.Actor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+
+import java.sql.SQLException;
 import java.util.Vector;
 
+@RestController
+@RequestMapping("/api/room")
+@Getter
+@Setter
+@NoArgsConstructor
 public class RoomController {
-    private final RoomRepository roomRepo;
+    @Autowired
+    private RoomRepository roomRepo;
 
-    public RoomController(RoomRepository roomRepo) {
-        this.roomRepo = roomRepo;
+    @PostMapping
+    public void addRoom(@RequestBody Room room) throws SQLException {
+        roomRepo.addRoomToTable(room);
+    }
+    @GetMapping("/{id}")
+    public Room findRoomById(@PathVariable String id) throws SQLException {
+        return roomRepo.getRoomWithIdFromTable(id);
     }
 
-    public void addRoom(Room room) {
-        roomRepo.add(room);
+    @DeleteMapping("/{id}")
+    public void deleteRoomWithIdFromTable(@PathVariable String id) throws SQLException {
+        roomRepo.deleteRoomWithIdFromTable(id);
     }
 
-    public Room findRoomById(String roomId) {
-        for (Room room : roomRepo.getAll()) {
-            if (room.getId().equals(roomId)) {
-                return room;
-            }
-        }
-        System.out.println("No room with that ID");
-        return null;
+    @DeleteMapping
+    public void deleteAllRooms() throws SQLException {
+        roomRepo.deleteAllFromRoomTable();
     }
-
-    public void deleteRoom(String roomId) {
-        Room roomToDelete = findRoomById(roomId);
-        if (roomToDelete != null) {
-            roomRepo.delete(roomToDelete);
-        }
+    @PutMapping("/{id}/updateRoomNumber")
+    public void updateRoomNumber(@PathVariable String id, @RequestBody int roomNumber) throws SQLException {
+        Room room = roomRepo.getRoomWithIdFromTable(id);
+        roomRepo.deleteRoomWithIdFromTable(id);
+        room.setRoomNumber(roomNumber);
+        roomRepo.addRoomToTable(room);
     }
-
-    public void deleteAllRooms() {
-        roomRepo.deleteAll();
+    @PutMapping("/{id}/updateNumberOfSeats")
+    public void updateNumberOfSeats(@PathVariable String id, @RequestBody int numberOfSeats) throws SQLException {
+        Room room = roomRepo.getRoomWithIdFromTable(id);
+        roomRepo.deleteRoomWithIdFromTable(id);
+        room.setNumberOfSeats(numberOfSeats);
+        roomRepo.addRoomToTable(room);
     }
-
-    public void updateRoomNumber(Room room, int roomNumber) {
-        roomRepo.updateRoomNumber(room, roomNumber);
-    }
-
-    public void updateNumberOfSeats(Room room, int numberOfSeats) {
-        roomRepo.updateNumberOfSeats(room, numberOfSeats);
-    }
-
+    @GetMapping
     public Vector<Room> getAllRooms() {
         return roomRepo.getAll();
-    }
-
-    public void printAllRooms() {
-        roomRepo.printAll();
     }
 }

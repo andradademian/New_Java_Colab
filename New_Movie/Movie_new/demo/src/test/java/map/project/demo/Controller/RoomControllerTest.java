@@ -15,7 +15,7 @@ import java.util.Vector;
 
 public class RoomControllerTest {
     RoomRepository roomRepository = new RoomRepository();
-    RoomController roomController = new RoomController(roomRepository);
+    RoomController roomController = new RoomController();
 
     public RoomControllerTest() throws SQLException {
     }
@@ -28,7 +28,7 @@ public class RoomControllerTest {
     }
 
     @Test
-    public void shouldFindRoomById() {
+    public void shouldFindRoomById() throws SQLException {
         Room foundRoom = roomController.findRoomById("1");
 
         assertNotNull(foundRoom);
@@ -36,7 +36,7 @@ public class RoomControllerTest {
     }
 
     @Test
-    public void shouldNotFindRoomByInvalidId() {
+    public void shouldNotFindRoomByInvalidId() throws SQLException {
         Room foundRoom = roomController.findRoomById("4");
 
         assertNull(foundRoom);

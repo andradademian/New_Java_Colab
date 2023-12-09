@@ -22,7 +22,7 @@ public class CinemaRepoTest {
 
     @BeforeEach
     public void setUp() throws SQLException {
-        cinemaRepository = CinemaRepository.getInstance();
+        cinemaRepository = new CinemaRepository();
     }
 
     @Test
@@ -104,32 +104,32 @@ public class CinemaRepoTest {
     }
 
     @Test
-    public void expectCorrectAddingOfTheRoom() {
+    public void expectCorrectAddingOfTheRoom() throws SQLException {
         cinemaIsAddedToTheList();
         roomIsAddedToTheCinema();
         assertEquals(cinemaRepository.getAll().get(0).getListOfRooms().size(), 1);
     }
 
     @Test
-    public void expectIncorrectAddingOfTheRoom() {
+    public void expectIncorrectAddingOfTheRoom() throws SQLException {
         cinemaIsAddedToTheList();
         roomIsAddedToTheCinema();
         assertNotEquals(cinemaRepository.getAll().get(0).getListOfRooms().size(), 0);
     }
 
     @Test
-    public void expectCorrectDeletingOfTheRoom() {
+    public void expectCorrectDeletingOfTheRoom() throws SQLException {
         cinemaIsAddedToTheList();
         roomIsAddedToTheCinema();
-        cinemaRepository.deleteRoom(cinemaRepository.getAll().get(0), cinemaRepository.getAll().get(0).getListOfRooms().get(0));
+        cinemaRepository.deleteRoom(String.valueOf(cinemaRepository.getAll().get(0)), cinemaRepository.getAll().get(0).getListOfRooms().get(0));
         assertEquals(cinemaRepository.getAll().get(0).getListOfRooms().size(), 0);
     }
 
     @Test
-    public void expectIncorrectDeletingOfTheRoom() {
+    public void expectIncorrectDeletingOfTheRoom() throws SQLException {
         cinemaIsAddedToTheList();
         roomIsAddedToTheCinema();
-        cinemaRepository.deleteRoom(cinemaRepository.getAll().get(0), cinemaRepository.getAll().get(0).getListOfRooms().get(0));
+        cinemaRepository.deleteRoom(String.valueOf(cinemaRepository.getAll().get(0)), cinemaRepository.getAll().get(0).getListOfRooms().get(0));
         assertNotEquals(cinemaRepository.getAll().get(0).getListOfRooms().size(), 1);
     }
 
@@ -139,8 +139,8 @@ public class CinemaRepoTest {
         cinemaRepository.add(cinema);
     }
 
-    public void roomIsAddedToTheCinema() {
+    public void roomIsAddedToTheCinema() throws SQLException {
         Room room = RoomBuilder.buildRoom("1", 1, 50);
-        cinemaRepository.addRoom(cinemaRepository.getAll().get(0), room.getId());
+        cinemaRepository.addRoom(String.valueOf(cinemaRepository.getAll().get(0)), room.getId());
     }
 }
