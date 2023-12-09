@@ -1,119 +1,91 @@
 package map.project.demo.Controller;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import map.project.demo.Domain.*;
 
 import map.project.demo.Repository.MovieRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
 import java.util.Objects;
 import java.util.Scanner;
 import java.util.Vector;
 
+@RestController
+@RequestMapping("/api/movie")
+@Getter
+@Setter
+@NoArgsConstructor
 public class MovieController {
+    @Autowired
     private MovieRepository movieRepo;
-    private final Vector<Movie> listOfMovies = new Vector<>();
 
-    public MovieController(MovieRepository movieRepo) throws SQLException {
-        this.movieRepo = movieRepo;
+    @PostMapping
+    public void addMovie(@RequestBody Movie movie) throws SQLException {
+        movieRepo.addMovieToTable(movie);
     }
 
-    public Movie findMovieById(String id) {
-        for (Movie movie : movieRepo.getAll()) {
-            if (movie.getId().equals(id)) {
-                return movie;
-            }
-        }
-        System.out.println("No movie with that ID");
-        return null;
+    @GetMapping("/{id}")
+    public Movie getMovieWithId(@PathVariable String id) throws SQLException {
+        return movieRepo.getMovieWithIdFromTable(id);
     }
 
-    public void deleteMovie(String id) {
-        Movie movie = findMovieById(id);
-        if (movie != null) {
-            movieRepo.delete(movie);
-        }
+    @DeleteMapping("/{id}")
+    public void deleteMovie(@PathVariable String id) throws SQLException {
+        movieRepo.deleteMovieWithIdFromTable(id);
     }
 
-    public boolean findDirectorById(Movie movie, String id) {
-        for (String stageDirector : movie.getStageDirectors()) {
-            if (Objects.equals(stageDirector, id)) {
-                return true;
-            }
-        }
-        System.out.println("No stage director with that id");
-        return false;
+    @DeleteMapping
+    public void deleteAllMovies() throws SQLException {
+        movieRepo.deleteAllFromMovieTable();
     }
 
-    public boolean findActorById(Movie movie, String id) {
-        for (String actor : movie.getActors()) {
-            if (Objects.equals(actor, id)) {
-                return true;
-            }
-        }
-        System.out.println("No actor with that id");
-        return false;
+    @PutMapping("/{movieId}/title")
+    public void updateMovieTitle(@PathVariable String movieId, @RequestBody String title) throws SQLException {
+        movieRepo.updateTitleForMovieWithId(movieId, title);
     }
 
-    public boolean findGenreById(Movie movie, String id) {
-        for (String genre : movie.getGenres()) {
-            if (Objects.equals(genre, id)) {
-                return true;
-            }
-        }
-        System.out.println("No genre with that id");
-        return false;
+    @PutMapping("/{movieId}/duration")
+    public void updateMovieDuration(@PathVariable String movieId, @RequestBody int duration) throws SQLException {
+        movieRepo.updateDurationForMovieWithId(movieId, duration);
     }
 
-    public void addMovie(Movie movie) {
-        movieRepo.add(movie);
+    @DeleteMapping("/{movieId}/directors/{directorId}")
+    public void deleteStageDirectorFromMovie(@PathVariable String movieId, @PathVariable String directorId) throws SQLException {
+        movieRepo.deleteDirectorFromMovie(movieId, directorId);
     }
 
-    public void deleteMovie(Movie movie) {
-        movieRepo.delete(movie);
+    @PostMapping("/{movieId}/directors")
+    public void addStageDirectorToMovie(@PathVariable String movieId, @RequestBody String stageDirector) throws SQLException {
+        movieRepo.addDirectorToMovie(movieId, stageDirector);
     }
 
-    public void deleteAllMovies() {
-        movieRepo.deleteAll();
+    @PostMapping("/{movieId}/genres")
+    public void addGenreToMovie(@PathVariable String movieId, @RequestBody String genre) throws SQLException {
+        movieRepo.addGenreToMovie(movieId, genre);
     }
 
-    public void updateMovieTitle(Movie movie, String title) {
-        movieRepo.updateTitle(movie, title);
+    @DeleteMapping("/{movieId}/genres/{genreId}")
+    public void deleteGenreFromMovie(@PathVariable String movieId, @PathVariable String genreId) throws SQLException {
+        movieRepo.deleteGenreFromMovie(movieId, genreId);
     }
 
-    public void updateMovieDuration(Movie movie, int duration) {
-        movieRepo.updateDuration(movie, duration);
+    @PostMapping("/{movieId}/actors")
+    public void addActorToMovie(@PathVariable String movieId, @RequestBody String actor) throws SQLException {
+        movieRepo.addActorToMovie(movieId, actor);
     }
 
-    public void deleteStageDirectorFromMovie(Movie movie, String stageDirector) {
-        movieRepo.deleteStageDirector(movie, stageDirector);
+    @DeleteMapping("/{movieId}/actors/{actorId}")
+    public void deleteActorFromMovie(@PathVariable String movieId, @PathVariable String actorId) throws SQLException {
+        movieRepo.deleteActorFromMovie(movieId, actorId);
     }
 
-    public void addStageDirectorToMovie(Movie movie, String stageDirector) {
-        movieRepo.addStageDirector(movie, stageDirector);
-    }
-
-    public void addGenreToMovie(Movie movie, String genre) {
-        movieRepo.addGenre(movie, genre);
-    }
-
-    public void deleteGenreFromMovie(Movie movie, String genre) {
-        movieRepo.deleteGenre(movie, genre);
-    }
-
-    public void addActorToMovie(Movie movie, String actor) {
-        movieRepo.addActor(movie, actor);
-    }
-
-    public void deleteActorFromMovie(Movie movie, String actor) {
-        movieRepo.deleteActor(movie, actor);
-    }
-
-    public Vector<Movie> getAllMovies() {
-        return movieRepo.getAll();
-    }
-
-    public void printAllMovies() {
-        movieRepo.printAll();
+    @GetMapping
+    public Vector<Movie> getAllMovies() throws SQLException {
+        return movieRepo.getMoviesFromTable();
     }
 
 }

@@ -8,12 +8,15 @@ import java.sql.Time;
 
 public class Screening4DX extends ScreeningDecorator {
 
+    public Screening4DX() {
 
-    public Screening4DX(String id, Movie movie, Room room, Time startTime) {
-        super(id,movie,room,startTime);
     }
 
-//    public String getId() {
+    public Screening4DX(String id, Movie movie, Room room, Time startTime) {
+        super(id, movie, room, startTime);
+    }
+
+    //    public String getId() {
 //        return id;
 //    }
 //

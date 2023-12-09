@@ -136,7 +136,7 @@ public class SpectatorRepository {
                 }
             }
         }
-        return null;//spectator was not created
+        return null;
     }
 
     @Transactional
@@ -181,10 +181,10 @@ public class SpectatorRepository {
         spectators.clear();
     }
 
-    @Transactional
-    public void printAll() {
-        System.out.println(spectators);
-    }
+//    @Transactional
+//    public void printAll() {
+//        System.out.println(spectators);
+//    }
 
     @Transactional
     public Vector<Spectator> getAll() {

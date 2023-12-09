@@ -1,6 +1,5 @@
 package map.project.demo.Domain;
 
-import map.project.demo.Adapter.ScreeningPlayer;
 import map.project.demo.Adapter.TwoDScreeningAdapter;
 import map.project.demo.Strategy.Screening;
 
@@ -11,6 +10,10 @@ public class Screening2D implements Screening {
     private Movie movie;
     private Room room;
     private Time startTime;
+
+    public Screening2D() {
+
+    }
 
     public Screening2D(String id, Movie movie, Room room, Time startTime) {
         this.id = id;

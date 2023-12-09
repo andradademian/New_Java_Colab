@@ -1,4 +1,5 @@
 package map.project.demo.Decorator;
+
 import map.project.demo.Adapter.FourDXScreeningAdapter;
 import map.project.demo.Domain.Movie;
 import map.project.demo.Domain.Room;
@@ -13,12 +14,17 @@ public abstract class ScreeningDecorator implements Screening {
     protected Room room;
     protected Time startTime;
 
+    public ScreeningDecorator() {
+
+    }
+
     public ScreeningDecorator(String id, Movie movie, Room room, Time startTime) {
         this.id = id;
         this.movie = movie;
         this.room = room;
         this.startTime = startTime;
     }
+
     public String getId() {
         return id;
     }

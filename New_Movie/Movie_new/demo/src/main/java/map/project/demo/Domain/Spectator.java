@@ -1,7 +1,5 @@
 package map.project.demo.Domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import map.project.demo.ObserverPattern.Observer;
 
 import java.sql.*;

@@ -1,63 +1,77 @@
 package map.project.demo.Controller;
 
-import map.project.demo.Domain.Movie;
-import map.project.demo.Domain.Room;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import map.project.demo.Domain.Screening2D;
+import map.project.demo.Domain.Screening3D;
+import map.project.demo.Domain.Screening4DX;
 import map.project.demo.Repository.ScreeningRepository;
 import map.project.demo.Strategy.Screening;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLException;
 import java.sql.Time;
 import java.util.Vector;
 
+@RestController
+@RequestMapping("/api/screening")
+@Getter
+@Setter
+@NoArgsConstructor
 public class ScreeningController {
-    private final ScreeningRepository screeningRepo;
+    @Autowired
+    private ScreeningRepository screeningRepo;
 
-    public ScreeningController(ScreeningRepository screeningRepo) {
-        this.screeningRepo = screeningRepo;
+    @PostMapping("/4DX")
+    public void addScreening4DX(@RequestBody Screening4DX screening) throws SQLException {
+        screeningRepo.addScreeningToTable(screening);
     }
 
-    public void addScreening(Screening screening) {
-        screeningRepo.add(screening);
+    @PostMapping("/3D")
+    public void addScreening3D(@RequestBody Screening3D screening) throws SQLException {
+        screeningRepo.addScreeningToTable(screening);
     }
 
-    public Screening findScreeningById(String screeningId) {
-        for (Screening screening : screeningRepo.getAll()) {
-            if (screening.getId().equals(screeningId)) {
-                return screening;
-            }
-        }
-        System.out.println("No screening with that ID");
-        return null;
+    @PostMapping("/2D")
+    public void addScreening(@RequestBody Screening2D screening) throws SQLException {
+        screeningRepo.addScreeningToTable(screening);
     }
 
-    public void deleteScreening(String screeningId) {
-        Screening screeningToDelete = findScreeningById(screeningId);
-        if (screeningToDelete != null) {
-            screeningRepo.delete(screeningToDelete);
-        }
+    @GetMapping("/{id}")
+    public Screening findScreeningById(@PathVariable String id) throws SQLException {
+        return screeningRepo.getScreeningWithIdFromTable(id);
     }
 
-    public void deleteAllScreenings() {
-        screeningRepo.deleteAll();
+    @DeleteMapping("/{id}")
+    public void deleteScreening(@PathVariable String id) throws SQLException {
+        screeningRepo.deleteScreeningWithIdFromTable(id);
+    }
+
+    @DeleteMapping
+    public void deleteAllScreenings() throws SQLException {
+        screeningRepo.deleteAllFromScreeningTable();
     }
 
 
-    public void updateScreeningRoom(Screening screening, Room room) {
-        screeningRepo.updateRoom(screening, room);
+    @PutMapping("/{screeningId}/room")
+    public void updateScreeningRoom(@PathVariable String screeningId, @RequestBody String roomId) throws SQLException {
+        screeningRepo.updateRoom(screeningId, roomId);
     }
 
-    public void updateScreeningStartTime(Screening screening, Time startTime) {
-        screeningRepo.updateStartTime(screening, startTime);
+    @PutMapping("/{id}/startTime")
+    public void updateScreeningStartTime(@PathVariable String id, @RequestBody Time startTime) throws SQLException {
+        screeningRepo.updateStartTime(id, startTime);
     }
 
-    public void updateScreeningMovie(Screening screening, Movie movie) {
-        screeningRepo.updateMovie(screening, movie);
+    @PutMapping("/{id}/movie")
+    public void updateScreeningMovie(@PathVariable String id, String movieId) throws SQLException {
+        screeningRepo.updateMovie(id, movieId);
     }
 
-    public Vector<Screening> getAllScreenings() {
-        return screeningRepo.getAll();
-    }
-
-    public void printAllScreenings() {
-        screeningRepo.printAll();
+    @GetMapping
+    public Vector<Screening> getAllScreenings() throws SQLException {
+        return screeningRepo.getScreeningsFromTable();
     }
 }

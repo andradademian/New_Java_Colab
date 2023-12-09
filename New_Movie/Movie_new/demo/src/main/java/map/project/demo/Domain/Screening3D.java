@@ -11,6 +11,10 @@ public class Screening3D implements Screening {
     private Room room;
     private Time startTime;
 
+    public Screening3D() {
+
+    }
+
     public Screening3D(String id, Movie movie, Room room, Time startTime) {
         this.id = id;
         this.movie = movie;
