@@ -18,8 +18,8 @@ import java.util.Vector;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ActorControllerTest {
-    ActorRepository actorRepository = ActorRepository.getInstance();
-    ActorController actorController = new ActorController(actorRepository);
+    ActorRepository actorRepository = new ActorRepository();
+    ActorController actorController = new ActorController();
 
     public ActorControllerTest() throws SQLException {
     }
@@ -36,27 +36,27 @@ public class ActorControllerTest {
     }
 
     @Test
-    public void expectCorrectFindingOfTheActorById() {
+    public void expectCorrectFindingOfTheActorById() throws SQLException {
         Actor actor = actorController.findActorById("1");
         assertEquals(actor.getId(), "1");
     }
 
     @Test
-    public void expectIncorrectFindingOfTheActorById() {
+    public void expectIncorrectFindingOfTheActorById() throws SQLException {
         Actor actor = actorController.findActorById("1");
         assertNotEquals(actor.getId(), "2");
     }
 
     @Test
-    public void expectCorrectFindingOfTheMovieById() {
-        actorRepository.addMovie(actorController.getAllActors().get(0), "111");
+    public void expectCorrectFindingOfTheMovieById() throws SQLException {
+        actorRepository.addMovie(String.valueOf(actorController.getAllActors().get(0)), "111");
         boolean movieExists = actorController.findMovieById(actorController.getAllActors().get(0), "111");
         assertTrue(movieExists);
     }
 
     @Test
-    public void expectIncorrectFindingOfTheMovieById() {
-        actorRepository.addMovie(actorController.getAllActors().get(0), "111");
+    public void expectIncorrectFindingOfTheMovieById() throws SQLException {
+        actorRepository.addMovie(String.valueOf(actorController.getAllActors().get(0)), "111");
         boolean movieExists = actorController.findMovieById(actorController.getAllActors().get(0), "112");
         assertFalse(movieExists);
     }

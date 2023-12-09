@@ -7,6 +7,10 @@ public class Genre {
     private String name;
     private List<String> listOfMovies;
 
+    public Genre() {
+
+    }
+
     public Genre(String id, String name, List<String> listOfMovies) {
         this.id = id;
         this.name = name;

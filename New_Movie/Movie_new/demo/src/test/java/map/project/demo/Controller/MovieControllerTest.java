@@ -13,8 +13,8 @@ import java.sql.SQLException;
 import java.util.Vector;
 
 public class MovieControllerTest {
-    MovieRepository movieRepository = MovieRepository.getInstance();
-    MovieController movieController = new MovieController(movieRepository);
+    MovieRepository movieRepository = new MovieRepository();
+    MovieController movieController = new MovieController();
 
     public MovieControllerTest() throws SQLException {
     }

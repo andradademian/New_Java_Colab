@@ -6,39 +6,37 @@ import map.project.demo.Repository.GenreRepository;
 
 import java.sql.SQLException;
 import java.util.Objects;
-import java.util.Scanner;
 import java.util.Vector;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/api/genre")
+@Getter
+@Setter
+@NoArgsConstructor
 public class GenreController {
-    private final GenreRepository genreRepo;
+    @Autowired
+    private GenreRepository genreRepo;
 
-    public GenreController(GenreRepository genreRepo) {
-        this.genreRepo = genreRepo;
+    @PostMapping
+    public void addGenre(@RequestBody Genre genre) throws SQLException {
+        genreRepo.addGenreToTable(genre);
     }
 
-    public void addGenre(Genre genre) {
-        genreRepo.add(genre);
+    @GetMapping("/{id}")
+    public Genre findGenreById(@PathVariable String id) throws SQLException {
+        return genreRepo.getGenreWithIdFromTable(id);
     }
 
-    public void deleteGenre(Genre genre) {
-        genreRepo.delete(genre);
-    }
-
-    public Genre findGenreById(String id) {
-        for (Genre genre : genreRepo.getAll()) {
-            if (genre.getId().equals(id)) {
-                return genre;
-            }
-        }
-        System.out.println("No genre with that ID");
-        return null;
-    }
-
-    public void deleteGenre(String genreId) {
-        Genre genre = findGenreById(genreId);
-        if (genre != null) {
-            genreRepo.delete(genre);
-        }
+    @DeleteMapping("/{id}")
+    public void deleteGenreWithIdFromTable(@PathVariable String id) throws SQLException {
+        genreRepo.deleteGenreWithIdFromTable(id);
     }
 
     public boolean findMovieById(Genre genre, String id) {
@@ -51,27 +49,33 @@ public class GenreController {
         return false;
     }
 
-    public void deleteAllGenres() {
-        genreRepo.deleteAll();
+    @DeleteMapping
+    public void deleteAllGenres() throws SQLException {
+        genreRepo.deleteAllFromGenreTable();
     }
 
-    public void updateGenreName(Genre genre, String name) {
-        genreRepo.updateName(genre, name);
+    @DeleteMapping("/movies")
+    public void deleteAllFromMovieGenreTable() throws SQLException {
+        genreRepo.deleteAllFromMovieGenreTable();
     }
-
-    public void deleteMovieFromGenre(Genre genre, String movieId) {
-        genreRepo.deleteMovie(genre, movieId);
+    @PutMapping("/{id}/updateGenreName")
+    public void updateGenreName(@PathVariable String id, @RequestBody String genreName) throws SQLException {
+        Genre genre = genreRepo.getGenreWithIdFromTable(id);
+        genreRepo.deleteGenreWithIdFromTable(id);
+        genre.setName(genreName);
+        genreRepo.addGenreToTable(genre);
     }
-
-    public void addMovieToGenre(Genre genre, String movieId) {
-        genreRepo.addMovie(genre, movieId);
+    @DeleteMapping("/{genreId}/movies/{movieId}")
+    public void deleteMovie(@PathVariable String genreId, @PathVariable String movieId) throws SQLException {
+        genreRepo.deleteMovie(genreId, movieId);
     }
-
+    @PostMapping("{genreId}/movies")
+    public void addMovie(@PathVariable String genreId, @RequestBody String movieId) throws SQLException {
+        genreRepo.addMovie(genreId, movieId);
+    }
+    @GetMapping
     public Vector<Genre> getAllGenres() {
         return genreRepo.getAll();
     }
 
-    public void printAllGenres() {
-        genreRepo.printAll();
-    }
 }

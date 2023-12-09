@@ -14,7 +14,7 @@ import java.sql.SQLException;
 import java.util.Vector;
 
 public class AwardControllerTest {
-    AwardRepository awardRepository = AwardRepository.getInstance();
+    AwardRepository awardRepository = new AwardRepository();
     AwardFactory awardFactory = AwardFactory.getInstance();
     AwardController awardController = new AwardController();
 

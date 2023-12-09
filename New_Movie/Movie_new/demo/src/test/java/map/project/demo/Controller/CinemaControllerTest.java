@@ -15,7 +15,7 @@ import java.sql.SQLException;
 import java.util.Vector;
 
 public class CinemaControllerTest {
-    CinemaRepository cinemaRepository = CinemaRepository.getInstance();
+    CinemaRepository cinemaRepository = new CinemaRepository();
     CinemaController cinemaController = new CinemaController();
 
     public CinemaControllerTest() throws SQLException {
@@ -30,7 +30,7 @@ public class CinemaControllerTest {
 
 
     @Test
-    public void shouldFindCinemaById() {
+    public void shouldFindCinemaById() throws SQLException {
         String cinemaId = "2";
 
         Cinema foundCinema = cinemaController.findCinemaById(cinemaId);
@@ -40,7 +40,7 @@ public class CinemaControllerTest {
     }
 
     @Test
-    public void shouldNotFindInvalidCinemaById() {
+    public void shouldNotFindInvalidCinemaById() throws SQLException {
         String invalidCinemaId = "InvalidId";
 
         Cinema foundCinema = cinemaController.findCinemaById(invalidCinemaId);
@@ -49,12 +49,12 @@ public class CinemaControllerTest {
     }
 
     @Test
-    public void shouldFindRoomById() {
+    public void shouldFindRoomById() throws SQLException {
         Cinema cinema = cinemaController.findCinemaById("1");
         assertNotNull(cinema);
 
         Room roomToAdd = RoomBuilder.buildRoom("1", 100, 120);
-        cinemaController.addRoomToCinema(cinema, roomToAdd.getId());
+        cinemaController.addRoom(String.valueOf(cinema), roomToAdd.getId());
 
         String roomId = "1";
 
@@ -65,7 +65,7 @@ public class CinemaControllerTest {
 
 
     @Test
-    public void shouldNotFindInvalidRoomById() {
+    public void shouldNotFindInvalidRoomById() throws SQLException {
         Cinema cinema = cinemaController.findCinemaById("1");
         String invalidRoomId = "InvalidId";
 

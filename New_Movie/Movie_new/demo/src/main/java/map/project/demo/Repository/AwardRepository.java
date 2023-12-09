@@ -34,13 +34,6 @@ public class AwardRepository {
         awards = getAwardsFromTable();
     }
 
-    public static AwardRepository getInstance() throws SQLException {
-        if (instance == null) {
-            instance = new AwardRepository();
-        }
-        return instance;
-    }
-
     @Transactional
     public Vector<Award> getAwardsFromTable() throws SQLException {
         Vector<Award> awardVector = new Vector<>();

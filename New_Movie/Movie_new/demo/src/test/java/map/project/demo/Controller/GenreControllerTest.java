@@ -14,8 +14,8 @@ import java.sql.SQLException;
 import java.util.Vector;
 
 public class GenreControllerTest {
-    GenreRepository genreRepository = GenreRepository.getInstance();
-    GenreController genreController = new GenreController(genreRepository);
+    GenreRepository genreRepository = new GenreRepository();
+    GenreController genreController = new GenreController();
 
     public GenreControllerTest() throws SQLException {
     }
@@ -29,7 +29,7 @@ public class GenreControllerTest {
 
 
     @Test
-    public void shouldFindGenreById() {
+    public void shouldFindGenreById() throws SQLException {
         String genreId = "2";
 
         Genre foundGenre = genreController.findGenreById(genreId);
@@ -39,7 +39,7 @@ public class GenreControllerTest {
     }
 
     @Test
-    public void shouldNotFindInvalidGenreById() {
+    public void shouldNotFindInvalidGenreById() throws SQLException {
         String invalidGenreId = "InvalidId";
 
         Genre foundGenre = genreController.findGenreById(invalidGenreId);
@@ -48,15 +48,15 @@ public class GenreControllerTest {
     }
 
     @Test
-    public void expectCorrectFindingOfTheMovieById() {
-        genreRepository.addMovie(genreController.getAllGenres().get(0), "111");
+    public void expectCorrectFindingOfTheMovieById() throws SQLException {
+        genreRepository.addMovie(String.valueOf(genreController.getAllGenres().get(0)), "111");
         boolean movieExists = genreController.findMovieById(genreController.getAllGenres().get(0), "111");
         assertTrue(movieExists);
     }
 
     @Test
-    public void expectIncorrectFindingOfTheMovieById() {
-        genreRepository.addMovie(genreController.getAllGenres().get(0), "111");
+    public void expectIncorrectFindingOfTheMovieById() throws SQLException {
+        genreRepository.addMovie(String.valueOf(genreController.getAllGenres().get(0)), "111");
         boolean movieExists = genreController.findMovieById(genreController.getAllGenres().get(0), "112");
         assertFalse(movieExists);
     }
