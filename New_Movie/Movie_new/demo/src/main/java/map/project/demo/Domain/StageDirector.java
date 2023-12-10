@@ -11,6 +11,9 @@ public class StageDirector extends Spectator {
     private Vector<String> listOfMovies;
     private Vector<String> awards;
 
+    public StageDirector() {
+
+    }
     public StageDirector(String id, String firstName, String lastName, Vector<String> listOfMovies, Vector<String> awards) throws SQLException {
         super(id, firstName, lastName);
         this.listOfMovies = listOfMovies;

@@ -45,7 +45,7 @@ public class MovieControllerTest {
     public void shouldFindDirectorById() throws SQLException {
         Movie movie = movieController.getAllMovies().get(0);
         StageDirector stageDirector = new StageDirector("1", "FirstName1", "LastName1", new Vector<String>(), new Vector<String>());
-        movieRepository.addStageDirector(movie, stageDirector.getId());
+        movieRepository.addDirector(movie, stageDirector.getId());
 
         boolean foundDirector = movieController.findDirectorById(movie, "1");
 

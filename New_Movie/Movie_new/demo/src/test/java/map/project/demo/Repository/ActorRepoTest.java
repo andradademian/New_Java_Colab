@@ -151,7 +151,7 @@ public class ActorRepoTest {
     public void expectCorrectDeletingOfTheAward() throws ParseException, SQLException {
         actorIsAddedToTheList();
         awardIsAddedToTheActor();
-        actorRepository.deleteAward(actorRepository.getAll().get(0), actorRepository.getAll().get(0).getListOfAwards().get(0));
+        actorRepository.deleteAward(String.valueOf(actorRepository.getAll().get(0)), actorRepository.getAll().get(0).getListOfAwards().get(0));
         assertEquals(actorRepository.getAll().get(0).getListOfAwards().size(), 0);
     }
 
@@ -159,7 +159,7 @@ public class ActorRepoTest {
     public void expectIncorrectDeletingOfTheAward() throws ParseException, SQLException {
         actorIsAddedToTheList();
         awardIsAddedToTheActor();
-        actorRepository.deleteAward(actorRepository.getAll().get(0), actorRepository.getAll().get(0).getListOfAwards().get(0));
+        actorRepository.deleteAward(String.valueOf(actorRepository.getAll().get(0)), actorRepository.getAll().get(0).getListOfAwards().get(0));
         assertNotEquals(actorRepository.getAll().get(0).getListOfAwards().size(), 1);
     }
 
@@ -174,14 +174,14 @@ public class ActorRepoTest {
         actorRepository.add(actor);
     }
 
-    public void movieIsAddedToTheActor() {
+    public void movieIsAddedToTheActor() throws SQLException {
         Movie movie = new Movie("1", "Title", 120, new Vector<>(), new Vector<>(), new Vector<>());
-        actorRepository.addMovie(actorRepository.getAll().get(0), movie.getId());
+        actorRepository.addMovie(String.valueOf(actorRepository.getAll().get(0)), movie.getId());
     }
 
-    public void awardIsAddedToTheActor() {
+    public void awardIsAddedToTheActor() throws SQLException {
         Award award = new Award("1", "Best actor");
-        actorRepository.addAward(actorRepository.getAll().get(0), award.getId());
+        actorRepository.addAward(String.valueOf(actorRepository.getAll().get(0)), award.getId());
     }
 
 }

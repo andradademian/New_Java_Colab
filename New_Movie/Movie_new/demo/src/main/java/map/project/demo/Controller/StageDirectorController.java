@@ -6,63 +6,92 @@ import map.project.demo.Domain.Movie;
 import map.project.demo.Domain.StageDirector;
 import map.project.demo.Repository.StageDirectorRepository;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import map.project.demo.Repository.ActorRepository;
+import map.project.demo.Domain.Actor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
 import java.sql.SQLException;
 import java.util.Objects;
 import java.util.Scanner;
 import java.util.Vector;
 
+@RestController
+@RequestMapping("/api/stagedirector")
+@Getter
+@Setter
+@NoArgsConstructor
 public class StageDirectorController {
-    private final StageDirectorRepository stageDirectorRepo;
+    @Autowired
+    private StageDirectorRepository stageDirectorRepo;
 
-    public StageDirectorController(StageDirectorRepository stageDirectorRepo) {
-        this.stageDirectorRepo = stageDirectorRepo;
+    @PostMapping
+    public void addDirector(@RequestBody StageDirector stageDirector) throws SQLException {
+        stageDirectorRepo.addDirectorToTable(stageDirector);
     }
 
-    public void addStageDirector(StageDirector stageDirector) {
-        stageDirectorRepo.add(stageDirector);
+    @GetMapping("/{id}")
+    public StageDirector findDirectorById(@PathVariable String id) throws SQLException {
+        return stageDirectorRepo.getDirectorWithIdFromTable(id);
     }
 
-    public StageDirector findStageDirectorById(String stageDirectorId) {
-        for (StageDirector stageDirector : stageDirectorRepo.getAll()) {
-            if (stageDirector.getId().equals(stageDirectorId)) {
-                return stageDirector;
-            }
-        }
-        System.out.println("No stage director with that ID");
-        return null;
+    @DeleteMapping("/{id}")
+    public void deleteDirectorWithIdFromTable(@PathVariable String id) throws SQLException {
+        stageDirectorRepo.deleteDirectorWithIdFromTable(id);
+    }
+    @DeleteMapping
+    public void deleteAllDirectors() throws SQLException {
+        stageDirectorRepo.deleteAllFromDirectorTable();
     }
 
-    public void deleteStageDirector(StageDirector stageDirector) {
-        stageDirectorRepo.delete(stageDirector);
+    @DeleteMapping("/movies")
+    public void deleteAllFromMovieDirectorTable() throws SQLException {
+        stageDirectorRepo.deleteAllFromMovieDirectorTable();
     }
 
-    public void deleteAllStageDirectors() {
-        stageDirectorRepo.deleteAll();
+    @DeleteMapping("/awards")
+    public void deleteAllFromDirectorAwardTable() throws SQLException {
+        stageDirectorRepo.deleteAllFromDirectorAwardTable();
+    }
+
+    @PutMapping("/{id}/updateFirstName")
+    public void updateFirstName(@PathVariable String id, @RequestBody String firstName) throws SQLException {
+        StageDirector stageDirector = stageDirectorRepo.getDirectorWithIdFromTable(id);
+        stageDirectorRepo.deleteDirectorWithIdFromTable(id);
+        stageDirector.setFirstName(firstName);
+        stageDirectorRepo.addDirectorToTable(stageDirector);
+    }
+
+    @PutMapping("/{id}/updateLastName")
+    public void updateLastName(@PathVariable String id, @RequestBody String lastName) throws SQLException {
+        StageDirector stageDirector = stageDirectorRepo.getDirectorWithIdFromTable(id);
+        stageDirectorRepo.deleteDirectorWithIdFromTable(id);
+        stageDirector.setLastName(lastName);
+        stageDirectorRepo.addDirectorToTable(stageDirector);
+    }
+
+    @DeleteMapping("/{stagedirectorId}/movies/{movieId}")
+    public void deleteMovie(@PathVariable String stagedirectorId, @PathVariable String movieId) throws SQLException {
+        stageDirectorRepo.deleteMovie(stagedirectorId, movieId);
     }
 
 
-    public void updateStageDirectorFirstName(StageDirector stageDirector, String firstName) {
-        stageDirectorRepo.updateFirstName(stageDirector, firstName);
+    @PostMapping("{stagedirectorId}/movies")
+    public void addMovie(@PathVariable String stagedirectorId, @RequestBody String movieId) throws SQLException {
+        stageDirectorRepo.addMovie(stagedirectorId, movieId);
     }
 
-    public void updateStageDirectorLastName(StageDirector stageDirector, String lastName) {
-        stageDirectorRepo.updateLastName(stageDirector, lastName);
+    @PostMapping("{stagedirectorId}/awards")
+    public void addAward(@PathVariable String stagedirectorId, @RequestBody String awardId) throws SQLException {
+        stageDirectorRepo.addAward(stagedirectorId, awardId);
     }
 
-    public void deleteMovie(StageDirector stageDirector, String movie) {
-        stageDirectorRepo.deleteMovie(stageDirector, movie);
-    }
-
-    public void addMovie(StageDirector stageDirector, String movie) {
-        stageDirectorRepo.addMovie(stageDirector, movie);
-    }
-
-    public void addAward(StageDirector stageDirector, String award) {
-        stageDirectorRepo.addAward(stageDirector, award);
-    }
-
-    public void deleteAward(StageDirector stageDirector, String award) {
-        stageDirectorRepo.deleteAward(stageDirector, award);
+    @DeleteMapping("/{stagedirectorId}/awards/{awardId}")
+    public void deleteAward(@PathVariable String stagedirectorId, @PathVariable String awardId) throws SQLException {
+        stageDirectorRepo.deleteAward(stagedirectorId, awardId);
     }
 
     public boolean findMovieById(StageDirector stageDirector, String id) {
@@ -81,11 +110,8 @@ public class StageDirectorController {
         return false;
     }
 
-    public Vector<StageDirector> getAllStageDirectors() {
-        return stageDirectorRepo.getAll();
-    }
-
-    public void printAllStageDirectors() {
-        stageDirectorRepo.printAll();
+    @GetMapping
+    public Vector<StageDirector> getAllDirectors() throws SQLException {
+        return stageDirectorRepo.getDirectorsFromTable();
     }
 }
