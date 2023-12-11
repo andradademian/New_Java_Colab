@@ -26,111 +26,85 @@ public class CinemaRepoTest {
     }
 
     @Test
-    public void expectCinemaAddedSuccessfully() {
-        cinemaIsAddedToTheList();
-        assertEquals(cinemaRepository.getAll().size(), 1);
+    public void expectCinemaAddedSuccessfully() throws SQLException {
+        int size = cinemaRepository.getCinemasFromTable().size();
+        cinemaIsAddedToTheTable();
+        assertSame(cinemaRepository.getCinemasFromTable().size(), size + 1);
+        cinemaIsRemoved();
     }
 
     @Test
-    public void expectCinemaNotAddedSuccessfully() {
-        cinemaIsAddedToTheList();
-        assertNotEquals(cinemaRepository.getAll().size(), 0);
+    public void expectCinemaNotAddedSuccessfully() throws SQLException {
+        int size = cinemaRepository.getCinemasFromTable().size();
+        cinemaIsAddedToTheTable();
+        assertNotSame(cinemaRepository.getCinemasFromTable().size(), size);
+        cinemaIsRemoved();
     }
 
     @Test
-    public void expectCinemaRemovedSuccessfully() {
-        cinemaIsAddedToTheList();
-        Cinema cinema = cinemaRepository.getAll().get(0);
-        cinemaRepository.delete(cinema);
-        assertEquals(cinemaRepository.getAll().size(), 0);
+    public void expectCinemaRemovedSuccessfully() throws SQLException {
+        int size = cinemaRepository.getCinemasFromTable().size();
+        cinemaIsAddedToTheTable();
+        assertSame(cinemaRepository.getCinemasFromTable().size(), size + 1);
+        cinemaIsRemoved();
+        assertSame(cinemaRepository.getCinemasFromTable().size(), size);
     }
 
     @Test
-    public void expectCinemaNotRemovedSuccessfully() {
-        cinemaIsAddedToTheList();
-        Cinema cinema = cinemaRepository.getAll().get(0);
-        cinemaRepository.delete(cinema);
-        assertNotEquals(cinemaRepository.getAll().size(), 1);
+    public void expectCinemaNotRemovedSuccessfully() throws SQLException {
+        int size = cinemaRepository.getCinemasFromTable().size();
+        cinemaIsAddedToTheTable();
+        assertEquals(cinemaRepository.getCinemasFromTable().size(), size + 1);
+        cinemaIsRemoved();
+        assertNotEquals(cinemaRepository.getCinemasFromTable().size(), size + 1);
     }
 
     @Test
     public void expectCorrectRemovalOfAllCinemas() {
-        cinemaIsAddedToTheList();
         cinemaRepository.deleteAll();
         assertEquals(cinemaRepository.getAll().size(), 0);
     }
 
     @Test
     public void expectIncorrectRemovalOfAllCinemas() {
-        cinemaIsAddedToTheList();
         cinemaRepository.deleteAll();
         assertNotEquals(cinemaRepository.getAll().size(), 1);
     }
 
     @Test
-    public void expectCorrectUpdateOfTheName() {
+    public void expectCorrectUpdateOfTheName() throws SQLException {
         cinemaIsAddedToTheList();
-        cinemaRepository.updateName(cinemaRepository.getAll().get(0), "Other Name");
+        cinemaRepository.updateName(cinemaRepository.getAll().getLast(), "Other Name");
         String expected = "Other Name";
-        String actual = cinemaRepository.getAll().get(0).getName();
+        String actual = cinemaRepository.getAll().getLast().getName();
         assertSame(actual, expected);
     }
 
     @Test
-    public void expectIncorrectUpdateOfTheName() {
+    public void expectIncorrectUpdateOfTheName() throws SQLException {
         cinemaIsAddedToTheList();
-        cinemaRepository.updateName(cinemaRepository.getAll().get(0), "Other Name");
+        cinemaRepository.updateName(cinemaRepository.getAll().getLast(), "Other Name");
         String expected = "Name";
-        String actual = cinemaRepository.getAll().get(0).getName();
+        String actual = cinemaRepository.getAll().getLast().getName();
         assertNotSame(actual, expected);
     }
 
     @Test
-    public void expectCorrectUpdateOfTheAddress() {
+    public void expectCorrectUpdateOfTheAddress() throws SQLException {
         cinemaIsAddedToTheList();
-        cinemaRepository.updateAddress(cinemaRepository.getAll().get(0), "Other");
+        cinemaRepository.updateAddress(cinemaRepository.getAll().getLast(), "Other");
         String expected = "Other";
-        String actual = cinemaRepository.getAll().get(0).getAddress();
+        String actual = cinemaRepository.getAll().getLast().getAddress();
         assertSame(actual, expected);
     }
 
     @Test
-    public void expectIncorrectUpdateOfTheAddress() {
+    public void expectIncorrectUpdateOfTheAddress() throws SQLException {
         cinemaIsAddedToTheList();
-        cinemaRepository.updateAddress(cinemaRepository.getAll().get(0), "Other");
+        cinemaRepository.updateAddress(cinemaRepository.getAll().getLast(), "Other");
         String expected = "Address";
-        String actual = cinemaRepository.getAll().get(0).getAddress();
+        String actual = cinemaRepository.getAll().getLast().getAddress();
         assertNotSame(actual, expected);
-    }
-
-    @Test
-    public void expectCorrectAddingOfTheRoom() throws SQLException {
-        cinemaIsAddedToTheList();
-        roomIsAddedToTheCinema();
-        assertEquals(cinemaRepository.getAll().get(0).getListOfRooms().size(), 1);
-    }
-
-    @Test
-    public void expectIncorrectAddingOfTheRoom() throws SQLException {
-        cinemaIsAddedToTheList();
-        roomIsAddedToTheCinema();
-        assertNotEquals(cinemaRepository.getAll().get(0).getListOfRooms().size(), 0);
-    }
-
-    @Test
-    public void expectCorrectDeletingOfTheRoom() throws SQLException {
-        cinemaIsAddedToTheList();
-        roomIsAddedToTheCinema();
-        cinemaRepository.deleteRoom(String.valueOf(cinemaRepository.getAll().get(0)), cinemaRepository.getAll().get(0).getListOfRooms().get(0));
-        assertEquals(cinemaRepository.getAll().get(0).getListOfRooms().size(), 0);
-    }
-
-    @Test
-    public void expectIncorrectDeletingOfTheRoom() throws SQLException {
-        cinemaIsAddedToTheList();
-        roomIsAddedToTheCinema();
-        cinemaRepository.deleteRoom(String.valueOf(cinemaRepository.getAll().get(0)), cinemaRepository.getAll().get(0).getListOfRooms().get(0));
-        assertNotEquals(cinemaRepository.getAll().get(0).getListOfRooms().size(), 1);
     }
 
     public void cinemaIsAddedToTheList() {
@@ -139,8 +113,21 @@ public class CinemaRepoTest {
         cinemaRepository.add(cinema);
     }
 
+    public void cinemaIsAddedToTheTable() throws SQLException {
+        Cinema cinema = new Cinema("1K", "Name", "Address", new Vector<>());
+        cinemaRepository.addCinemaToTable(cinema);
+    }
+
     public void roomIsAddedToTheCinema() throws SQLException {
-        Room room = RoomBuilder.buildRoom("1", 1, 50);
-        cinemaRepository.addRoom(String.valueOf(cinemaRepository.getAll().get(0)), room.getId());
+        Room room = RoomBuilder.buildRoom("1K", 1, 50);
+        cinemaRepository.addRoom("1K", room.getId());
+    }
+
+    public void cinemaIsRemoved() throws SQLException {
+        cinemaRepository.deleteCinemaWithIdFromTable("1K");
+    }
+
+    public void roomIsRemoved() throws SQLException {
+        cinemaRepository.deleteRoom("1K", "1K");
     }
 }

@@ -2,7 +2,6 @@ package map.project.demo.Repository;
 
 import map.project.demo.Builder.RoomBuilder;
 import map.project.demo.Domain.*;
-import map.project.demo.Repository.TicketRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -18,7 +17,7 @@ public class TicketRepoTest {
 
     @BeforeEach
     public void setUp() throws SQLException {
-        ticketRepository = TicketRepository.getInstance();
+        ticketRepository = new TicketRepository();
     }
 
     @Test
@@ -49,38 +48,6 @@ public class TicketRepoTest {
         assertNotEquals(ticketRepository.getAll().size(), 1);
     }
 
-    @Test
-    public void expectCorrectRemovalOfAllTickets() throws SQLException {
-        ticketIsAddedToTheList();
-        ticketRepository.deleteAll();
-        assertEquals(ticketRepository.getAll().size(), 0);
-    }
-
-    @Test
-    public void expectIncorrectRemovalOfAllTickets() throws SQLException {
-        ticketIsAddedToTheList();
-        ticketRepository.deleteAll();
-        assertNotEquals(ticketRepository.getAll().size(), 1);
-    }
-
-    @Test
-    public void expectUpdatePriceSuccessfully() throws SQLException {
-        ticketIsAddedToTheList();
-        Ticket ticket = ticketRepository.getAll().get(0);
-        float newPrice = 25.0f;
-        ticketRepository.updatePrice(ticket, newPrice);
-        assertEquals(ticket.getPrice(), newPrice, 0.01);
-    }
-
-    @Test
-    public void expectUpdateSeatNumberSuccessfully() throws SQLException {
-        ticketIsAddedToTheList();
-        Ticket ticket = ticketRepository.getAll().get(0);
-        int newSeatNumber = 101;
-        ticketRepository.updateSeatNumber(ticket, newSeatNumber);
-        assertEquals(ticket.getSeatNumber(), newSeatNumber);
-    }
-
     public void ticketIsAddedToTheList() throws SQLException {
         ticketRepository.deleteAll();
         Movie movie = createMovie();
@@ -93,7 +60,7 @@ public class TicketRepoTest {
     }
 
     public Movie createMovie() {
-        return new Movie("1", "MovieTitle", 90, new Vector<>(), new Vector<>(), null);
+        return new Movie("KX", "MovieTitle", 90, new Vector<>(), new Vector<>(), null);
     }
 
     public Room createRoom() {

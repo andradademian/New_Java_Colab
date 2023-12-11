@@ -54,10 +54,11 @@ public class GenreController {
         genreRepo.deleteAllFromGenreTable();
     }
 
-    @DeleteMapping("/movies")
-    public void deleteAllFromMovieGenreTable() throws SQLException {
-        genreRepo.deleteAllFromMovieGenreTable();
+    @DeleteMapping("/{id}/movies")
+    public void deleteAllFromMovieGenreTable(@PathVariable String id) throws SQLException {
+        genreRepo.deleteAllMoviesFromGenreWithId(id);
     }
+
     @PutMapping("/{id}/updateGenreName")
     public void updateGenreName(@PathVariable String id, @RequestBody String genreName) throws SQLException {
         Genre genre = genreRepo.getGenreWithIdFromTable(id);
@@ -65,17 +66,20 @@ public class GenreController {
         genre.setName(genreName);
         genreRepo.addGenreToTable(genre);
     }
+
     @DeleteMapping("/{genreId}/movies/{movieId}")
     public void deleteMovie(@PathVariable String genreId, @PathVariable String movieId) throws SQLException {
         genreRepo.deleteMovie(genreId, movieId);
     }
+
     @PostMapping("{genreId}/movies")
     public void addMovie(@PathVariable String genreId, @RequestBody String movieId) throws SQLException {
         genreRepo.addMovie(genreId, movieId);
     }
+
     @GetMapping
-    public Vector<Genre> getAllGenres() {
-        return genreRepo.getAll();
+    public Vector<Genre> getAllGenres() throws SQLException {
+        return genreRepo.getGenresFromTable();
     }
 
 }

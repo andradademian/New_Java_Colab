@@ -217,4 +217,51 @@ public class MovieRepository {
         preparedStatement.executeUpdate();
     }
 
+    public Vector<Movie> getAll() {
+        return this.movies;
+    }
+
+    public void deleteAll() {
+        this.movies.clear();
+    }
+
+    public void delete(Movie movie) {
+        movies.remove(movie);
+    }
+
+    public void add(Movie movie) {
+        movies.add(movie);
+    }
+
+    public void addStageDirector(Movie movie, String stageDirector) {
+        movies.get(getAll().indexOf(movie)).addStageDirector(stageDirector);
+    }
+
+    public void deleteStageDirector(Movie movie, String stageDirector) {
+        movies.get(getAll().indexOf(movie)).deleteStageDirector(stageDirector);
+    }
+
+    public void addActor(Movie movie, String actor) {
+        movies.get(getAll().indexOf(movie)).addActor(actor);
+    }
+
+    public void deleteActor(Movie movie, String actor) {
+        movies.get(getAll().indexOf(movie)).deleteActor(actor);
+    }
+
+    public void addGenre(Movie movie, String genre) {
+        movies.get(getAll().indexOf(movie)).addGenre(genre);
+    }
+
+    public void deleteGenre(Movie movie, String genre) {
+        movies.get(getAll().indexOf(movie)).deleteGenre(genre);
+    }
+
+    public void updateDuration(Movie movie, int duration) {
+        movies.get(getAll().indexOf(movie)).setDurationInMinutes(duration);
+    }
+
+    public void updateTitle(Movie movie, String title) {
+        movies.get(getAll().indexOf(movie)).setTitle(title);
+    }
 }

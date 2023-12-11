@@ -38,8 +38,8 @@ public class AwardController {
     }
 
     @DeleteMapping
-    public void deleteAllAwards() {
-        awardRepo.deleteAll();
+    public void deleteAllAwards() throws SQLException {
+        awardRepo.deleteAllFromAwards();
     }
 
     @GetMapping("/{id}")
@@ -58,8 +58,8 @@ public class AwardController {
     }
 
     @GetMapping
-    public Vector<Award> getAllAwards() {
-        return awardRepo.getAll();
+    public Vector<Award> getAllAwards() throws SQLException {
+        return awardRepo.getAwardsFromTable();
     }
 
 }

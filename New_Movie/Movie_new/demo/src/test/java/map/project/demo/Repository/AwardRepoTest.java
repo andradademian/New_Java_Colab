@@ -15,7 +15,7 @@ public class AwardRepoTest {
 
     @BeforeEach
     public void setUp() throws SQLException {
-        awardRepository = AwardRepository.getInstance();
+        awardRepository = new AwardRepository();
     }
 
     @Test

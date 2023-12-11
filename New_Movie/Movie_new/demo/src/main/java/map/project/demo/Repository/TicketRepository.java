@@ -207,4 +207,20 @@ public class TicketRepository {
         preparedStatement.setString(2, ticketId);
         preparedStatement.executeUpdate();
     }
+
+    public void add(Ticket ticket) {
+        tickets.add(ticket);
+    }
+
+    public void delete(Ticket ticket) {
+        tickets.remove(ticket);
+    }
+
+    public Vector<Ticket> getAll() {
+        return tickets;
+    }
+
+    public void deleteAll() {
+        tickets.clear();
+    }
 }

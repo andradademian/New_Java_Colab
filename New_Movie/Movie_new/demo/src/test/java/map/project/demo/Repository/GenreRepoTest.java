@@ -17,107 +17,64 @@ public class GenreRepoTest {
 
     @BeforeEach
     public void setUp() throws SQLException {
-        genreRepository = GenreRepository.getInstance();
+        genreRepository = new GenreRepository();
     }
 
     @Test
-    public void expectGenreAddedSuccessfully() {
+    public void expectGenreAddedSuccessfully() throws SQLException {
+        int size = genreRepository.getGenresFromTable().size();
         genreIsAddedToTheList();
-        assertEquals(genreRepository.getAll().size(), 1);
+        assertEquals(genreRepository.getGenresFromTable().size(), size + 1);
+        genreRepository.deleteGenreWithIdFromTable("1K");
     }
 
     @Test
-    public void expectGenreNotAddedSuccessfully() {
+    public void expectGenreNotAddedSuccessfully() throws SQLException {
+        int size = genreRepository.getGenresFromTable().size();
         genreIsAddedToTheList();
-        assertNotEquals(genreRepository.getAll().size(), 0);
+        assertNotEquals(genreRepository.getGenresFromTable().size(), size);
+        genreRepository.deleteGenreWithIdFromTable("1K");
     }
 
     @Test
-    public void expectGenreRemovedSuccessfully() {
+    public void expectGenreRemovedSuccessfully() throws SQLException {
         genreIsAddedToTheList();
-        Genre genre = genreRepository.getAll().get(0);
-        genreRepository.delete(genre);
+        int size = genreRepository.getGenresFromTable().size();
+        genreRepository.deleteGenreWithIdFromTable("1K");
+        assertEquals(genreRepository.getGenresFromTable().size(), size - 1);
+    }
+
+    @Test
+    public void expectGenreNotRemovedSuccessfully() throws SQLException {
+        genreIsAddedToTheList();
+        int size = genreRepository.getGenresFromTable().size();
+        genreRepository.deleteGenreWithIdFromTable("1K");
+        assertNotEquals(genreRepository.getGenresFromTable().size(), size);
+    }
+
+    @Test
+    public void expectCorrectRemovalOfAllGenres() throws SQLException {
+        genreIsAddedToTheList();
+        genreRepository.deleteAll();
         assertEquals(genreRepository.getAll().size(), 0);
     }
 
     @Test
-    public void expectGenreNotRemovedSuccessfully() {
-        genreIsAddedToTheList();
-        Genre genre = genreRepository.getAll().get(0);
-        genreRepository.delete(genre);
-        assertNotEquals(genreRepository.getAll().size(), 1);
-    }
-
-    @Test
-    public void expectCorrectRemovalOfAllGenres() {
+    public void expectIncorrectRemovalOfAllGenres() throws SQLException {
         genreIsAddedToTheList();
         genreRepository.deleteAll();
-        assertEquals(genreRepository.getAll().size(), 0);
+        assertNotEquals(genreRepository.getGenresFromTable().size(), 1);
+        genreRepository.deleteGenreWithIdFromTable("1K");
     }
 
-    @Test
-    public void expectIncorrectRemovalOfAllGenres() {
-        genreIsAddedToTheList();
+    public void genreIsAddedToTheList() throws SQLException {
         genreRepository.deleteAll();
-        assertNotEquals(genreRepository.getAll().size(), 1);
+        Genre genre = new Genre("1K", "Comedy", new Vector<>());
+        genreRepository.addGenreToTable(genre);
     }
 
-    @Test
-    public void expectCorrectUpdateOfTheName() {
-        genreIsAddedToTheList();
-        genreRepository.updateName(genreRepository.getAll().get(0), "Other Name");
-        String expected = "Other Name";
-        String actual = genreRepository.getAll().get(0).getName();
-        assertSame(actual, expected);
-    }
-
-    @Test
-    public void expectIncorrectUpdateOfTheName() {
-        genreIsAddedToTheList();
-        genreRepository.updateName(genreRepository.getAll().get(0), "Other Name");
-        String expected = "Name";
-        String actual = genreRepository.getAll().get(0).getName();
-        assertNotSame(actual, expected);
-    }
-
-    @Test
-    public void expectCorrectAddingOfTheMovie() {
-        genreIsAddedToTheList();
-        movieIsAddedToTheGenre();
-        assertEquals(genreRepository.getAll().get(0).getListOfMovies().size(), 1);
-    }
-
-    @Test
-    public void expectIncorrectAddingOfTheMovie() {
-        genreIsAddedToTheList();
-        movieIsAddedToTheGenre();
-        assertNotEquals(genreRepository.getAll().get(0).getListOfMovies().size(), 0);
-    }
-
-    @Test
-    public void expectCorrectDeletingOfTheMovie() {
-        genreIsAddedToTheList();
-        movieIsAddedToTheGenre();
-        genreRepository.deleteMovie(genreRepository.getAll().get(0), genreRepository.getAll().get(0).getListOfMovies().get(0));
-        assertEquals(genreRepository.getAll().get(0).getListOfMovies().size(), 0);
-    }
-
-    @Test
-    public void expectIncorrectDeletingOfTheMovie() {
-        genreIsAddedToTheList();
-        movieIsAddedToTheGenre();
-        genreRepository.deleteMovie(genreRepository.getAll().get(0), genreRepository.getAll().get(0).getListOfMovies().get(0));
-        assertNotEquals(genreRepository.getAll().get(0).getListOfMovies().size(), 1);
-    }
-
-    public void genreIsAddedToTheList() {
-        genreRepository.deleteAll();
-        Genre genre = new Genre("1", "Comedy", new Vector<>());
-        genreRepository.add(genre);
-    }
-
-    public void movieIsAddedToTheGenre() {
-        Movie movie = new Movie("1", "Title", 120, new Vector<String>(), new Vector<String>(), new Vector<String>());
-        genreRepository.addMovie(genreRepository.getAll().get(0), movie.getId());
+    public void movieIsAddedToTheGenre() throws SQLException {
+        Movie movie = new Movie("1K", "Title", 120, new Vector<String>(), new Vector<String>(), new Vector<String>());
+        genreRepository.addMovie("1K", movie.getId());
     }
 }

@@ -7,6 +7,8 @@ import map.project.demo.Repository.ActorRepository;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.autoconfigure.graphql.ConditionalOnGraphQlSchema;
+import org.testng.annotations.Ignore;
 
 import java.sql.SQLException;
 import java.text.DateFormat;
@@ -16,13 +18,14 @@ import java.sql.Date;
 import java.util.Vector;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 public class ActorRepoTest {
     ActorRepository actorRepository;
 
     @BeforeEach
     public void setUp() throws SQLException {
-        actorRepository = ActorRepository.getInstance();
+        actorRepository = new ActorRepository();
     }
 
     @Test
@@ -104,65 +107,51 @@ public class ActorRepoTest {
     }
 
     @Test
-    public void expectCorrectAddingOfTheMovie() throws ParseException, SQLException {
-        actorIsAddedToTheList();
-        movieIsAddedToTheActor();
-        assertEquals(actorRepository.getAll().get(0).getListOfMovies().size(), 1);
+    public void actorIsAddedCorrectlyToTheTable() throws SQLException, ParseException {
+        actorIsAddedToTheTable();
+        Actor actor = actorRepository.getActorWithIdFromTable("1K");
+        assertSame(actor.getId(), "1K");
+        actorIsRemovedFromTheTable();
     }
 
     @Test
-    public void expectIncorrectAddingOfTheMovie() throws ParseException, SQLException {
-        actorIsAddedToTheList();
-        movieIsAddedToTheActor();
-        assertNotEquals(actorRepository.getAll().get(0).getListOfMovies().size(), 0);
+    public void actorIsNotAddedCorrectlyToTheTable() throws SQLException, ParseException {
+        actorIsAddedToTheTable();
+        Actor actor = actorRepository.getActorWithIdFromTable("1K");
+        assertNotSame(actor.getId(), "1");
+        actorIsRemovedFromTheTable();
     }
 
     @Test
-    public void expectCorrectDeletingOfTheMovie() throws ParseException, SQLException {
-        actorIsAddedToTheList();
-        movieIsAddedToTheActor();
-        actorRepository.deleteMovie(actorRepository.getAll().get(0), actorRepository.getAll().get(0).getListOfMovies().get(0));
-        assertEquals(actorRepository.getAll().get(0).getListOfMovies().size(), 0);
+    public void actorIsRemovedCorrectlyFromTheTable() throws SQLException, ParseException {
+        int size = actorRepository.getActorsFromTable().size();
+        actorIsAddedToTheTable();
+        assertSame(actorRepository.getActorsFromTable().size(), size + 1);
+        actorIsRemovedFromTheTable();
+        assertSame(actorRepository.getActorsFromTable().size(), size);
     }
 
     @Test
-    public void expectIncorrectDeletingOfTheMovie() throws ParseException, SQLException {
-        actorIsAddedToTheList();
-        movieIsAddedToTheActor();
-        actorRepository.deleteMovie(actorRepository.getAll().get(0), actorRepository.getAll().get(0).getListOfMovies().get(0));
-        assertNotEquals(actorRepository.getAll().get(0).getListOfMovies().size(), 1);
+    public void actorIsNotRemovedCorrectlyFromTheTable() throws SQLException, ParseException {
+        int size = actorRepository.getActorsFromTable().size();
+        actorIsAddedToTheTable();
+        assertSame(actorRepository.getActorsFromTable().size(), size + 1);
+        actorIsRemovedFromTheTable();
+        assertNotSame(actorRepository.getActorsFromTable().size(), size + 1);
     }
 
-    @Test
-    public void expectCorrectAddingOfTheAward() throws ParseException, SQLException {
-        actorIsAddedToTheList();
-        awardIsAddedToTheActor();
-        assertEquals(actorRepository.getAll().get(0).getListOfAwards().size(), 1);
+    public void actorIsAddedToTheTable() throws ParseException, SQLException {
+        String startDate = "2000-01-01";
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        java.util.Date date = dateFormat.parse(startDate);
+        Date sqlDate = new Date(date.getTime());
+        Actor actor = new Actor("1K", "Vin", "Diesel", new Vector<>(), sqlDate, new Vector<>());
+        actorRepository.addActorToTable(actor);
     }
 
-    @Test
-    public void expectIncorrectAddingOfTheAward() throws ParseException, SQLException {
-        actorIsAddedToTheList();
-        awardIsAddedToTheActor();
-        assertNotEquals(actorRepository.getAll().get(0).getListOfAwards().size(), 0);
+    public void actorIsRemovedFromTheTable() throws SQLException {
+        actorRepository.deleteActorWithIdFromTable("1K");
     }
-
-    @Test
-    public void expectCorrectDeletingOfTheAward() throws ParseException, SQLException {
-        actorIsAddedToTheList();
-        awardIsAddedToTheActor();
-        actorRepository.deleteAward(String.valueOf(actorRepository.getAll().get(0)), actorRepository.getAll().get(0).getListOfAwards().get(0));
-        assertEquals(actorRepository.getAll().get(0).getListOfAwards().size(), 0);
-    }
-
-    @Test
-    public void expectIncorrectDeletingOfTheAward() throws ParseException, SQLException {
-        actorIsAddedToTheList();
-        awardIsAddedToTheActor();
-        actorRepository.deleteAward(String.valueOf(actorRepository.getAll().get(0)), actorRepository.getAll().get(0).getListOfAwards().get(0));
-        assertNotEquals(actorRepository.getAll().get(0).getListOfAwards().size(), 1);
-    }
-
 
     public void actorIsAddedToTheList() throws ParseException, SQLException {
         actorRepository.deleteAll();

@@ -71,13 +71,14 @@ public class CinemaController {
         cinemaRepo.addCinemaToTable(cinema);
     }
 
-    @PutMapping("/{id}/updateCinemaName")
+    @PutMapping("/{id}/updateCinemaAddress")
     public void updateCinemaAddress(@PathVariable String id, @RequestBody String cinemaAddress) throws SQLException {
         Cinema cinema = cinemaRepo.getCinemaWithIdFromTable(id);
         cinemaRepo.deleteCinemaWithIdFromTable(id);
         cinema.setAddress(cinemaAddress);
         cinemaRepo.addCinemaToTable(cinema);
     }
+
     @PostMapping("{cinemaId}/rooms")
     public void addRoom(@PathVariable String cinemaId, @RequestBody String roomId) throws SQLException {
         cinemaRepo.addRoom(cinemaId, roomId);
@@ -87,9 +88,10 @@ public class CinemaController {
     public void deleteRoom(@PathVariable String cinemaId, @PathVariable String roomId) throws SQLException {
         cinemaRepo.deleteRoom(cinemaId, roomId);
     }
+
     @GetMapping
-    public Vector<Cinema> getAllCinemas() {
-        return cinemaRepo.getAll();
+    public Vector<Cinema> getAllCinemas() throws SQLException {
+        return cinemaRepo.getCinemasFromTable();
     }
 
 }

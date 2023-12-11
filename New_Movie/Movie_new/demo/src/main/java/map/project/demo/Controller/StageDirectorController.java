@@ -42,19 +42,20 @@ public class StageDirectorController {
     public void deleteDirectorWithIdFromTable(@PathVariable String id) throws SQLException {
         stageDirectorRepo.deleteDirectorWithIdFromTable(id);
     }
+
     @DeleteMapping
     public void deleteAllDirectors() throws SQLException {
         stageDirectorRepo.deleteAllFromDirectorTable();
     }
 
-    @DeleteMapping("/movies")
-    public void deleteAllFromMovieDirectorTable() throws SQLException {
-        stageDirectorRepo.deleteAllFromMovieDirectorTable();
+    @DeleteMapping("/{id}/movies")
+    public void deleteAllFromMovieDirectorTable(@PathVariable String id) throws SQLException {
+        stageDirectorRepo.deleteAllMoviesFromDirectorWithId(id);
     }
 
-    @DeleteMapping("/awards")
-    public void deleteAllFromDirectorAwardTable() throws SQLException {
-        stageDirectorRepo.deleteAllFromDirectorAwardTable();
+    @DeleteMapping("/{id}/awards")
+    public void deleteAllFromDirectorAwardTable(@PathVariable String id) throws SQLException {
+        stageDirectorRepo.deleteAllAwardsFromDirectorWithId(id);
     }
 
     @PutMapping("/{id}/updateFirstName")

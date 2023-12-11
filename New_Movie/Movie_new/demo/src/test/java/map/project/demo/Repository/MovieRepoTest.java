@@ -2,7 +2,6 @@ package map.project.demo.Repository;
 
 import map.project.demo.Domain.*;
 
-import map.project.demo.Repository.MovieRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -17,7 +16,7 @@ public class MovieRepoTest {
 
     @BeforeEach
     public void setUp() throws SQLException {
-        movieRepository = MovieRepository.getInstance();
+        movieRepository = new MovieRepository();
     }
 
     @Test

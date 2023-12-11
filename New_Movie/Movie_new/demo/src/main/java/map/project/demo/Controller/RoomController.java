@@ -28,6 +28,7 @@ public class RoomController {
     public void addRoom(@RequestBody Room room) throws SQLException {
         roomRepo.addRoomToTable(room);
     }
+
     @GetMapping("/{id}")
     public Room findRoomById(@PathVariable String id) throws SQLException {
         return roomRepo.getRoomWithIdFromTable(id);
@@ -42,6 +43,7 @@ public class RoomController {
     public void deleteAllRooms() throws SQLException {
         roomRepo.deleteAllFromRoomTable();
     }
+
     @PutMapping("/{id}/updateRoomNumber")
     public void updateRoomNumber(@PathVariable String id, @RequestBody int roomNumber) throws SQLException {
         Room room = roomRepo.getRoomWithIdFromTable(id);
@@ -49,6 +51,7 @@ public class RoomController {
         room.setRoomNumber(roomNumber);
         roomRepo.addRoomToTable(room);
     }
+
     @PutMapping("/{id}/updateNumberOfSeats")
     public void updateNumberOfSeats(@PathVariable String id, @RequestBody int numberOfSeats) throws SQLException {
         Room room = roomRepo.getRoomWithIdFromTable(id);
@@ -56,8 +59,9 @@ public class RoomController {
         room.setNumberOfSeats(numberOfSeats);
         roomRepo.addRoomToTable(room);
     }
+
     @GetMapping
-    public Vector<Room> getAllRooms() {
-        return roomRepo.getAll();
+    public Vector<Room> getAllRooms() throws SQLException {
+        return roomRepo.getRoomsFromTable();
     }
 }

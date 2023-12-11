@@ -17,14 +17,14 @@ import java.util.Vector;
 public class StageDirectorRepository {
     private static StageDirectorRepository instance;
     private final Vector<StageDirector> stageDirectors;
-    Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Movie", "MyUser", "slay");
+    Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Movie", "MyUser", "castravete");
     Statement insert = connection.createStatement();
     String insertStringFancy = "insert into \"StageDirector\"(id, firstName, lastName) VALUES (?, ?, ?) on conflict (id) do nothing";
     PreparedStatement insertFancy = connection.prepareStatement(insertStringFancy);
-    String insertStringFancyIntoMovieDirector = "INSERT INTO \"MovieDirector\"(movieid,stageDirectorid) VALUES (?, ?) ON CONFLICT ( movieid,stageDirectorid) DO NOTHING";
+    String insertStringFancyIntoMovieDirector = "INSERT INTO \"MovieDirector\"(movieid,directorid) VALUES (?, ?) ON CONFLICT ( movieid,directorid) DO NOTHING";
     PreparedStatement insertFancyIntoMovieDirector = connection.prepareStatement(insertStringFancyIntoMovieDirector);
 
-    String insertStringFancyIntoDirectorAward = "INSERT INTO \"DirectorAward\"(stageDirectorid,awardid) VALUES (?, ?) ON CONFLICT (stageDirectorid, awardid) DO NOTHING";
+    String insertStringFancyIntoDirectorAward = "INSERT INTO \"DirectorAward\"(directorid,awardid) VALUES (?, ?) ON CONFLICT (directorid, awardid) DO NOTHING";
     PreparedStatement insertFancyIntoDirectorAward = connection.prepareStatement(insertStringFancyIntoDirectorAward);
     Statement select = connection.createStatement();
 
@@ -82,14 +82,29 @@ public class StageDirectorRepository {
 
     @Transactional
     public void addDirectorToTable(StageDirector stageDirector) throws SQLException {
-            insertFancy.setString(1, stageDirector.getId());
-            insertFancy.setString(2, stageDirector.getFirstName());
-            insertFancy.setString(3, stageDirector.getLastName());
-            insertFancy.executeUpdate();
+        insertFancy.setString(1, stageDirector.getId());
+        insertFancy.setString(2, stageDirector.getFirstName());
+        insertFancy.setString(3, stageDirector.getLastName());
+        insertFancy.executeUpdate();
     }
+
     @Transactional
     public void deleteAllFromMovieDirectorTable() throws SQLException {
         select.execute("delete from \"MovieDirector\"");
+    }
+
+    @Transactional
+    public void deleteAllMoviesFromDirectorWithId(String id) throws SQLException {
+        PreparedStatement preparedStatement = connection.prepareStatement("delete from \"MovieDirector\" where directorid=?");
+        preparedStatement.setString(1, id);
+        preparedStatement.executeUpdate();
+    }
+
+    @Transactional
+    public void deleteAllAwardsFromDirectorWithId(String id) throws SQLException {
+        PreparedStatement preparedStatement = connection.prepareStatement("delete from \"DirectorAward\" where directorid=?");
+        preparedStatement.setString(1, id);
+        preparedStatement.executeUpdate();
     }
 
     @Transactional
@@ -106,7 +121,7 @@ public class StageDirectorRepository {
     @Transactional
     public Vector<String> getAwardsFromDirectorAwardTable(String directorId) throws SQLException {
         Vector<String> awardIds = new Vector<>();
-        PreparedStatement awardStatement = connection.prepareStatement(" SELECT AA.awardid FROM \"StageDirector\" SD join \"DirectorAward\" AA on AA.stageDirectorid=?");
+        PreparedStatement awardStatement = connection.prepareStatement(" SELECT AA.awardid FROM \"StageDirector\" SD join \"DirectorAward\" AA on AA.directorid=?");
         awardStatement.setString(1, directorId);
         ResultSet result = awardStatement.executeQuery();
         while (result.next()) {
@@ -118,7 +133,7 @@ public class StageDirectorRepository {
     @Transactional
     public Vector<String> getMoviesFromMovieDirectorTable(String directorId) throws SQLException {
         Vector<String> moviesIds = new Vector<>();
-        PreparedStatement movieStatement = connection.prepareStatement(" SELECT AM.movieid FROM \"StageDirector\" SD join \"MovieDirector\" AM on AM.stageDirectorid=?");
+        PreparedStatement movieStatement = connection.prepareStatement(" SELECT AM.movieid FROM \"StageDirector\" SD join \"MovieDirector\" AM on AM.directorid=?");
         movieStatement.setString(1, directorId);
         ResultSet result = movieStatement.executeQuery();
         while (result.next()) {
@@ -162,6 +177,7 @@ public class StageDirectorRepository {
     public void updateFirstName(StageDirector stageDirector, String firstName) {
         stageDirectors.get(getAll().indexOf(stageDirector)).setFirstName(firstName);
     }
+
     @Transactional
     public void updateLastName(StageDirector stageDirector, String lastName) {
         stageDirectors.get(getAll().indexOf(stageDirector)).setLastName(lastName);
@@ -169,7 +185,7 @@ public class StageDirectorRepository {
 
     @Transactional
     public void deleteMovie(String stagedirectorId, String movieId) throws SQLException {
-        PreparedStatement movieStatement = connection.prepareStatement(" delete FROM \"MovieDirector\" MD where MD.movieid=? and MD.stagedirectorid=?");
+        PreparedStatement movieStatement = connection.prepareStatement(" delete FROM \"MovieDirector\" MD where MD.movieid=? and MD.directorid=?");
         movieStatement.setString(1, movieId);
         movieStatement.setString(2, stagedirectorId);
         movieStatement.execute();
@@ -189,7 +205,7 @@ public class StageDirectorRepository {
 
     @Transactional
     public void deleteAward(String stagedirectorId, String awardId) throws SQLException {
-        PreparedStatement statement = connection.prepareStatement(" delete FROM \"DirectorAward\" DA where DA.stagedirectorid=? and DA.awardid=?");
+        PreparedStatement statement = connection.prepareStatement(" delete FROM \"DirectorAward\" DA where DA.directorid=? and DA.awardid=?");
         statement.setString(1, stagedirectorId);
         statement.setString(2, awardId);
         statement.execute();

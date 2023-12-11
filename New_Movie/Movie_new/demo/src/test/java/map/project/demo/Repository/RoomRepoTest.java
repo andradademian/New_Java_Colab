@@ -17,7 +17,7 @@ public class RoomRepoTest {
 
     @BeforeEach
     public void setUp() throws SQLException {
-        roomRepository = RoomRepository.getInstance();
+        roomRepository = new RoomRepository();
     }
 
     @Test
