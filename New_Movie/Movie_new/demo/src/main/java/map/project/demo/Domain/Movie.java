@@ -21,6 +21,10 @@ public class Movie{
         this.genres = genres;
     }
 
+    public Movie() {
+
+    }
+
     public Vector<String> getActors() {
         return actors;
     }
@@ -107,7 +111,7 @@ public class Movie{
     }
 
 
-    public void showMovie() {
+    public void showMovie() throws Exception {
         System.out.println("Movie \""+this.title+"\" is showed.");
     }
 }

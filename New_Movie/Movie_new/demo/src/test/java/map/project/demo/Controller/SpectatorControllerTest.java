@@ -32,6 +32,9 @@ public class SpectatorControllerTest {
     @Test
     public void expectCorrectAddingOfTheSpectator() throws SQLException {
         assertEquals(spectatorController.getAllSpectators().size(), 3);
+        Spectator spectator4 = new Spectator("4", "First4", "Last4");
+        spectatorController.addSpectator(spectator4);
+        assertEquals(spectatorController.getAllSpectators().size(), 4);
         spectatorController.deleteAllSpectators();
     }
 
