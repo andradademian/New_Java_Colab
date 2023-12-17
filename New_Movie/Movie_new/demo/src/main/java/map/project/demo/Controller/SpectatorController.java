@@ -66,7 +66,7 @@ public class SpectatorController {
     }
 
     @PutMapping("/{id}/setTicket")
-    public void setTicket(@RequestBody Ticket ticket, String id) throws SQLException {
+    public void setTicket(@RequestBody Ticket ticket, @PathVariable String id) throws SQLException {
         Spectator spectator = spectatorRepo.getSpectatorWithIdFromTable(id);
         spectatorRepo.deleteSpectatorWithIdFromTable(id);
         spectator.setTicket(ticket);

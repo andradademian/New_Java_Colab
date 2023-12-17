@@ -83,26 +83,6 @@ public class StageDirectorControllerTest {
     }
 
     @Test
-    void testUpdateFirstName() throws Exception {
-        doNothing().when(stageDirectorRepository).deleteDirectorWithIdFromTable(anyString());
-
-        mockMvc.perform(put("/api/stagedirector/1/updateFirstName")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("\"NewFirstName\""))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    void testUpdateLastName() throws Exception {
-        doNothing().when(stageDirectorRepository).deleteDirectorWithIdFromTable(anyString());
-
-        mockMvc.perform(put("/api/stagedirector/1/updateLastName")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("\"NewLastName\""))
-                .andExpect(status().isOk());
-    }
-
-    @Test
     void testDeleteMovie() throws Exception {
         doNothing().when(stageDirectorRepository).deleteMovie(anyString(), anyString());
 

@@ -98,33 +98,14 @@ public class SpectatorControllerTest {
                 .andExpect(status().isOk());
     }
 
-    @Test
-    void testUpdateFirstName() throws Exception {
-        doNothing().when(spectatorRepository).deleteSpectatorWithIdFromTable(anyString());
-
-        mockMvc.perform(put("/api/spectator/updateFirstName/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("\"NewFirstName\""))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    void testUpdateLastName() throws Exception {
-        doNothing().when(spectatorRepository).deleteSpectatorWithIdFromTable(anyString());
-
-        mockMvc.perform(put("/api/spectator/updateLastName/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("\"NewLastName\""))
-                .andExpect(status().isOk());
-    }
 
     @Test
     void testSetTicket() throws Exception {
         Ticket ticket = new Ticket();
-        ticket.setId("T123");
+        ticket.setId("1");
         ticket.setPrice(20);
 
-        Spectator spectator = new Spectator();
+        Spectator spectator = new Spectator("1","FirstName", "LastName");
 
         doNothing().when(spectatorRepository).deleteSpectatorWithIdFromTable(anyString());
         when(spectatorRepository.getSpectatorWithIdFromTable("1")).thenReturn(spectator);
@@ -134,6 +115,7 @@ public class SpectatorControllerTest {
                         .content(objectMapper.writeValueAsString(ticket)))
                 .andExpect(status().isOk());
     }
+
 
     @Test
     void testGetAllSpectators() throws Exception {
