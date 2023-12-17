@@ -15,7 +15,7 @@ import java.util.Vector;
 public class GenreRepository {
     private static GenreRepository instance;
     private final Vector<Genre> genres;
-    Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Movie", "MyUser", "slay");
+    Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Movie", "MyUser", "castravete");
     Statement insert = connection.createStatement();
     String insertStringFancy = "insert into \"Genre\"(id,genrename) VALUES (?, ?) on conflict (id) do nothing";
     PreparedStatement insertFancy = connection.prepareStatement(insertStringFancy);
@@ -51,6 +51,7 @@ public class GenreRepository {
         }
         return null;
     }
+
     public List<String> getMoviesFromMovieGenreTable(String genreId) throws SQLException {
         List<String> moviesIds = new ArrayList<>();
         PreparedStatement movieStatement = connection.prepareStatement(" SELECT MG.movieid FROM \"Genre\" G join \"MovieGenre\" MG on MG.genreid=?");
@@ -85,18 +86,26 @@ public class GenreRepository {
 
     @Transactional
     public void addGenreToTable(Genre genre) throws SQLException {
-            insertFancy.setString(1, genre.getId());
-            insertFancy.setString(2, genre.getName());
-            insertFancy.executeUpdate();
+        insertFancy.setString(1, genre.getId());
+        insertFancy.setString(2, genre.getName());
+        insertFancy.executeUpdate();
     }
+
     @Transactional
     public void deleteAllFromMovieGenreTable() throws SQLException {
         select.execute("delete from \"MovieGenre\"");
     }
 
     @Transactional
+    public void deleteAllMoviesFromGenreWithId(String id) throws SQLException {
+        PreparedStatement preparedStatement = connection.prepareStatement("delete from \"MovieGenre\" where genreid=?");
+        preparedStatement.setString(1, id);
+        preparedStatement.executeUpdate();
+    }
+
+    @Transactional
     public void addToMovieGenreTable() throws SQLException {
-        for (Genre genre: genres) {
+        for (Genre genre : genres) {
             for (String movie : genre.getListOfMovies()) {
                 insertFancyIntoMovieGenre.setString(1, genre.getId());
                 insertFancyIntoMovieGenre.setString(2, movie);
@@ -133,7 +142,7 @@ public class GenreRepository {
 
     @Transactional
     public void deleteMovie(String genreId, String movieId) throws SQLException {
-        PreparedStatement movieStatement = connection.prepareStatement(" delete FROM \"MovieGenre\" MG where MG.genreid=? and GM.movieid=?");
+        PreparedStatement movieStatement = connection.prepareStatement(" delete FROM \"MovieGenre\" MG where MG.genreid=? and MG.movieid=?");
         movieStatement.setString(1, genreId);
         movieStatement.setString(2, movieId);
         movieStatement.execute();
@@ -146,6 +155,7 @@ public class GenreRepository {
         insertFancyIntoMovieGenre.executeUpdate();
 
     }
+
     @Transactional
     public Vector<Genre> getAll() {
         return this.genres;
