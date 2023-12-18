@@ -1,6 +1,7 @@
 package map.project.demo.TestingWeb;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import map.project.demo.AwardFactory.AwardFactory;
 import map.project.demo.Controller.AwardController;
 import map.project.demo.Domain.Actor;
 import map.project.demo.Domain.Award;
@@ -8,7 +9,9 @@ import map.project.demo.Repository.AwardRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -25,7 +28,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(AwardController.class)
+//@WebMvcTest(AwardController.class)
+@SpringBootTest
+@AutoConfigureMockMvc
 public class AwardControllerTest {
 
     @Autowired
@@ -33,6 +38,10 @@ public class AwardControllerTest {
 
     @MockBean
     private AwardRepository awardRepository;
+
+    @Autowired
+    private AwardRepository actualawardRepository;
+
 
     @InjectMocks
     private AwardController awardController;
@@ -42,15 +51,22 @@ public class AwardControllerTest {
 
     @Test
     void testAddAward() throws Exception {
-        Award award = new Award();
-        award.setCategory("Best Actor");
-
-        doNothing().when(awardRepository).addAwardToTable(any(Award.class));
+        AwardFactory awardFactory = AwardFactory.getInstance();
+        Award award = awardFactory.buildAward("Oscar", "KX", "BestActor");
+//        award.setId("KX");
+//        award.setCategory("Best Actor");
+//        doNothing().when(awardRepository).addAwardToTable(any(Award.class));
 
         mockMvc.perform(post("/api/award")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(award)))
                 .andExpect(status().isOk());
+
+//        when(awardRepository.getAwardWithIdFromTable).thenReturn(awardRepository.getAwardWithIdFromTable("KX"));
+//        mockMvc.perform(get("/api/award/KX"))
+//                .andDo((x) -> System.out.println(x.getResponse().))
+//                .andExpect(jsonPath("$.category").value("Best Actor"));
+        actualawardRepository.getAwardsFromTable().forEach(System.out::println);
     }
 
     @Test
