@@ -22,7 +22,7 @@ public class AwardRepository {
     private static AwardRepository instance;
     private final Vector<Award> awards;
 
-    Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Movie", "MyUser", "slay");
+    Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Movie", "MyUser", "castravete");
     Statement insert = connection.createStatement();
     String insertStringFancy = "INSERT INTO \"Award\"(id, awardType, category) VALUES (?, ?, ?) on conflict (id) do nothing";
     PreparedStatement insertFancy = connection.prepareStatement(insertStringFancy);
@@ -58,6 +58,7 @@ public class AwardRepository {
     public void deleteAllFromAwards() throws SQLException {
         select.execute("delete from \"Award\"");
     }
+
     @Transactional
     public void addAwardsToTable() throws SQLException {
         for (Award award : awards) {
@@ -86,15 +87,12 @@ public class AwardRepository {
             String category = result.getString("Category");
             if (Objects.equals(type, "Oscar")) {
                 return new Oscar(id, category);
-            }
-            else if (Objects.equals(type, "PalmeDor")) {
+            } else if (Objects.equals(type, "PalmeDor")) {
                 return new PalmeDor(id, category);
-            }
-            else if (Objects.equals(type, "GoldenGlobe")) {
+            } else if (Objects.equals(type, "GoldenGlobe")) {
                 return new GoldenGlobe(id, category);
-            }
-            else
-                return new Award(id,category);
+            } else
+                return new Award(id, category);
 
         }
         return null;

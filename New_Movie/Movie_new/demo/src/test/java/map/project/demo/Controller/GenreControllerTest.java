@@ -14,17 +14,19 @@ import java.sql.SQLException;
 import java.util.Vector;
 
 public class GenreControllerTest {
-    GenreRepository genreRepository = new GenreRepository();
-    GenreController genreController = new GenreController();
+    GenreRepository genreRepository;
+    GenreController genreController;
 
-    public GenreControllerTest() throws SQLException {
+    public GenreControllerTest() {
     }
 
     @BeforeEach
-    public void setUp() {
+    public void setUp() throws SQLException {
+        genreRepository = new GenreRepository();
         genreRepository.add(new Genre("1", "Action", new Vector<String>()));
         genreRepository.add(new Genre("2", "Drama", new Vector<String>()));
         genreRepository.add(new Genre("3", "Comedy", new Vector<String>()));
+        genreController = new GenreController();
     }
 
 

@@ -16,7 +16,7 @@ public class RoomRepository {
     private static RoomRepository instance;
     private final Vector<Room> rooms;
 
-    Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Movie", "MyUser", "slay");
+    Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Movie", "MyUser", "castravete");
     Statement insert = connection.createStatement();
     String insertStringFancy = "INSERT INTO \"Room\"(id, roomnumber, numberofseats) VALUES (?, ?, ?) on conflict (id) do nothing";
     PreparedStatement insertFancy = connection.prepareStatement(insertStringFancy);
@@ -78,20 +78,22 @@ public class RoomRepository {
 
     @Transactional
     public void addRoomToTable(Room room) throws SQLException {
-            insertFancy.setString(1, room.getId());
-            insertFancy.setInt(2, room.getRoomNumber());
-            insertFancy.setInt(3, room.getNumberOfSeats());
-            insertFancy.executeUpdate();
+        insertFancy.setString(1, room.getId());
+        insertFancy.setInt(2, room.getRoomNumber());
+        insertFancy.setInt(3, room.getNumberOfSeats());
+        insertFancy.executeUpdate();
     }
 
     @Transactional
     public void add(Room room) {
         rooms.add(room);
     }
+
     @Transactional
     public void delete(Room room) {
         rooms.remove(room);
     }
+
     @Transactional
     public void deleteAll() {
         rooms.clear();
