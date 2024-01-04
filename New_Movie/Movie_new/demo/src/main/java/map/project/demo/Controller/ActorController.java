@@ -22,13 +22,13 @@ public class ActorController {
     private ActorRepository actorRepo;
 
     @PostMapping
-    public void addActor(@RequestBody Actor actor) throws SQLException {
-        actorRepo.addActorToTable(actor);
+    public void addActor(@RequestBody Actor actor) {
+        actorRepo.save(actor);
     }
 
     @GetMapping("/{id}")
-    public Actor findActorById(@PathVariable String id) throws SQLException {
-        return actorRepo.getActorWithIdFromTable(id);
+    public Actor findActorById(@PathVariable String id) {
+        return actorRepo.findById(id).get();
     }
 
     public boolean findMovieById(Actor actor, String id) {
@@ -67,24 +67,24 @@ public class ActorController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteActorWithIdFromTable(@PathVariable String id) throws SQLException {
-        actorRepo.deleteActorWithIdFromTable(id);
+    public void deleteActorWithIdFromTable(@PathVariable String id) {
+        actorRepo.deleteById(id);
     }
 
     @PutMapping("/{id}/updateFirstName")
-    public void updateFirstName(@PathVariable String id, @RequestBody String firstName) throws SQLException {
-        Actor actor = actorRepo.getActorWithIdFromTable(id);
-        actorRepo.deleteActorWithIdFromTable(id);
+    public void updateFirstName(@PathVariable String id, @RequestBody String firstName) {
+        Actor actor = actorRepo.findById(id).get();
+        actorRepo.deleteById(id);
         actor.setFirstName(firstName);
-        actorRepo.addActorToTable(actor);
+        actorRepo.save(actor);
     }
 
     @PutMapping("/{id}/updateLastName")
-    public void updateLastName(@PathVariable String id, @RequestBody String lastName) throws SQLException {
-        Actor actor = actorRepo.getActorWithIdFromTable(id);
-        actorRepo.deleteActorWithIdFromTable(id);
+    public void updateLastName(@PathVariable String id, @RequestBody String lastName) {
+        Actor actor = actorRepo.findById(id).get();
+        actorRepo.deleteById(id);
         actor.setLastName(lastName);
-        actorRepo.addActorToTable(actor);
+        actorRepo.save(actor);
     }
 
     @DeleteMapping("/{actorId}/movies/{movieId}")
@@ -108,7 +108,7 @@ public class ActorController {
     }
 
     @GetMapping
-    public Vector<Actor> getAllActors() throws SQLException {
-        return actorRepo.getActorsFromTable();
+    public Vector<Actor> getAllActors() {
+        return (Vector<Actor>) actorRepo.findAll();
     }
 }

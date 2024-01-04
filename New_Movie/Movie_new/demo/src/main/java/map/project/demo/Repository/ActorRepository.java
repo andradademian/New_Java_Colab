@@ -2,13 +2,15 @@ package map.project.demo.Repository;
 
 import jakarta.transaction.Transactional;
 import map.project.demo.Domain.Actor;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
+import java.util.Optional;
 import java.util.Vector;
 
 @Repository
-public class ActorRepository {
+public class ActorRepository implements CrudRepository<Actor, String> {
     private final Vector<Actor> listOfActors;
 
     Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Movie", "MyUser", "castravete");
@@ -26,7 +28,8 @@ public class ActorRepository {
         listOfActors = getActorsFromTable();
     }
 
-    @Transactional
+
+    //    @Transactional
     public Vector<Actor> getActorsFromTable() throws SQLException {
         Vector<Actor> actorVector = new Vector<>();
         ResultSet result = select.executeQuery(" SELECT * FROM \"Actor\"");
@@ -41,7 +44,7 @@ public class ActorRepository {
         return actorVector;
     }
 
-    @Transactional
+    //    @Transactional
     public Actor getActorWithIdFromTable(String id) throws SQLException {
         PreparedStatement statement = connection.prepareStatement(" SELECT * FROM \"Actor\" where Id=?");
         statement.setString(1, id);
@@ -55,7 +58,7 @@ public class ActorRepository {
         return null;
     }
 
-    @Transactional
+    //    @Transactional
     public void deleteActorWithIdFromTable(String id) throws SQLException {
         PreparedStatement preparedStatement = connection.prepareStatement("delete from \"Actor\" where id=?");
         preparedStatement.setString(1, id);
@@ -67,59 +70,59 @@ public class ActorRepository {
         select.execute("delete from \"Actor\"");
     }
 
-    @Transactional
-    public void addActorsToTable() throws SQLException {
-        for (Actor actor : listOfActors) {
-            insertFancy.setString(1, actor.getId());
-            insertFancy.setString(2, actor.getFirstName());
-            insertFancy.setString(3, actor.getLastName());
-            insertFancy.setDate(4, actor.getStartOfCareer());
-            insertFancy.executeUpdate();
-        }
-    }
+//    @Transactional
+//    public void addActorsToTable() throws SQLException {
+//        for (Actor actor : listOfActors) {
+//            insertFancy.setString(1, actor.getId());
+//            insertFancy.setString(2, actor.getFirstName());
+//            insertFancy.setString(3, actor.getLastName());
+//            insertFancy.setDate(4, actor.getStartOfCareer());
+//            insertFancy.executeUpdate();
+//        }
+//    }
 
-    @Transactional
-    public void addActorToTable(Actor actor) throws SQLException {
-        insertFancy.setString(1, actor.getId());
-        insertFancy.setString(2, actor.getFirstName());
-        insertFancy.setString(3, actor.getLastName());
-        insertFancy.setDate(4, actor.getStartOfCareer());
-        insertFancy.executeUpdate();
-    }
+//    @Transactional
+//    public void addActorToTable(Actor actor) throws SQLException {
+//        insertFancy.setString(1, actor.getId());
+//        insertFancy.setString(2, actor.getFirstName());
+//        insertFancy.setString(3, actor.getLastName());
+//        insertFancy.setDate(4, actor.getStartOfCareer());
+//        insertFancy.executeUpdate();
+//    }
 
     @Transactional
     public void deleteAllFromActorMovieTable() throws SQLException {
         select.execute("delete from \"ActorMovie\"");
     }
 
-    @Transactional
-    public void addToActorMovieTable() throws SQLException {
-        for (Actor actor : listOfActors) {
-            for (String movie : actor.getListOfMovies()) {
-                insertFancyIntoActorMovie.setString(1, actor.getId());
-                insertFancyIntoActorMovie.setString(2, movie);
-                insertFancyIntoActorMovie.executeUpdate();
-            }
-        }
-    }
+//    @Transactional
+//    public void addToActorMovieTable() throws SQLException {
+//        for (Actor actor : listOfActors) {
+//            for (String movie : actor.getListOfMovies()) {
+//                insertFancyIntoActorMovie.setString(1, actor.getId());
+//                insertFancyIntoActorMovie.setString(2, movie);
+//                insertFancyIntoActorMovie.executeUpdate();
+//            }
+//        }
+//    }
 
     @Transactional
     public void deleteAllFromActorAwardTable() throws SQLException {
         select.execute("delete from \"ActorAward\"");
     }
 
-    @Transactional
-    public void addToActorAwardTable() throws SQLException {
-        for (Actor actor : listOfActors) {
-            for (String award : actor.getListOfAwards()) {
-                insertFancyIntoActorAward.setString(1, actor.getId());
-                insertFancyIntoActorAward.setString(2, award);
-                insertFancyIntoActorAward.executeUpdate();
-            }
-        }
-    }
+//    @Transactional
+//    public void addToActorAwardTable() throws SQLException {
+//        for (Actor actor : listOfActors) {
+//            for (String award : actor.getListOfAwards()) {
+//                insertFancyIntoActorAward.setString(1, actor.getId());
+//                insertFancyIntoActorAward.setString(2, award);
+//                insertFancyIntoActorAward.executeUpdate();
+//            }
+//        }
+//    }
 
-    @Transactional
+    //    @Transactional
     public Vector<String> getAwardsFromActorAwardTable(String actorId) throws SQLException {
         Vector<String> awardIds = new Vector<>();
         PreparedStatement awardStatement = connection.prepareStatement(" SELECT AA.awardid FROM \"ActorAward\" AA where AA.actorid=?");
@@ -131,7 +134,7 @@ public class ActorRepository {
         return awardIds;
     }
 
-    @Transactional
+    //    @Transactional
     public Vector<String> getMoviesFromActorMovieTable(String actorId) throws SQLException {
         Vector<String> moviesIds = new Vector<>();
         PreparedStatement movieStatement = connection.prepareStatement(" SELECT AM.movieid FROM \"ActorMovie\" AM where AM.actorid=?");
@@ -148,9 +151,180 @@ public class ActorRepository {
         listOfActors.add(actor);
     }
 
+    @Override
+    @Transactional
+    public <S extends Actor> S save(S entity) {
+        try {
+            insertFancy.setString(1, entity.getId());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            insertFancy.setString(2, entity.getFirstName());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            insertFancy.setString(3, entity.getLastName());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            insertFancy.setDate(4, entity.getStartOfCareer());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            insertFancy.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+
+    @Override
+    public <S extends Actor> Iterable<S> saveAll(Iterable<S> entities) {
+        return null;
+    }
+
+    @Transactional
+    @Override
+    public Optional<Actor> findById(String id) {
+        PreparedStatement statement;
+        try {
+            statement = connection.prepareStatement(" SELECT * FROM \"Actor\" where Id=?");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            statement.setString(1, id);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        ResultSet result;
+        try {
+            result = statement.executeQuery();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            if (result.next()) {
+                String firstName = result.getString("FirstName");
+                String lastName = result.getString("LastName");
+                Date startOfCareer = result.getDate("StartOfCareer");
+                return Optional.of(new Actor(id, firstName, lastName, getMoviesFromActorMovieTable(id), startOfCareer, getAwardsFromActorAwardTable(id)));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+
+    @Override
+    public boolean existsById(String id) {
+        try {
+            return this.getActorWithIdFromTable(id) != null;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Transactional
+    @Override
+    public Iterable<Actor> findAll() {
+        try {
+            return getActorsFromTable();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public Iterable<Actor> findAllById(Iterable<String> strings) {
+        Vector<Actor> actors = new Vector<>();
+        for (String id : strings) {
+            try {
+                actors.add(getActorWithIdFromTable(id));
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return actors;
+    }
+
+    @Override
+    public long count() {
+        Statement countStatement;
+        try {
+            countStatement = connection.createStatement();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        ResultSet countResult;
+        try {
+            countResult = countStatement.executeQuery("SELECT COUNT(*) FROM \"Actor\"");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        try {
+            if (countResult.next()) {
+                return countResult.getLong(1);
+            } else {
+                return 0;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Transactional
+    @Override
+    public void deleteById(String id) {
+        PreparedStatement preparedStatement;
+        try {
+            preparedStatement = connection.prepareStatement("delete from \"Actor\" where id=?");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            preparedStatement.setString(1, id);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @Transactional
     public void delete(Actor actor) {
         listOfActors.remove(actor);
+    }
+
+    @Transactional
+    @Override
+    public void deleteAllById(Iterable<? extends String> strings) {
+        for (String id : strings) {
+            try {
+                this.deleteActorWithIdFromTable(id);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    @Override
+    public void deleteAll(Iterable<? extends Actor> entities) {
+        for (Actor actor : entities) {
+            try {
+                this.deleteActorWithIdFromTable(actor.getId());
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     @Transactional
@@ -158,10 +332,6 @@ public class ActorRepository {
         listOfActors.clear();
     }
 
-    @Transactional
-    public void printAll() {
-        System.out.println(listOfActors);
-    }
 
     @Transactional
     public void updateFirstName(Actor actor, String firstName) {
