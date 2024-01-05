@@ -3,15 +3,17 @@ package map.project.demo.Controller;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import map.project.demo.Repository.ActorRepository;
 import map.project.demo.Domain.Actor;
+import map.project.demo.Repository.IActorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.SQLException;
-import java.util.Objects;
-import java.util.Vector;
+import java.util.*;
 
+@CrossOrigin(origins = "http://localhost:8081")
 @RestController
 @RequestMapping("/api/actor")
 @Getter
@@ -19,7 +21,8 @@ import java.util.Vector;
 @NoArgsConstructor
 public class ActorController {
     @Autowired
-    private ActorRepository actorRepo;
+    private IActorRepository actorRepo;
+    private static final Logger logger = LoggerFactory.getLogger(ActorController.class);
 
     @PostMapping
     public void addActor(@RequestBody Actor actor) {
@@ -27,8 +30,8 @@ public class ActorController {
     }
 
     @GetMapping("/{id}")
-    public Actor findActorById(@PathVariable String id) {
-        return actorRepo.findById(id).get();
+    public Optional<Actor> findActorById(@PathVariable String id) {
+        return actorRepo.findById(id);
     }
 
     public boolean findMovieById(Actor actor, String id) {
@@ -52,19 +55,22 @@ public class ActorController {
     }
 
     @DeleteMapping
-    public void deleteAllActors() throws SQLException {
-        actorRepo.deleteAllFromActorTable();
+    public void deleteAllActors() {
+        actorRepo.deleteAll();
     }
 
-    @DeleteMapping("/movies")
-    public void deleteAllFromActorMovieTable() throws SQLException {
-        actorRepo.deleteAllFromActorMovieTable();
-    }
-
-    @DeleteMapping("/awards")
-    public void deleteAllFromActorAwardTable() throws SQLException {
-        actorRepo.deleteAllFromActorAwardTable();
-    }
+//    @DeleteMapping("/movies")
+//    public void deleteAllFromActorMovieTable()  {
+//        Actor actor=actorRepo.findById(actorId).get();
+//        actorRepo.deleteById(actorId);
+//        actor.removeAward(awardId);
+//        actorRepo.save(actor);
+//    }
+//
+//    @DeleteMapping("/awards")
+//    public void deleteAllFromActorAwardTable() {
+//        actorRepo.deleteAllFromActorAwardTable();
+//    }
 
     @DeleteMapping("/{id}")
     public void deleteActorWithIdFromTable(@PathVariable String id) {
@@ -89,26 +95,40 @@ public class ActorController {
 
     @DeleteMapping("/{actorId}/movies/{movieId}")
     public void deleteMovie(@PathVariable String actorId, @PathVariable String movieId) throws SQLException {
-        actorRepo.deleteMovie(actorId, movieId);
+        Actor actor = actorRepo.findById(actorId).get();
+        actorRepo.deleteById(actorId);
+        actor.removeMovie(movieId);
+        actorRepo.save(actor);
     }
 
     @PostMapping("{actorId}/movies")
     public void addMovie(@PathVariable String actorId, @RequestBody String movieId) throws SQLException {
-        actorRepo.addMovie(actorId, movieId);
+        Actor actor = actorRepo.findById(actorId).get();
+        actorRepo.deleteById(actorId);
+        actor.addMovie(movieId);
+        actorRepo.save(actor);
     }
 
     @DeleteMapping("/{actorId}/awards/{awardId}")
     public void deleteAward(@PathVariable String actorId, @PathVariable String awardId) throws SQLException {
-        actorRepo.deleteAward(actorId, awardId);
+        Actor actor = actorRepo.findById(actorId).get();
+        actorRepo.deleteById(actorId);
+        actor.removeAward(awardId);
+        actorRepo.save(actor);
     }
 
     @PostMapping("{actorId}/awards")
     public void addAward(@PathVariable String actorId, @RequestBody String awardId) throws SQLException {
-        actorRepo.addAward(actorId, awardId);
+        Actor actor = actorRepo.findById(actorId).get();
+        actorRepo.deleteById(actorId);
+        actor.addAward(awardId);
+        actorRepo.save(actor);
     }
 
     @GetMapping
-    public Vector<Actor> getAllActors() {
-        return (Vector<Actor>) actorRepo.findAll();
+    public List<Actor> getAllActors() {
+        List<Actor> actors = actorRepo.findAll();
+        logger.info("Retrieved {} actors from the database.", actors.size());
+        return actors;
     }
 }

@@ -1,20 +1,33 @@
 package map.project.demo.Domain;
 
+import jakarta.persistence.*;
 import map.project.demo.ObserverPattern.Observer;
 
 import java.sql.*;
 
+@Entity
+@Table(name = "Spectator")
 public class Spectator implements Observer {
+    @Id
     private String id;
+
+    @Column(name = "firstname")
     private String firstName;
+
+    @Column(name = "lastname")
     private String lastName;
+
+    @Transient
     private Ticket ticket;
+
+    @Column(name = "ticketId")
+    private String ticketId;
 
     public Spectator() {
 
     }
 
-    public Spectator(String id, String firstName, String lastName) throws SQLException {
+    public Spectator(String id, String firstName, String lastName) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;

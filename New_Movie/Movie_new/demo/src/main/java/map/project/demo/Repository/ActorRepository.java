@@ -2,6 +2,7 @@ package map.project.demo.Repository;
 
 import jakarta.transaction.Transactional;
 import map.project.demo.Domain.Actor;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -10,7 +11,7 @@ import java.util.Optional;
 import java.util.Vector;
 
 @Repository
-public class ActorRepository implements CrudRepository<Actor, String> {
+public class ActorRepository {
     private final Vector<Actor> listOfActors;
 
     Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Movie", "MyUser", "castravete");
@@ -151,181 +152,181 @@ public class ActorRepository implements CrudRepository<Actor, String> {
         listOfActors.add(actor);
     }
 
-    @Override
-    @Transactional
-    public <S extends Actor> S save(S entity) {
-        try {
-            insertFancy.setString(1, entity.getId());
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            insertFancy.setString(2, entity.getFirstName());
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            insertFancy.setString(3, entity.getLastName());
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            insertFancy.setDate(4, entity.getStartOfCareer());
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            insertFancy.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return null;
-    }
-
-    @Override
-    public <S extends Actor> Iterable<S> saveAll(Iterable<S> entities) {
-        return null;
-    }
-
-    @Transactional
-    @Override
-    public Optional<Actor> findById(String id) {
-        PreparedStatement statement;
-        try {
-            statement = connection.prepareStatement(" SELECT * FROM \"Actor\" where Id=?");
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            statement.setString(1, id);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        ResultSet result;
-        try {
-            result = statement.executeQuery();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            if (result.next()) {
-                String firstName = result.getString("FirstName");
-                String lastName = result.getString("LastName");
-                Date startOfCareer = result.getDate("StartOfCareer");
-                return Optional.of(new Actor(id, firstName, lastName, getMoviesFromActorMovieTable(id), startOfCareer, getAwardsFromActorAwardTable(id)));
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return null;
-    }
-
-    @Override
-    public boolean existsById(String id) {
-        try {
-            return this.getActorWithIdFromTable(id) != null;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Transactional
-    @Override
-    public Iterable<Actor> findAll() {
-        try {
-            return getActorsFromTable();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public Iterable<Actor> findAllById(Iterable<String> strings) {
-        Vector<Actor> actors = new Vector<>();
-        for (String id : strings) {
-            try {
-                actors.add(getActorWithIdFromTable(id));
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        }
-        return actors;
-    }
-
-    @Override
-    public long count() {
-        Statement countStatement;
-        try {
-            countStatement = connection.createStatement();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        ResultSet countResult;
-        try {
-            countResult = countStatement.executeQuery("SELECT COUNT(*) FROM \"Actor\"");
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        try {
-            if (countResult.next()) {
-                return countResult.getLong(1);
-            } else {
-                return 0;
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Transactional
-    @Override
-    public void deleteById(String id) {
-        PreparedStatement preparedStatement;
-        try {
-            preparedStatement = connection.prepareStatement("delete from \"Actor\" where id=?");
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            preparedStatement.setString(1, id);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
+//    @Override
+//    @Transactional
+//    public <S extends Actor> S save(S entity) {
+//        try {
+//            insertFancy.setString(1, entity.getId());
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
+//        try {
+//            insertFancy.setString(2, entity.getFirstName());
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
+//        try {
+//            insertFancy.setString(3, entity.getLastName());
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
+//        try {
+//            insertFancy.setDate(4, entity.getStartOfCareer());
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
+//        try {
+//            insertFancy.executeUpdate();
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
+//        return null;
+//    }
+//
+//    @Override
+//    public <S extends Actor> Iterable<S> saveAll(Iterable<S> entities) {
+//        return null;
+//    }
+//
+//    @Transactional
+//    @Override
+//    public Optional<Actor> findById(String id) {
+//        PreparedStatement statement;
+//        try {
+//            statement = connection.prepareStatement(" SELECT * FROM \"Actor\" where Id=?");
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
+//        try {
+//            statement.setString(1, id);
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
+//        ResultSet result;
+//        try {
+//            result = statement.executeQuery();
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
+//        try {
+//            if (result.next()) {
+//                String firstName = result.getString("FirstName");
+//                String lastName = result.getString("LastName");
+//                Date startOfCareer = result.getDate("StartOfCareer");
+//                return Optional.of(new Actor(id, firstName, lastName, getMoviesFromActorMovieTable(id), startOfCareer, getAwardsFromActorAwardTable(id)));
+//            }
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
+//        return null;
+//    }
+//
+//    @Override
+//    public boolean existsById(String id) {
+//        try {
+//            return this.getActorWithIdFromTable(id) != null;
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
+//
+//    @Transactional
+//    @Override
+//    public Iterable<Actor> findAll() {
+//        try {
+//            return getActorsFromTable();
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
+//
+//    @Override
+//    public Iterable<Actor> findAllById(Iterable<String> strings) {
+//        Vector<Actor> actors = new Vector<>();
+//        for (String id : strings) {
+//            try {
+//                actors.add(getActorWithIdFromTable(id));
+//            } catch (SQLException e) {
+//                throw new RuntimeException(e);
+//            }
+//        }
+//        return actors;
+//    }
+//
+//    @Override
+//    public long count() {
+//        Statement countStatement;
+//        try {
+//            countStatement = connection.createStatement();
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
+//        ResultSet countResult;
+//        try {
+//            countResult = countStatement.executeQuery("SELECT COUNT(*) FROM \"Actor\"");
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
+//
+//        try {
+//            if (countResult.next()) {
+//                return countResult.getLong(1);
+//            } else {
+//                return 0;
+//            }
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
+//
+//    @Transactional
+//    @Override
+//    public void deleteById(String id) {
+//        PreparedStatement preparedStatement;
+//        try {
+//            preparedStatement = connection.prepareStatement("delete from \"Actor\" where id=?");
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
+//        try {
+//            preparedStatement.setString(1, id);
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
+//        try {
+//            preparedStatement.executeUpdate();
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
 
     @Transactional
     public void delete(Actor actor) {
         listOfActors.remove(actor);
     }
 
-    @Transactional
-    @Override
-    public void deleteAllById(Iterable<? extends String> strings) {
-        for (String id : strings) {
-            try {
-                this.deleteActorWithIdFromTable(id);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }
-
-    @Override
-    public void deleteAll(Iterable<? extends Actor> entities) {
-        for (Actor actor : entities) {
-            try {
-                this.deleteActorWithIdFromTable(actor.getId());
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }
+//    @Transactional
+//    @Override
+//    public void deleteAllById(Iterable<? extends String> strings) {
+//        for (String id : strings) {
+//            try {
+//                this.deleteActorWithIdFromTable(id);
+//            } catch (SQLException e) {
+//                throw new RuntimeException(e);
+//            }
+//        }
+//    }
+//
+//    @Override
+//    public void deleteAll(Iterable<? extends Actor> entities) {
+//        for (Actor actor : entities) {
+//            try {
+//                this.deleteActorWithIdFromTable(actor.getId());
+//            } catch (SQLException e) {
+//                throw new RuntimeException(e);
+//            }
+//        }
+//    }
 
     @Transactional
     public void deleteAll() {

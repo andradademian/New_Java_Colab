@@ -1,31 +1,48 @@
 package map.project.demo.Domain;
 
+import jakarta.persistence.*;
+import lombok.Getter;
+
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.Vector;
 
+@Entity
+@Table(name = "Actor")
 public class Actor extends Spectator {
-    private Vector<String> listOfMovies;
-    private Vector<String> listOfAwards;
+    @Id
+    private String id;
+
+    @Column(name = "FirstName")
+    private String firstName;
+
+    @Column(name = "LastName")
+    private String lastName;
+
+    @Getter
+    @Column(name = "startofcareer")
     private Date startOfCareer;
+
+    @Getter
+    @ElementCollection
+    private Vector<String> listOfMovies;
+
+    @Getter
+    @ElementCollection
+    private Vector<String> listOfAwards;
 
     public Actor() {
 
     }
 
-    public Actor(String id, String firstName, String lastName, Vector<String> listOfMovies, Date startOfCareer, Vector<String> awards) throws SQLException {
+    public Actor(String id, String firstName, String lastName, Vector<String> listOfMovies, Date startOfCareer, Vector<String> awards) {
         super(id, firstName, lastName);
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.listOfMovies = listOfMovies;
         this.startOfCareer = startOfCareer;
         this.listOfAwards = awards;
-    }
-
-    public Vector<String> getListOfMovies() {
-        return listOfMovies;
-    }
-
-    public Vector<String> getListOfAwards() {
-        return listOfAwards;
     }
 
     public void setListOfAwards(Vector<String> listOfAwards) {
@@ -50,10 +67,6 @@ public class Actor extends Spectator {
 
     public void setListOfMovies(Vector<String> listOfMovies) {
         this.listOfMovies = listOfMovies;
-    }
-
-    public Date getStartOfCareer() {
-        return startOfCareer;
     }
 
     public void setStartOfCareer(Date startOfCareer) {
