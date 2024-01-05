@@ -7,6 +7,8 @@ import map.project.demo.Domain.Spectator;
 import map.project.demo.Domain.Ticket;
 import map.project.demo.Repository.SpectatorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
@@ -22,9 +24,14 @@ public class SpectatorController {
     private SpectatorRepository spectatorRepo;
 
     @PostMapping
-    public Spectator addSpectator(@RequestBody Spectator spectator) throws SQLException {
-        spectatorRepo.addSpectatorToTable(spectator);
-        return spectator;
+    public ResponseEntity<Spectator> addSpectator(@RequestBody Spectator spectator) {
+        try {
+            spectatorRepo.addSpectatorToTable(spectator);
+            return new ResponseEntity<>(spectator, HttpStatus.CREATED);
+        } catch (SQLException e) {
+            // Handle the exception and return an appropriate response
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping("/{id}")

@@ -14,7 +14,7 @@ import java.util.Vector;
 public class ActorRepository {
     private final Vector<Actor> listOfActors;
 
-    Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Movie", "MyUser", "castravete");
+    Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Movie", "MyUser", "slay");
     Statement insert = connection.createStatement();
     String insertStringFancy = "insert into \"Actor\"(id, firstName, lastName, startOfCareer) VALUES (?, ?, ?, ?) on conflict (id) do nothing";
     PreparedStatement insertFancy = connection.prepareStatement(insertStringFancy);
@@ -82,14 +82,14 @@ public class ActorRepository {
 //        }
 //    }
 
-//    @Transactional
-//    public void addActorToTable(Actor actor) throws SQLException {
-//        insertFancy.setString(1, actor.getId());
-//        insertFancy.setString(2, actor.getFirstName());
-//        insertFancy.setString(3, actor.getLastName());
-//        insertFancy.setDate(4, actor.getStartOfCareer());
-//        insertFancy.executeUpdate();
-//    }
+    @Transactional
+    public void addActorToTable(Actor actor) throws SQLException {
+        insertFancy.setString(1, actor.getId());
+        insertFancy.setString(2, actor.getFirstName());
+        insertFancy.setString(3, actor.getLastName());
+        insertFancy.setDate(4, actor.getStartOfCareer());
+        insertFancy.executeUpdate();
+    }
 
     @Transactional
     public void deleteAllFromActorMovieTable() throws SQLException {
