@@ -146,7 +146,7 @@ public class ActorRepoTest {
         java.util.Date date = dateFormat.parse(startDate);
         Date sqlDate = new Date(date.getTime());
         Actor actor = new Actor("1K", "Vin", "Diesel", new Vector<>(), sqlDate, new Vector<>());
-        actorRepository.save(actor);
+        actorRepository.add(actor);
     }
 
     public void actorIsRemovedFromTheTable() throws SQLException {

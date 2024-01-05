@@ -1,12 +1,14 @@
 package map.project.demo.Domain;
 
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.Vector;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "Actor")
 public class Actor extends Spectator {
