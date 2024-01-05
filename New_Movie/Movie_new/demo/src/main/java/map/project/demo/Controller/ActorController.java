@@ -6,8 +6,6 @@ import lombok.Setter;
 import map.project.demo.Domain.Actor;
 import map.project.demo.Repository.IActorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,16 +25,13 @@ public class ActorController {
     private static final Logger logger = LoggerFactory.getLogger(ActorController.class);
 
     @PostMapping
-    public ResponseEntity<Void> addActor(@RequestBody Actor actor) {
+    public void addActor(@RequestBody Actor actor) {
         actorRepo.save(actor);
-        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Actor> findActorById(@PathVariable String id) {
-        Optional<Actor> actorOptional = actorRepo.findById(id);
-        return actorOptional.map(actor -> new ResponseEntity<>(actor, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    public Optional<Actor> findActorById(@PathVariable String id) {
+        return actorRepo.findById(id);
     }
 
     public boolean findMovieById(Actor actor, String id) {
@@ -78,68 +73,62 @@ public class ActorController {
 //    }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteActorWithIdFromTable(@PathVariable String id) {
+    public void deleteActorWithIdFromTable(@PathVariable String id) {
         actorRepo.deleteById(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PutMapping("/{id}/updateFirstName")
-    public ResponseEntity<Void> updateFirstName(@PathVariable String id, @RequestBody String firstName) {
-        actorRepo.findById(id).ifPresent(actor -> {
-            actor.setFirstName(firstName);
-            actorRepo.save(actor);
-        });
-        return new ResponseEntity<>(HttpStatus.OK);
+    public void updateFirstName(@PathVariable String id, @RequestBody String firstName) {
+        Actor actor = actorRepo.findById(id).get();
+        actorRepo.deleteById(id);
+        actor.setFirstName(firstName);
+        actorRepo.save(actor);
     }
 
     @PutMapping("/{id}/updateLastName")
-    public ResponseEntity<Void> updateLastName(@PathVariable String id, @RequestBody String lastName) {
-        actorRepo.findById(id).ifPresent(actor -> {
-            actor.setLastName(lastName);
-            actorRepo.save(actor);
-        });
-        return new ResponseEntity<>(HttpStatus.OK);
+    public void updateLastName(@PathVariable String id, @RequestBody String lastName) {
+        Actor actor = actorRepo.findById(id).get();
+        actorRepo.deleteById(id);
+        actor.setLastName(lastName);
+        actorRepo.save(actor);
     }
 
     @DeleteMapping("/{actorId}/movies/{movieId}")
-    public ResponseEntity<Void> deleteMovie(@PathVariable String actorId, @PathVariable String movieId) {
-        actorRepo.findById(actorId).ifPresent(actor -> {
-            actor.removeMovie(movieId);
-            actorRepo.save(actor);
-        });
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    public void deleteMovie(@PathVariable String actorId, @PathVariable String movieId) throws SQLException {
+        Actor actor = actorRepo.findById(actorId).get();
+        actorRepo.deleteById(actorId);
+        actor.removeMovie(movieId);
+        actorRepo.save(actor);
     }
 
     @PostMapping("{actorId}/movies")
-    public ResponseEntity<Void> addMovie(@PathVariable String actorId, @RequestBody String movieId) {
-        actorRepo.findById(actorId).ifPresent(actor -> {
-            actor.addMovie(movieId);
-            actorRepo.save(actor);
-        });
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    public void addMovie(@PathVariable String actorId, @RequestBody String movieId) throws SQLException {
+        Actor actor = actorRepo.findById(actorId).get();
+        actorRepo.deleteById(actorId);
+        actor.addMovie(movieId);
+        actorRepo.save(actor);
     }
 
     @DeleteMapping("/{actorId}/awards/{awardId}")
-    public ResponseEntity<Void> deleteAward(@PathVariable String actorId, @PathVariable String awardId) {
-        actorRepo.findById(actorId).ifPresent(actor -> {
-            actor.removeAward(awardId);
-            actorRepo.save(actor);
-        });
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    public void deleteAward(@PathVariable String actorId, @PathVariable String awardId) throws SQLException {
+        Actor actor = actorRepo.findById(actorId).get();
+        actorRepo.deleteById(actorId);
+        actor.removeAward(awardId);
+        actorRepo.save(actor);
     }
 
     @PostMapping("{actorId}/awards")
-    public ResponseEntity<Void> addAward(@PathVariable String actorId, @RequestBody String awardId) {
-        actorRepo.findById(actorId).ifPresent(actor -> {
-            actor.addAward(awardId);
-            actorRepo.save(actor);
-        });
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    public void addAward(@PathVariable String actorId, @RequestBody String awardId) throws SQLException {
+        Actor actor = actorRepo.findById(actorId).get();
+        actorRepo.deleteById(actorId);
+        actor.addAward(awardId);
+        actorRepo.save(actor);
     }
 
     @GetMapping
-    public ResponseEntity<List<Actor>> getAllActors() {
+    public List<Actor> getAllActors() {
         List<Actor> actors = actorRepo.findAll();
-        return new ResponseEntity<>(actors, HttpStatus.OK);
+        logger.info("Retrieved {} actors from the database.", actors.size());
+        return actors;
     }
 }

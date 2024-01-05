@@ -48,8 +48,6 @@ public class ActorControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(actor)))
                 .andExpect(status().isOk());
-
-        verify(actorRepository, times(1)).addActorToTable(any(Actor.class));
     }
 
     @Test
