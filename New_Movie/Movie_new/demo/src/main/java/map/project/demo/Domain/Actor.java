@@ -4,38 +4,35 @@ import jakarta.persistence.*;
 import lombok.Getter;
 
 import java.sql.Date;
-import java.sql.SQLException;
-import java.util.Vector;
+import java.util.List;
 
+@Getter
 @Entity
 @Table(name = "Actor")
 public class Actor extends Spectator {
     @Id
     private String id;
 
-    @Column(name = "FirstName")
+    @Column(name = "firstname")
     private String firstName;
 
-    @Column(name = "LastName")
+    @Column(name = "lastname")
     private String lastName;
 
-    @Getter
     @Column(name = "startofcareer")
     private Date startOfCareer;
 
-    @Getter
     @ElementCollection
-    private Vector<String> listOfMovies;
+    private List<String> listOfMovies;
 
-    @Getter
     @ElementCollection
-    private Vector<String> listOfAwards;
+    private List<String> listOfAwards;
 
     public Actor() {
 
     }
 
-    public Actor(String id, String firstName, String lastName, Vector<String> listOfMovies, Date startOfCareer, Vector<String> awards) {
+    public Actor(String id, String firstName, String lastName, List<String> listOfMovies, Date startOfCareer, List<String> awards) {
         super(id, firstName, lastName);
         this.id = id;
         this.firstName = firstName;
@@ -45,7 +42,22 @@ public class Actor extends Spectator {
         this.listOfAwards = awards;
     }
 
-    public void setListOfAwards(Vector<String> listOfAwards) {
+    @Override
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    @Override
+    public void setFirstName(String name) {
+        this.firstName = name;
+    }
+
+    @Override
+    public void setLastName(String name) {
+        this.lastName = name;
+    }
+
+    public void setListOfAwards(List<String> listOfAwards) {
         this.listOfAwards = listOfAwards;
     }
 
@@ -65,7 +77,7 @@ public class Actor extends Spectator {
         listOfAwards.remove(awardId);
     }
 
-    public void setListOfMovies(Vector<String> listOfMovies) {
+    public void setListOfMovies(List<String> listOfMovies) {
         this.listOfMovies = listOfMovies;
     }
 

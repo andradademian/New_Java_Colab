@@ -1,22 +1,28 @@
 package map.project.demo.Domain;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 import map.project.demo.ObserverPattern.Observer;
 
 import java.sql.*;
 
 @Entity
 @Table(name = "Spectator")
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Spectator implements Observer {
+    @Getter
     @Id
     private String id;
 
+    @Getter
     @Column(name = "firstname")
     private String firstName;
 
+    @Getter
     @Column(name = "lastname")
     private String lastName;
 
+    @Getter
     @Transient
     private Ticket ticket;
 
@@ -33,32 +39,16 @@ public class Spectator implements Observer {
         this.lastName = lastName;
     }
 
-    public String getId() {
-        return id;
-    }
-
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getFirstName() {
-        return firstName;
     }
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
-    public String getLastName() {
-        return lastName;
-    }
-
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public Ticket getTicket() {
-        return ticket;
     }
 
     public void setTicket(Ticket ticket) {
