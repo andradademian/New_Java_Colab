@@ -1,38 +1,57 @@
 package map.project.demo.Domain;
 
-import map.project.demo.Controller.AwardController;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import map.project.demo.ObserverPattern.Observable;
+import map.project.demo.ObserverPattern.Observer;
 
-import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
+@Getter
+@Entity
+@Table(name = "StageDirector")
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class StageDirector extends Spectator {
 
-    private Vector<String> listOfMovies;
-    private Vector<String> awards;
+    @Id
+    private String id;
+
+    @Transient
+    @ElementCollection
+    @CollectionTable(name = "MovieDirector", joinColumns = @JoinColumn(name = "directorid"))
+    @Column(name = "movieid")
+    private List<String> listOfMovies;
+
+    @Transient
+    @ElementCollection
+    @CollectionTable(name = "DirectorAward", joinColumns = @JoinColumn(name = "directorid"))
+    @Column(name = "awardid")
+    private List<String> awards;
 
     public StageDirector() {
 
     }
-    public StageDirector(String id, String firstName, String lastName, Vector<String> listOfMovies, Vector<String> awards) throws SQLException {
+    public StageDirector(String id, String firstName, String lastName, List<String> listOfMovies, List<String> awards)  {
         super(id, firstName, lastName);
         this.listOfMovies = listOfMovies;
         this.awards = awards;
     }
 
-    public Vector<String> getListOfMovies() {
-        return listOfMovies;
-    }
+//    public List<String> getListOfMovies() {
+//        return listOfMovies;
+//    }
 
-    public void setListOfMovies(Vector<String> listOfMovies) {
+    public void setListOfMovies(List<String> listOfMovies) {
         this.listOfMovies = listOfMovies;
     }
 
-    public Vector<String> getAwards() {
-        return awards;
-    }
+//    public List<String> getAwards() {
+//        return awards;
+//    }
 
-    public void setAwards(Vector<String> awards) {
+    public void setAwards(List<String> awards) {
         this.awards = awards;
     }
 
