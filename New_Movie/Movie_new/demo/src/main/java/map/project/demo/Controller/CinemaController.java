@@ -14,6 +14,7 @@ import map.project.demo.Domain.*;
 import map.project.demo.Repository.ICinemaRepo;
 
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
 
@@ -82,16 +83,21 @@ public class CinemaController {
         cinemaRepo.save(cinema);
     }
 
-//    @PostMapping("{cinemaId}/rooms")
-//    public void addRoom(@PathVariable String cinemaId, @RequestBody String roomId) {
-//        cinemaRepo.addRoom(cinemaId, roomId);
-//    }
-//
-//    @DeleteMapping("/{cinemaId}/rooms/{roomId}")
-//    public void deleteRoom(@PathVariable String cinemaId, @PathVariable String roomId){
-//        cinemaRepo.deleteRoom(cinemaId, roomId);
-//    }
+    @PostMapping("{cinemaId}/rooms")
+    public void addRoom(@PathVariable String cinemaId, @RequestBody String roomId) {
+        Cinema cinema = cinemaRepo.findById(cinemaId).get();
+        cinemaRepo.deleteById(cinemaId);
+        cinema.addRoom(roomId);
+        cinemaRepo.save(cinema);
+    }
 
+    @DeleteMapping("{/{cinemaId}/rooms/{roomId}")
+    public void deleteRoom(@PathVariable String cinemaId, @RequestBody String roomId) {
+        Cinema cinema = cinemaRepo.findById(cinemaId).get();
+        cinemaRepo.deleteById(cinemaId);
+        cinema.removeRoom(roomId);
+        cinemaRepo.save(cinema);
+    }
     @GetMapping
     public List<Cinema> getAllCinemas() {
         return cinemaRepo.findAll();
