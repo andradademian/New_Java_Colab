@@ -12,8 +12,6 @@ import java.sql.*;
 import java.text.ParseException;
 
 @SpringBootApplication
-@EnableJpaRepositories(basePackages = "map.project.demo.Repository")
-@EntityScan(basePackages = "map.project.demo.Domain")
 public class Main {
 
     public static void main(String[] args) throws Exception {
