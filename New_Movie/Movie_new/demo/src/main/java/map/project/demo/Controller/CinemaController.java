@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Objects;
 
 
-
 @RestController
 @RequestMapping("/api/cinema")
 @Getter
@@ -68,7 +67,7 @@ public class CinemaController {
     }
 
     @PutMapping("/{id}/updateCinemaName")
-    public void updateCinemaName(@PathVariable String id, @RequestBody String cinemaName){
+    public void updateCinemaName(@PathVariable String id, @RequestBody String cinemaName) {
         Cinema cinema = cinemaRepo.findById(id).get();
         cinema.setName(cinemaName);
         cinemaRepo.deleteById(id);
@@ -83,21 +82,21 @@ public class CinemaController {
         cinemaRepo.save(cinema);
     }
 
-    @PostMapping("{cinemaId}/rooms")
-    public void addRoom(@PathVariable String cinemaId, @RequestBody String roomId) {
-        Cinema cinema = cinemaRepo.findById(cinemaId).get();
-        cinemaRepo.deleteById(cinemaId);
-        cinema.addRoom(roomId);
-        cinemaRepo.save(cinema);
-    }
-
-    @DeleteMapping("{/{cinemaId}/rooms/{roomId}")
-    public void deleteRoom(@PathVariable String cinemaId, @RequestBody String roomId) {
-        Cinema cinema = cinemaRepo.findById(cinemaId).get();
-        cinemaRepo.deleteById(cinemaId);
-        cinema.removeRoom(roomId);
-        cinemaRepo.save(cinema);
-    }
+    //    @PostMapping("{cinemaId}/rooms")
+//    public void addRoom(@PathVariable String cinemaId, @RequestBody String roomId) {
+//        Cinema cinema = cinemaRepo.findById(cinemaId).get();
+//        cinemaRepo.deleteById(cinemaId);
+//        cinema.addRoom(roomId);
+//        cinemaRepo.save(cinema);
+//    }
+//
+//    @DeleteMapping("{/{cinemaId}/rooms/{roomId}")
+//    public void deleteRoom(@PathVariable String cinemaId, @RequestBody String roomId) {
+//        Cinema cinema = cinemaRepo.findById(cinemaId).get();
+//        cinemaRepo.deleteById(cinemaId);
+//        cinema.removeRoom(roomId);
+//        cinemaRepo.save(cinema);
+//    }
     @GetMapping
     public List<Cinema> getAllCinemas() {
         return cinemaRepo.findAll();

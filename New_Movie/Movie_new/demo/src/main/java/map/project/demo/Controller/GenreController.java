@@ -35,7 +35,7 @@ public class GenreController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteGenreWithIdFromTable(@PathVariable String id){
+    public void deleteGenreWithIdFromTable(@PathVariable String id) {
         genreRepo.deleteById(id);
     }
 
@@ -50,14 +50,14 @@ public class GenreController {
     }
 
     @DeleteMapping
-    public void deleteAllGenres()  {
+    public void deleteAllGenres() {
         genreRepo.deleteAll();
     }
 
-    @DeleteMapping
-    public void deleteAllFromMovieGenreTable()  {
-        genreRepo.deleteAll();
-    }
+//    @DeleteMapping
+//    public void deleteAllFromMovieGenreTable()  {
+//        genreRepo.deleteAll();
+//    }
 
     @PutMapping("/{id}/updateGenreName")
     public void updateGenreName(@PathVariable String id, @RequestBody String genreName) {
@@ -68,7 +68,7 @@ public class GenreController {
     }
 
     @DeleteMapping("/{genreId}/movies/{movieId}")
-    public void deleteMovie(@PathVariable String genreId, @PathVariable String movieId){
+    public void deleteMovie(@PathVariable String genreId, @PathVariable String movieId) {
         Genre genre = genreRepo.findById(genreId).get();
         genreRepo.deleteById(genreId);
         genre.deleteMovie(movieId);

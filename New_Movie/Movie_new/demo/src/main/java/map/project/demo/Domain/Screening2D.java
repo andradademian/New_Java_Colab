@@ -1,15 +1,32 @@
 package map.project.demo.Domain;
 
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import map.project.demo.Adapter.TwoDScreeningAdapter;
 import map.project.demo.Strategy.Screening;
 
 import java.sql.Time;
 
-public class Screening2D implements Screening {
-    String id;
+@Getter
+@Entity
+@Setter
+@DiscriminatorValue("2D")
+public class Screening2D extends BaseScreening {
+    @Id
+    private String id;
+
+    @OneToOne
     private Movie movie;
+
+    @OneToOne
     private Room room;
+
+    @Column(name = "starttime")
     private Time startTime;
+
+    @Column(name = "screeningformat")
+    private String format;
 
     public Screening2D() {
 
@@ -20,46 +37,39 @@ public class Screening2D implements Screening {
         this.movie = movie;
         this.room = room;
         this.startTime = startTime;
+        this.format = "2D";
     }
 
     public String getFormat() {
         return "2D";
     }
 
-    public String getId() {
-        return id;
+    public void setTime(Time time) {
+        this.startTime = time;
     }
 
     public void setId(String id) {
         this.id = id;
     }
 
-    public Movie getMovie() {
-        return movie;
+    public void setFormat(String format) {
+        this.format = format;
     }
 
     public void setRoom(Room room) {
         this.room = room;
     }
 
-    public Time getStartTime() {
-        return startTime;
-    }
-
-    public Movie getIdMovie() {
-        return movie;
+    public String getIdMovie() {
+        return movie.getId();
     }
 
     public void setMovie(Movie movie) {
         this.movie = movie;
     }
 
-    public Room getRoom() {
-        return this.room;
-    }
-
-    public void setIdRoom(Room room) {
-        this.room = room;
+    public String getIdRoom() {
+        return room.getId();
     }
 
     public Time getTime() {

@@ -1,13 +1,16 @@
 package map.project.demo.Decorator;
 
+import lombok.Getter;
 import map.project.demo.Adapter.FourDXScreeningAdapter;
+import map.project.demo.Domain.BaseScreening;
 import map.project.demo.Domain.Movie;
 import map.project.demo.Domain.Room;
 import map.project.demo.Strategy.Screening;
 
 import java.sql.Time;
 
-public abstract class ScreeningDecorator implements Screening {
+@Getter
+public abstract class ScreeningDecorator extends BaseScreening {
 
     protected String id;
     protected Movie movie;
@@ -25,16 +28,8 @@ public abstract class ScreeningDecorator implements Screening {
         this.startTime = startTime;
     }
 
-    public String getId() {
-        return id;
-    }
-
     public void setId(String id) {
         this.id = id;
-    }
-
-    public Movie getMovie() {
-        return movie;
     }
 
     public String getFormat() {
@@ -45,20 +40,12 @@ public abstract class ScreeningDecorator implements Screening {
         this.room = room;
     }
 
-    public Time getStartTime() {
-        return startTime;
-    }
-
     public Movie getIdMovie() {
         return movie;
     }
 
     public void setMovie(Movie movie) {
         this.movie = movie;
-    }
-
-    public Room getRoom() {
-        return this.room;
     }
 
     public void setIdRoom(Room room) {

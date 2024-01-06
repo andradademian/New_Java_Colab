@@ -7,19 +7,24 @@ import map.project.demo.Domain.Room;
 import java.sql.Time;
 
 public interface Screening {
+
     String getId();
 
     void setId(String id);
 
     Movie getMovie();
 
+    void setTime(Time time);
+
     void setRoom(Room room);
 
     Time getStartTime();
 
-    Movie getIdMovie();
+//    Movie getIdMovie();
 
     String getFormat();
+
+    void setFormat(String format);
 
     void setMovie(Movie movie);
 

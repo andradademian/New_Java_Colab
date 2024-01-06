@@ -1,15 +1,32 @@
 package map.project.demo.Domain;
 
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import map.project.demo.Adapter.ThreeDScreeningAdapter;
 import map.project.demo.Strategy.Screening;
 
 import java.sql.Time;
 
-public class Screening3D implements Screening {
-    String id;
+@Getter
+@Setter
+@Entity
+@DiscriminatorValue("3D")
+public class Screening3D extends BaseScreening {
+    @Id
+    private String id;
+
+    @OneToOne
     private Movie movie;
+
+    @OneToOne
     private Room room;
+
+    @Column(name = "starttime")
     private Time startTime;
+
+    @Column(name = "screeningformat")
+    private String format;
 
     public Screening3D() {
 
@@ -20,26 +37,23 @@ public class Screening3D implements Screening {
         this.movie = movie;
         this.room = room;
         this.startTime = startTime;
-    }
-
-    public String getId() {
-        return id;
+        this.format = "3D";
     }
 
     public void setId(String id) {
         this.id = id;
     }
 
-    public Movie getMovie() {
-        return movie;
-    }
-
     public void setRoom(Room room) {
         this.room = room;
     }
 
-    public Time getStartTime() {
-        return startTime;
+    public void setFormat(String format) {
+        this.format = format;
+    }
+
+    public void setTime(Time time) {
+        this.startTime = time;
     }
 
     public Movie getIdMovie() {
@@ -52,10 +66,6 @@ public class Screening3D implements Screening {
 
     public void setMovie(Movie movie) {
         this.movie = movie;
-    }
-
-    public Room getRoom() {
-        return this.room;
     }
 
     public void setIdRoom(Room room) {

@@ -1,11 +1,14 @@
 package map.project.demo.Controller;
 
+import jdk.dynalink.linker.LinkerServices;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import map.project.demo.Domain.BaseScreening;
 import map.project.demo.Domain.Screening2D;
 import map.project.demo.Domain.Screening3D;
 import map.project.demo.Domain.Screening4DX;
+import map.project.demo.Repository.IScreeningRepo;
 import map.project.demo.Repository.ScreeningRepository;
 import map.project.demo.Strategy.Screening;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
 import java.sql.Time;
+import java.util.List;
 import java.util.Vector;
 
 @RestController
@@ -22,56 +26,57 @@ import java.util.Vector;
 @NoArgsConstructor
 public class ScreeningController {
     @Autowired
-    private ScreeningRepository screeningRepo;
+    private IScreeningRepo screeningRepo;
 
     @PostMapping("/4DX")
     public void addScreening4DX(@RequestBody Screening4DX screening) throws SQLException {
-        screeningRepo.addScreeningToTable(screening);
+        screeningRepo.save(screening);
     }
 
     @PostMapping("/3D")
-    public void addScreening3D(@RequestBody Screening3D screening) throws SQLException {
-        screeningRepo.addScreeningToTable(screening);
+    public void addScreening3D(@RequestBody Screening3D screening) {
+        screeningRepo.save(screening);
     }
 
     @PostMapping("/2D")
-    public void addScreening(@RequestBody Screening2D screening) throws SQLException {
-        screeningRepo.addScreeningToTable(screening);
+    public void addScreening(@RequestBody Screening2D screening) {
+        screeningRepo.save(screening);
     }
 
     @GetMapping("/{id}")
-    public Screening findScreeningById(@PathVariable String id) throws SQLException {
-        return screeningRepo.getScreeningWithIdFromTable(id);
+    public Screening findScreeningById(@PathVariable String id) {
+        return screeningRepo.findById(id).get();
     }
 
     @DeleteMapping("/{id}")
-    public void deleteScreening(@PathVariable String id) throws SQLException {
-        screeningRepo.deleteScreeningWithIdFromTable(id);
+    public void deleteScreening(@PathVariable String id) {
+        screeningRepo.deleteById(id);
     }
 
     @DeleteMapping
-    public void deleteAllScreenings() throws SQLException {
-        screeningRepo.deleteAllFromScreeningTable();
+    public void deleteAllScreenings() {
+        screeningRepo.deleteAll();
     }
 
 
-    @PutMapping("/{screeningId}/room")
-    public void updateScreeningRoom(@PathVariable String screeningId, @RequestBody String roomId) throws SQLException {
-        screeningRepo.updateRoom(screeningId, roomId);
-    }
-
-    @PutMapping("/{id}/startTime")
-    public void updateScreeningStartTime(@PathVariable String id, @RequestBody Time startTime) throws SQLException {
-        screeningRepo.updateStartTime(id, startTime);
-    }
-
-    @PutMapping("/{id}/movie")
-    public void updateScreeningMovie(@PathVariable String id, @RequestBody String movieId) throws SQLException {
-        screeningRepo.updateMovie(id, movieId);
-    }
+//    @PutMapping("/{screeningId}/room")
+//    public void updateScreeningRoom(@PathVariable String screeningId, @RequestBody String roomId) {
+//        Screening screening = screeningRepo.findById(screeningId).get();
+//        screening.setRoom();
+//    }
+//
+//    @PutMapping("/{id}/startTime")
+//    public void updateScreeningStartTime(@PathVariable String id, @RequestBody Time startTime) {
+//        screeningRepo.updateStartTime(id, startTime);
+//    }
+//
+//    @PutMapping("/{id}/movie")
+//    public void updateScreeningMovie(@PathVariable String id, @RequestBody String movieId) {
+//        screeningRepo.updateMovie(id, movieId);
+//    }
 
     @GetMapping
-    public Vector<Screening> getAllScreenings() throws SQLException {
-        return screeningRepo.getScreeningsFromTable();
+    public List<BaseScreening> getAllScreenings() {
+        return screeningRepo.findAll();
     }
 }
