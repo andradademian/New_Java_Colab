@@ -14,7 +14,7 @@ import java.util.Vector;
 public class ActorRepository {
     private final Vector<Actor> listOfActors;
 
-    Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Movie", "MyUser", "slay");
+    Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Movie", "MyUser", "castravete");
     Statement insert = connection.createStatement();
     String insertStringFancy = "insert into \"Actor\"(id, firstName, lastName, startOfCareer) VALUES (?, ?, ?, ?) on conflict (id) do nothing";
     PreparedStatement insertFancy = connection.prepareStatement(insertStringFancy);
