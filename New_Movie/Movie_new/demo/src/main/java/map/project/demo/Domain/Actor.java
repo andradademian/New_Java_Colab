@@ -8,7 +8,7 @@ import java.util.List;
 
 @Getter
 @Entity
-@Table(name = "Actor")
+@Table(name = "actor")
 public class Actor extends Spectator {
     @Id
     private String id;
@@ -23,9 +23,13 @@ public class Actor extends Spectator {
     private Date startOfCareer;
 
     @ElementCollection
+    @CollectionTable(name = "ActorMovie", joinColumns = @JoinColumn(name = "actorid"))
+    @Column(name = "movieid")
     private List<String> listOfMovies;
 
     @ElementCollection
+    @CollectionTable(name = "ActorAward", joinColumns = @JoinColumn(name = "actorid"))
+    @Column(name = "awardid")
     private List<String> listOfAwards;
 
     public Actor() {
@@ -42,17 +46,14 @@ public class Actor extends Spectator {
         this.listOfAwards = awards;
     }
 
-    @Override
     public void setId(String id) {
         this.id = id;
     }
 
-    @Override
     public void setFirstName(String name) {
         this.firstName = name;
     }
 
-    @Override
     public void setLastName(String name) {
         this.lastName = name;
     }
