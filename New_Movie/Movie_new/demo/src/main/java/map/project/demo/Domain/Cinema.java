@@ -8,7 +8,6 @@ import map.project.demo.ObserverPattern.Observer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 @Entity
 @Table(name = "Cinema")
@@ -31,12 +30,12 @@ public class Cinema implements Observable {
     @Getter
     @Transient
     @ElementCollection
-    @CollectionTable(name = "cinema_rooms", joinColumns = @JoinColumn(name = "cinema_id"))
-    @Column(name = "room_id")
-    private Vector<String> listOfRooms;
+    @CollectionTable(name = "CinemaRoom", joinColumns = @JoinColumn(name = "cinemaid"))
+    @Column(name = "roomid")
+    private List<String> listOfRooms;
 
-    @Column(name = "roomId")
-    private String roomId;
+//    @Column(name = "roomid")
+//    private String roomId;
 
     @Getter
     @Transient
@@ -46,7 +45,7 @@ public class Cinema implements Observable {
 
     }
 
-    public Cinema(String id, String name, String address, Vector<String> listOfRooms) {
+    public Cinema(String id, String name, String address, List<String> listOfRooms) {
         this.id = id;
         this.name = name;
         this.address = address;
@@ -58,7 +57,7 @@ public class Cinema implements Observable {
         this.id = id;
     }
 
-    public void setListOfRooms(Vector<String> listOfRooms) {
+    public void setListOfRooms(List<String> listOfRooms) {
         this.listOfRooms = listOfRooms;
     }
 

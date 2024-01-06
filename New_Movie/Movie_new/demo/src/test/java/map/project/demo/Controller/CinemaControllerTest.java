@@ -48,20 +48,20 @@ public class CinemaControllerTest {
         assertNull(foundCinema);
     }
 
-//    @Test
-//    public void shouldFindRoomById() throws SQLException {
-//        Cinema cinema = cinemaController.findCinemaById("1");
-//        assertNotNull(cinema);
-//
-//        Room roomToAdd = RoomBuilder.buildRoom("1", 100, 120);
-//        cinemaController.addRoom(String.valueOf(cinema), roomToAdd.getId());
-//
-//        String roomId = "1";
-//
-//        boolean foundRoom = cinemaController.findRoomById(cinema, roomId);
-//
-//        assertTrue(foundRoom);
-//    }
+    @Test
+    public void shouldFindRoomById() throws SQLException {
+        Cinema cinema = cinemaController.findCinemaById("1");
+        assertNotNull(cinema);
+
+        Room roomToAdd = RoomBuilder.buildRoom("1", 100, 120);
+        cinemaController.addRoom(String.valueOf(cinema), roomToAdd.getId());
+
+        String roomId = "1";
+
+        boolean foundRoom = cinemaController.findRoomById(cinema, roomId);
+
+        assertTrue(foundRoom);
+    }
 
 
     @Test

@@ -1,10 +1,32 @@
 package map.project.demo.Domain;
 
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import map.project.demo.ObserverPattern.Observable;
+import map.project.demo.ObserverPattern.Observer;
+
+import java.util.ArrayList;
 import java.util.List;
 
+
+@Entity
+@Table(name = "Genre")
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Genre {
+    @Getter
+    @Id
     private String id;
+    @Getter
+    @Setter
+    @Column(name = "name")
     private String name;
+
+    @Getter
+    @Transient
+    @ElementCollection
+    @CollectionTable(name = "MovieGenre", joinColumns = @JoinColumn(name = "cinemaid"))
+    @Column(name = "genreid")
     private List<String> listOfMovies;
 
     public Genre() {
