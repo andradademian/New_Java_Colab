@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import map.project.demo.Repository.ActorRepository;
 import map.project.demo.Domain.Actor;
+import map.project.demo.Repository.IAwardRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +17,7 @@ import map.project.demo.AwardFactory.AwardFactory;
 
 import java.sql.SQLException;
 
+import java.util.List;
 import java.util.Vector;
 
 @RestController
@@ -25,41 +27,48 @@ import java.util.Vector;
 @NoArgsConstructor
 public class AwardController {
     @Autowired
-    private AwardRepository awardRepo;
+    private IAwardRepo awardRepo;
 
     @PostMapping
     public void addAward(@RequestBody Award award) throws SQLException {
-        awardRepo.addAwardToTable(award);
+        awardRepo.save(award);
     }
 
+//    @PostMapping
+//    public void addAward(@RequestBody Award award) {
+//        AwardFactory awardFactory = AwardFactory.getInstance();
+//        Award newAward = awardFactory.buildAward(award.getType(), award.getId(), award.getCategory());
+//        newAward.setType(newAward.getType());
+//        awardRepo.save(newAward);
+//    }
+
     @DeleteMapping("/{id}")
-    public void deleteAwardWithIdFromTable(@PathVariable String id) throws SQLException {
-        awardRepo.deleteAwardWithIdFromTable(id);
+    public void deleteAwardWithIdFromTable(@PathVariable String id) {
+        awardRepo.deleteById(id);
     }
 
     @DeleteMapping
-    public void deleteAllAwards() throws SQLException {
-        awardRepo.deleteAllFromAwards();
+    public void deleteAllAwards() {
+        awardRepo.deleteAll();
     }
 
     @GetMapping("/{id}")
-    public Award findAwardById(@PathVariable String id) throws SQLException {
-        return awardRepo.getAwardWithIdFromTable(id);
+    public Award findAwardById(@PathVariable String id) {
+        return awardRepo.findById(id).get();
     }
 
 
     @PutMapping("/{id}/updateAwardCategory")
-    public void updateAwardCategory(@PathVariable String id, @RequestBody String category) throws SQLException {
-        Award award = awardRepo.getAwardWithIdFromTable(id);
-        awardRepo.deleteAwardWithIdFromTable(id);
+    public void updateAwardCategory(@PathVariable String id, @RequestBody String category) {
+        Award award = awardRepo.findById(id).get();
+        awardRepo.deleteById(id);
         award.setCategory(category);
-        awardRepo.addAwardToTable(award);
-
+        awardRepo.save(award);
     }
 
     @GetMapping
-    public Vector<Award> getAllAwards() throws SQLException {
-        return awardRepo.getAwardsFromTable();
+    public List<Award> getAllAwards() {
+        return awardRepo.findAll();
     }
 
 }
