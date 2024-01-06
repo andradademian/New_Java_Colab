@@ -14,7 +14,7 @@ public class CinemaRepository {
     private static CinemaRepository instance;
     private final Vector<Cinema> cinemas;
 
-    Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Movie", "MyUser", "castravete");
+    Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Movie", "MyUser", "slay");
     Statement insert = connection.createStatement();
     String insertStringFancy = "INSERT INTO \"Cinema\"(id,cinemaname,cinemaaddress) VALUES (?, ?, ?) on conflict (id) do nothing";
     String insertFancyIntoCinemaRoom = "INSERT INTO \"CinemaRoom\"(cinemaid, roomid) VALUES (?, ?) ON CONFLICT (cinemaid, roomid) DO NOTHING";

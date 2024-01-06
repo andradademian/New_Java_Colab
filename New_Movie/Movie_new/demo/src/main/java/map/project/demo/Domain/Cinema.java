@@ -1,5 +1,8 @@
 package map.project.demo.Domain;
 
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import map.project.demo.ObserverPattern.Observable;
 import map.project.demo.ObserverPattern.Observer;
 
@@ -7,12 +10,41 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
+@Entity
+@Table(name = "Cinema")
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Cinema implements Observable {
+    @Getter
+    @Id
     private String id;
+
+    @Getter
+    @Setter
+    @Column(name = "name")
     private String name;
+
+    @Getter
+    @Setter
+    @Column(name = "address")
     private String address;
+
+    @Getter
+    @Transient
+    @ElementCollection
+    @CollectionTable(name = "cinema_rooms", joinColumns = @JoinColumn(name = "cinema_id"))
+    @Column(name = "room_id")
     private Vector<String> listOfRooms;
-    private final List<Observer> observers;
+
+    @Column(name = "roomId")
+    private String roomId;
+
+    @Getter
+    @Transient
+    private List<Observer> observers;
+
+    public Cinema() {
+
+    }
 
     public Cinema(String id, String name, String address, Vector<String> listOfRooms) {
         this.id = id;
@@ -22,32 +54,8 @@ public class Cinema implements Observable {
         this.observers = new ArrayList<>();
     }
 
-    public String getId() {
-        return id;
-    }
-
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public Vector<String> getListOfRooms() {
-        return listOfRooms;
     }
 
     public void setListOfRooms(Vector<String> listOfRooms) {
@@ -62,6 +70,7 @@ public class Cinema implements Observable {
         listOfRooms.remove(roomId);
     }
 
+
     @Override
     public String toString() {
         return "Cinema{" +
@@ -72,6 +81,7 @@ public class Cinema implements Observable {
                 '}';
     }
 
+    @Override
     public List<Observer> getObservers() {
         return observers;
     }

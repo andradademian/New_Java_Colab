@@ -11,12 +11,13 @@ import org.springframework.web.bind.annotation.*;
 
 import map.project.demo.Domain.*;
 
-import map.project.demo.Repository.CinemaRepository;
+import map.project.demo.Repository.ICinemaRepo;
 
-import java.sql.SQLException;
+
+import java.util.List;
 import java.util.Objects;
 
-import java.util.Vector;
+
 
 @RestController
 @RequestMapping("/api/cinema")
@@ -25,21 +26,23 @@ import java.util.Vector;
 @NoArgsConstructor
 public class CinemaController {
     @Autowired
-    private CinemaRepository cinemaRepo;
+    private ICinemaRepo cinemaRepo;
 
     @PostMapping
-    public void addCinema(@RequestBody Cinema cinema) throws SQLException {
-        cinemaRepo.addCinemaToTable(cinema);
+    public Cinema addCinema(@RequestBody Cinema cinema) {
+        cinemaRepo.save(cinema);
+        return cinema;
     }
 
     @GetMapping("/{id}")
-    public Cinema findCinemaById(@PathVariable String id) throws SQLException {
-        return cinemaRepo.getCinemaWithIdFromTable(id);
+    public Cinema findCinemaById(@PathVariable String id) {
+        return cinemaRepo.findById(id).get();
     }
 
+
     @DeleteMapping("/{id}")
-    public void deleteCinemaWithIdFromTable(@PathVariable String id) throws SQLException {
-        cinemaRepo.deleteCinemaWithIdFromTable(id);
+    public void deleteCinemaWithIdFromTable(@PathVariable String id) {
+        cinemaRepo.deleteById(id);
     }
 
 
@@ -54,44 +57,44 @@ public class CinemaController {
     }
 
     @DeleteMapping("/rooms")
-    public void deleteAllFromCinemaRoomTable() throws SQLException {
-        cinemaRepo.deleteAllFromCinemaRoomTable();
+    public void deleteAllFromCinemaRoomTable() {
+        cinemaRepo.deleteAll();
     }
 
     @DeleteMapping
-    public void deleteAllCinemas() throws SQLException {
-        cinemaRepo.deleteAllFromCinemaTable();
+    public void deleteAllCinemas() {
+        cinemaRepo.deleteAll();
     }
 
     @PutMapping("/{id}/updateCinemaName")
-    public void updateCinemaName(@PathVariable String id, @RequestBody String cinemaName) throws SQLException {
-        Cinema cinema = cinemaRepo.getCinemaWithIdFromTable(id);
-        cinemaRepo.deleteCinemaWithIdFromTable(id);
+    public void updateCinemaName(@PathVariable String id, @RequestBody String cinemaName){
+        Cinema cinema = cinemaRepo.findById(id).get();
         cinema.setName(cinemaName);
-        cinemaRepo.addCinemaToTable(cinema);
+        cinemaRepo.deleteById(id);
+        cinemaRepo.save(cinema);
     }
 
     @PutMapping("/{id}/updateCinemaAddress")
-    public void updateCinemaAddress(@PathVariable String id, @RequestBody String cinemaAddress) throws SQLException {
-        Cinema cinema = cinemaRepo.getCinemaWithIdFromTable(id);
-        cinemaRepo.deleteCinemaWithIdFromTable(id);
+    public void updateCinemaAddress(@PathVariable String id, @RequestBody String cinemaAddress) {
+        Cinema cinema = cinemaRepo.findById(id).get();
         cinema.setAddress(cinemaAddress);
-        cinemaRepo.addCinemaToTable(cinema);
+        cinemaRepo.deleteById(id);
+        cinemaRepo.save(cinema);
     }
 
     @PostMapping("{cinemaId}/rooms")
-    public void addRoom(@PathVariable String cinemaId, @RequestBody String roomId) throws SQLException {
+    public void addRoom(@PathVariable String cinemaId, @RequestBody String roomId) {
         cinemaRepo.addRoom(cinemaId, roomId);
     }
 
     @DeleteMapping("/{cinemaId}/rooms/{roomId}")
-    public void deleteRoom(@PathVariable String cinemaId, @PathVariable String roomId) throws SQLException {
+    public void deleteRoom(@PathVariable String cinemaId, @PathVariable String roomId){
         cinemaRepo.deleteRoom(cinemaId, roomId);
     }
 
     @GetMapping
-    public Vector<Cinema> getAllCinemas() throws SQLException {
-        return cinemaRepo.getCinemasFromTable();
+    public List<Cinema> getAllCinemas() {
+        return cinemaRepo.findAll();
     }
 
 }
