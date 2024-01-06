@@ -82,15 +82,15 @@ public class CinemaController {
         cinemaRepo.save(cinema);
     }
 
-    @PostMapping("{cinemaId}/rooms")
-    public void addRoom(@PathVariable String cinemaId, @RequestBody String roomId) {
-        cinemaRepo.addRoom(cinemaId, roomId);
-    }
-
-    @DeleteMapping("/{cinemaId}/rooms/{roomId}")
-    public void deleteRoom(@PathVariable String cinemaId, @PathVariable String roomId){
-        cinemaRepo.deleteRoom(cinemaId, roomId);
-    }
+//    @PostMapping("{cinemaId}/rooms")
+//    public void addRoom(@PathVariable String cinemaId, @RequestBody String roomId) {
+//        cinemaRepo.addRoom(cinemaId, roomId);
+//    }
+//
+//    @DeleteMapping("/{cinemaId}/rooms/{roomId}")
+//    public void deleteRoom(@PathVariable String cinemaId, @PathVariable String roomId){
+//        cinemaRepo.deleteRoom(cinemaId, roomId);
+//    }
 
     @GetMapping
     public List<Cinema> getAllCinemas() {

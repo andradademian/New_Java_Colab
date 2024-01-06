@@ -1,8 +1,26 @@
 package map.project.demo.Domain;
 
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import map.project.demo.ObserverPattern.Observer;
+
+
+@Entity
+@Getter
+@Table(name = "Room")
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Room {
+    @Setter
+    @Id
     private String id;
+
+    @Setter
+    @Column(name = "roomnumber")
     private int roomNumber;
+
+    @Setter
+    @Column(name = "numberofseats")
     private int numberOfSeats;
 
     public Room() {
@@ -15,29 +33,29 @@ public class Room {
         this.numberOfSeats = numberOfSeats;
     }
 
-    public String getId() {
-        return id;
-    }
+//    public String getId() {
+//        return id;
+//    }
 
-    public void setId(String id) {
-        this.id = id;
-    }
+//    public void setId(String id) {
+//        this.id = id;
+//    }
 
-    public int getRoomNumber() {
-        return roomNumber;
-    }
-
-    public void setRoomNumber(int roomNumber) {
-        this.roomNumber = roomNumber;
-    }
-
-    public int getNumberOfSeats() {
-        return numberOfSeats;
-    }
-
-    public void setNumberOfSeats(int numberOfSeats) {
-        this.numberOfSeats = numberOfSeats;
-    }
+//    public int getRoomNumber() {
+//        return roomNumber;
+//    }
+//
+//    public void setRoomNumber(int roomNumber) {
+//        this.roomNumber = roomNumber;
+//    }
+//
+//    public int getNumberOfSeats() {
+//        return numberOfSeats;
+//    }
+//
+//    public void setNumberOfSeats(int numberOfSeats) {
+//        this.numberOfSeats = numberOfSeats;
+//    }
 
 
     @Override
