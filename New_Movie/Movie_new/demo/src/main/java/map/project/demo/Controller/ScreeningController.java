@@ -57,23 +57,6 @@ public class ScreeningController {
         screeningRepo.deleteAll();
     }
 
-
-//    @PutMapping("/{screeningId}/room")
-//    public void updateScreeningRoom(@PathVariable String screeningId, @RequestBody String roomId) {
-//        Screening screening = screeningRepo.findById(screeningId).get();
-//        screening.setRoom();
-//    }
-//
-//    @PutMapping("/{id}/startTime")
-//    public void updateScreeningStartTime(@PathVariable String id, @RequestBody Time startTime) {
-//        screeningRepo.updateStartTime(id, startTime);
-//    }
-//
-//    @PutMapping("/{id}/movie")
-//    public void updateScreeningMovie(@PathVariable String id, @RequestBody String movieId) {
-//        screeningRepo.updateMovie(id, movieId);
-//    }
-
     @GetMapping
     public List<BaseScreening> getAllScreenings() {
         return screeningRepo.findAll();
