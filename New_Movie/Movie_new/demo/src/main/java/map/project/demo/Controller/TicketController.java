@@ -58,6 +58,10 @@ public class TicketController {
         ticketRepo.save(ticket);
     }
 
+    public boolean existsWithId(String id) {
+        return ticketRepo.existsById(id);
+    }
+
     @GetMapping
     public List<Ticket> getAllTickets() {
         return ticketRepo.findAll();

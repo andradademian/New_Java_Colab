@@ -64,7 +64,7 @@ public class ScreeningControllerTest {
     }
 
     @Test
-    void testAddScreening3D() throws Exception {
+    void testAddScreening3D() {
         Screening3D screening3D = new Screening3D();
         Room room1 = new Room("1", 5, 50);
         Movie movie1 = new Movie("1", "Title1", 120, new Vector<>(), new Vector<>(), new Vector<>());
@@ -82,7 +82,7 @@ public class ScreeningControllerTest {
     }
 
     @Test
-    void testAddScreening2D() throws Exception {
+    void testAddScreening2D() {
         Screening2D screening2D = new Screening2D();
         Room room1 = new Room("1", 5, 50);
         Movie movie1 = new Movie("1", "Title1", 120, new Vector<>(), new Vector<>(), new Vector<>());
