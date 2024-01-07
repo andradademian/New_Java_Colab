@@ -2,7 +2,6 @@ package map.project.demo.Controller;
 
 import map.project.demo.Domain.*;
 import map.project.demo.Repository.IStageDirectorRepo;
-import map.project.demo.Repository.StageDirectorRepository;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,28 +24,28 @@ public class StageDirectorController {
     private IStageDirectorRepo stageDirectorRepo;
 
     @PostMapping
-    public StageDirector addDirector(@RequestBody StageDirector stageDirector)  {
+    public StageDirector addDirector(@RequestBody StageDirector stageDirector) {
         stageDirectorRepo.save(stageDirector);
         return stageDirector;
     }
 
     @GetMapping("/{id}")
-    public StageDirector findDirectorById(@PathVariable String id)  {
+    public StageDirector findDirectorById(@PathVariable String id) {
         return stageDirectorRepo.findById(id).get();
     }
 
     @DeleteMapping("/{id}")
-    public void deleteDirectorWithIdFromTable(@PathVariable String id){
+    public void deleteDirectorWithIdFromTable(@PathVariable String id) {
         stageDirectorRepo.deleteById(id);
     }
 
     @DeleteMapping
-    public void deleteAllDirectors()  {
+    public void deleteAllDirectors() {
         stageDirectorRepo.deleteAll();
     }
 
     @DeleteMapping("/{id}/movies")
-    public void deleteAllFromMovieDirectorTable(@PathVariable String id)  {
+    public void deleteAllFromMovieDirectorTable(@PathVariable String id) {
         stageDirectorRepo.deleteAll();
     }
 
@@ -64,7 +63,7 @@ public class StageDirectorController {
     }
 
     @PutMapping("/{id}/updateLastName")
-    public void updateLastName(@PathVariable String id, @RequestBody String lastName)  {
+    public void updateLastName(@PathVariable String id, @RequestBody String lastName) {
         StageDirector stageDirector = stageDirectorRepo.findById(id).get();
         stageDirector.setLastName(lastName);
         stageDirectorRepo.deleteById(id);
@@ -72,7 +71,7 @@ public class StageDirectorController {
     }
 
     @DeleteMapping("/{stagedirectorId}/movies/{movieId}")
-    public void deleteMovie(@PathVariable String stagedirectorId, @PathVariable String movieId)  {
+    public void deleteMovie(@PathVariable String stagedirectorId, @PathVariable String movieId) {
         StageDirector stageDirector = stageDirectorRepo.findById(stagedirectorId).get();
         stageDirectorRepo.deleteById(stagedirectorId);
         stageDirector.deleteMovie(movieId);
@@ -121,7 +120,7 @@ public class StageDirectorController {
     }
 
     @GetMapping
-    public List<StageDirector> getAllDirectors()  {
+    public List<StageDirector> getAllDirectors() {
         return stageDirectorRepo.findAll();
     }
 }

@@ -5,7 +5,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import map.project.demo.Domain.Ticket;
 import map.project.demo.Repository.ITicketRepo;
-import map.project.demo.Repository.TicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
