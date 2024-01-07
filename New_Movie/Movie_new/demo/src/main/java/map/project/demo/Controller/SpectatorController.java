@@ -28,6 +28,9 @@ public class SpectatorController {
         return spectator;
     }
 
+    public boolean isPresentWithId(String id) {
+        return spectatorRepo.existsById(id);
+    }
 
     @GetMapping("/{id}")
     public Spectator findSpectatorById(@PathVariable String id) {

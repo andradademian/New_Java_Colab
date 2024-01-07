@@ -9,7 +9,6 @@ import map.project.demo.Domain.Screening2D;
 import map.project.demo.Domain.Screening3D;
 import map.project.demo.Domain.Screening4DX;
 import map.project.demo.Repository.IScreeningRepo;
-import map.project.demo.Repository.ScreeningRepository;
 import map.project.demo.Strategy.Screening;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

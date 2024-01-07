@@ -6,7 +6,6 @@ import map.project.demo.Repository.IStageDirectorRepo;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import map.project.demo.Repository.ActorRepository;
 import map.project.demo.Domain.Actor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

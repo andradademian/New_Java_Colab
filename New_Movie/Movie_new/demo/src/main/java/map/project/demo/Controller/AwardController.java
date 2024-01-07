@@ -3,7 +3,6 @@ package map.project.demo.Controller;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import map.project.demo.Repository.ActorRepository;
 import map.project.demo.Domain.Actor;
 import map.project.demo.Repository.IAwardRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import map.project.demo.Domain.Award;
 
-import map.project.demo.Repository.AwardRepository;
 import map.project.demo.AwardFactory.AwardFactory;
 
 import java.sql.SQLException;

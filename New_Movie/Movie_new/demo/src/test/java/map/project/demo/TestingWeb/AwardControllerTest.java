@@ -5,7 +5,6 @@ import map.project.demo.AwardFactory.AwardFactory;
 import map.project.demo.Controller.AwardController;
 import map.project.demo.Domain.Actor;
 import map.project.demo.Domain.Award;
-import map.project.demo.Repository.AwardRepository;
 import map.project.demo.Repository.IAwardRepo;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -34,13 +33,15 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(AwardController.class)
+//@WebMvcTest(AwardController.class)
+@SpringBootTest
+@AutoConfigureMockMvc
 public class AwardControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
+    @Autowired
     private IAwardRepo awardRepository;
 
     @Autowired
