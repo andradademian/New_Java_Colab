@@ -1,18 +1,49 @@
 package map.project.demo.Domain;
 
-import map.project.demo.Proxy.IMovie;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import map.project.demo.ObserverPattern.Observable;
+import map.project.demo.ObserverPattern.Observer;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
+@Getter
+@Entity
+@Table(name = "Movie")
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Movie{
+    @Id
     private String id;
-    private String title;
-    private int durationInMinutes;
-    private Vector<String> stageDirectors;
-    private Vector<String> actors;
-    private Vector<String> genres;
 
-    public Movie(String id, String title, int durationInMinutes, Vector<String> stageDirectors, Vector<String> actors, Vector<String> genres) {
+    @Setter
+    @Column(name = "title")
+    private String title;
+
+    @Setter
+    @Column(name = "durationInMinutes")
+    private int durationInMinutes;
+
+    @Transient
+    @ElementCollection
+    @CollectionTable(name = "MovieDirector", joinColumns = @JoinColumn(name = "movieid"))
+    @Column(name = "directorid")
+    private List<String> stageDirectors;
+
+    @Transient
+    @ElementCollection
+    @CollectionTable(name = "ActorMovie", joinColumns = @JoinColumn(name = "movieid"))
+    @Column(name = "actorid")
+    private List<String> actors;
+
+    @Transient
+    @ElementCollection
+    @CollectionTable(name = "MovieGenre", joinColumns = @JoinColumn(name = "movieid"))
+    @Column(name = "genreid")
+    private List<String> genres;
+
+    public Movie(String id, String title, int durationInMinutes, List<String> stageDirectors, List<String> actors, List<String> genres) {
         this.id = id;
         this.title = title;
         this.durationInMinutes = durationInMinutes;
@@ -25,48 +56,18 @@ public class Movie{
 
     }
 
-    public Vector<String> getActors() {
-        return actors;
-    }
-
-    public void setActors(Vector<String> actors) {
+    public void setActors(List<String> actors) {
         this.actors = actors;
-    }
-
-    public String getId() {
-        return id;
     }
 
     public void setId(String id) {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
-    }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
 
-    public int getDurationInMinutes() {
-        return durationInMinutes;
-    }
-
-    public void setDurationInMinutes(int durationInMinutes) {
-        this.durationInMinutes = durationInMinutes;
-    }
-
-    public Vector<String> getStageDirectors() {
-        return stageDirectors;
-    }
-
-    public void setStageDirectors(Vector<String> stageDirectors) {
+    public void setStageDirectors(List<String> stageDirectors) {
         this.stageDirectors = stageDirectors;
-    }
-
-    public Vector<String> getGenres() {
-        return genres;
     }
 
     public void addGenre(String genre) {
@@ -94,7 +95,7 @@ public class Movie{
     }
 
 
-    public void setGenres(Vector<String> genres) {
+    public void setGenres(List<String> genres) {
         this.genres = genres;
     }
 
