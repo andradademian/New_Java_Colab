@@ -9,25 +9,22 @@ import map.project.demo.ObserverPattern.Observer;
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
 @Entity
 @Table(name = "Cinema")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Cinema implements Observable {
-    @Getter
     @Id
     private String id;
 
-    @Getter
     @Setter
     @Column(name = "name")
     private String name;
 
-    @Getter
     @Setter
     @Column(name = "address")
     private String address;
 
-    @Getter
     @Transient
     @ElementCollection
     @CollectionTable(name = "CinemaRoom", joinColumns = @JoinColumn(name = "cinemaid"))
@@ -37,7 +34,6 @@ public class Cinema implements Observable {
 //    @Column(name = "roomid")
 //    private String roomId;
 
-    @Getter
     @Transient
     private List<Observer> observers;
 
