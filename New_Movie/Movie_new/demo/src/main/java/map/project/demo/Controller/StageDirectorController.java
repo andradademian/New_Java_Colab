@@ -56,16 +56,16 @@ public class StageDirectorController {
     @PutMapping("/{id}/updateFirstName")
     public void updateFirstName(@PathVariable String id, @RequestBody String firstName) {
         StageDirector stageDirector = stageDirectorRepo.findById(id).get();
-        stageDirector.setFirstName(firstName);
         stageDirectorRepo.deleteById(id);
+        stageDirector.setFirstName(firstName);
         stageDirectorRepo.save(stageDirector);
     }
 
     @PutMapping("/{id}/updateLastName")
     public void updateLastName(@PathVariable String id, @RequestBody String lastName) {
         StageDirector stageDirector = stageDirectorRepo.findById(id).get();
-        stageDirector.setLastName(lastName);
         stageDirectorRepo.deleteById(id);
+        stageDirector.setLastName(lastName);
         stageDirectorRepo.save(stageDirector);
     }
 
