@@ -46,16 +46,16 @@ public class RoomController {
     @PutMapping("/{id}/updateRoomNumber")
     public void updateRoomNumber(@PathVariable String id, @RequestBody int roomNumber) {
         Room room = roomRepo.findById(id).get();
-        room.setRoomNumber(roomNumber);
         roomRepo.deleteById(id);
+        room.setRoomNumber(roomNumber);
         roomRepo.save(room);
     }
 
     @PutMapping("/{id}/updateNumberOfSeats")
     public void updateNumberOfSeats(@PathVariable String id, @RequestBody int numberOfSeats){
         Room room = roomRepo.findById(id).get();
-        room.setNumberOfSeats(numberOfSeats);
         roomRepo.deleteById(id);
+        room.setNumberOfSeats(numberOfSeats);
         roomRepo.save(room);
     }
 

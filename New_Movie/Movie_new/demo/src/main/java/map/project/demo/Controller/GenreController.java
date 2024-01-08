@@ -62,8 +62,8 @@ public class GenreController {
     @PutMapping("/{id}/updateGenreName")
     public void updateGenreName(@PathVariable String id, @RequestBody String genreName) {
         Genre genre = genreRepo.findById(id).get();
-        genre.setName(genreName);
         genreRepo.deleteById(id);
+        genre.setName(genreName);
         genreRepo.save(genre);
     }
 

@@ -69,16 +69,16 @@ public class CinemaController {
     @PutMapping("/{id}/updateCinemaName")
     public void updateCinemaName(@PathVariable String id, @RequestBody String cinemaName) {
         Cinema cinema = cinemaRepo.findById(id).get();
-        cinema.setName(cinemaName);
         cinemaRepo.deleteById(id);
+        cinema.setName(cinemaName);
         cinemaRepo.save(cinema);
     }
 
     @PutMapping("/{id}/updateCinemaAddress")
     public void updateCinemaAddress(@PathVariable String id, @RequestBody String cinemaAddress) {
         Cinema cinema = cinemaRepo.findById(id).get();
-        cinema.setAddress(cinemaAddress);
         cinemaRepo.deleteById(id);
+        cinema.setAddress(cinemaAddress);
         cinemaRepo.save(cinema);
     }
 
